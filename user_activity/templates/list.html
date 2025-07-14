@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Log Aktivitas User
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+      <h4 class="mb-sm-0">Log Aktivitas User</h4>
+
+      <!-- 
+      <div class="page-title-right">
+        <button class="btn btn-primary" onclick="exportToExcel()">
+          <i class="fi fi-sr-download align-middle me-1"></i> Export Excel
+        </button>
+      </div> 
+      -->
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-0">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0 flex-grow-1">Daftar Aktivitas</h5>
+          <div class="flex-shrink-0">
+            <div class="d-flex flex-wrap gap-2">
+              <input type="text" id="search-input" class="form-control" placeholder="Cari aktivitas..." style="width: 200px;">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table align-middle table-bordered table-strip mb-0" id="activity-table">
+          <!-- Tambahkan kolom User jika superuser -->
+            <thead>
+                <tr>
+                    <th>No</th>
+                    {% if request.user.is_superuser %}
+                    <th>User</th>
+                    {% endif %}
+                    <th>Waktu</th>
+                    <th>Tipe Aktivitas</th>
+                    <th>Halaman</th>
+                    <th>Method</th>
+                    <th>IP Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for activity in activities %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    {% if request.user.is_superuser %}
+                    <td>
+                        {% if activity.user %}
+                            {{ activity.user.username }}
+                        {% else %}
+                            Anonymous
+                        {% endif %}
+                    </td>
+                    {% endif %}
+                    <td>{{ activity.timestamp|date:"d M Y H:i" }}</td>
+                    <td>
+                        <span class="badge 
+                        {% if activity.activity_type == 'VIEW' %}bg-success
+                        {% elif activity.activity_type == 'EDIT' %}bg-warning text-dark
+                        {% elif activity.activity_type == 'CREATE' %}bg-primary
+                        {% elif activity.activity_type == 'DELETE' %}bg-danger
+                        {% else %}bg-secondary{% endif %}">
+                        {{ activity.get_activity_type_display }}
+                        </span>
+                    </td>
+                    <td>{{ activity.path }}</td>
+                    <td>{{ activity.method }}</td>
+                    <td>{{ activity.ip_address }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="{% if request.user.is_superuser %}7{% else %}6{% endif %}" class="text-center">Tidak ada aktivitas yang tercatat</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <div class="d-flex justify-content-between mt-3">
+          <div>
+            <p class="mb-0">Menampilkan {{ activities.start_index }} - {{ activities.end_index }} dari {{ activities.paginator.count }} aktivitas</p>
+          </div>
+          <nav aria-label="Page navigation">
+            <ul class="pagination mb-0">
+              {% if activities.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="aktivitas/?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="aktivitas/?page={{ activities.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+              
+              {% for num in activities.paginator.page_range %}
+                {% if activities.number == num %}
+                  <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                {% elif num > activities.number|add:'-3' and num < activities.number|add:'3' %}
+                  <li class="page-item"><a class="page-link" href="aktivitas/?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+              {% endfor %}
+              
+              {% if activities.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="aktivitas/?page={{ activities.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="aktivitas/?page={{ activities.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+// Fungsi untuk export ke Excel
+function exportToExcel() {
+  // Implementasi export Excel disini
+  console.log("Export to Excel clicked");
+}
+
+// Fungsi pencarian
+document.getElementById('search-input').addEventListener('keyup', function() {
+  const searchText = this.value.toLowerCase();
+  const rows = document.querySelectorAll('#activity-table tbody tr');
+  
+  rows.forEach(row => {
+    const rowText = row.textContent.toLowerCase();
+    row.style.display = rowText.includes(searchText) ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}

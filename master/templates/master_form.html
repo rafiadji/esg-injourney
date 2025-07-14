@@ -1,0 +1,439 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Master
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+      <ol class="breadcrumb m-0">
+          <li class="breadcrumb-item"><a href="master">Master</a></li>
+          <li class="breadcrumb-item"><a href="master/detail/{{ matlev_kriteria.id }}">{{ matlev_kriteria.number }} {{ matlev_kriteria.kriteria }}</a></li>
+          <li class="breadcrumb-item active">{{ titlle_form }}</li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0 flex-grow-1">{{ titlle_form }}</h5>
+          <div class="flex-shrink-0">
+            <div class="d-flex flex-wrap gap-2">
+                
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="mb-3 col-6">
+            <label for="pillar_select" class="form-label">Indikator Kematangan *</label>
+            <input type="text" class="form-control" name="maturity" id="maturity" placeholder="Ketik indikator kematangan" onfocusout="save_maturity()" value="{{ matlev_detail.maturity|default_if_none:"" }}">
+          </div>
+          <div class="mb-3 col-6">
+            <label for="pillar_select" class="form-label">Range Level</label>
+            <input type="text" class="form-control" name="level" id="level" value="{{ matlev_detail.level }}" readonly>
+          </div>
+          <div class="mb-3 col-6">
+            <label for="pillar_select" class="form-label">Jenis Evidence *</label>
+            <textarea name="evidence" id="evidence" class="form-control" placeholder="Ketik jenis evidence" onfocusout="save_maturity()" rows="5">{{ matlev_detail.evidence|default_if_none:"" }}</textarea>
+          </div>
+          <div class="mb-3 col-6">
+            <label for="data_type_select" class="form-label">Tipe Data *</label>
+            <select name="data_type" id="data_type_select" class="form-control" onchange="save_maturity()">
+              <option value="" {% if matlev_detail.data_type == None %} selected {% endif %} disabled>-- Pilih Tipe Data -- </option>
+              <option value="upload" {% if matlev_detail.data_type == 'upload' %} selected {% endif %}>Upload Dokumen</option>
+              <option value="form" {% if matlev_detail.data_type == 'form' %} selected {% endif %}>Form Pengisian</option>
+            </select>
+          </div>
+          <div class="mb-3 col-12">
+            <div class="row">
+              <div class="col-6">
+                <label for="pic_select" class="form-label">PIC </label>
+                <select id="pic_select" class="form-control"></select>
+              </div>
+              <div class="mt-4 col-2">
+                <a href="javascript:;" onclick="save_pic()" class="btn btn-primary"><i class="fi fi-sr-add align-middle me-1"></i> Tambahkan</a>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="pic_select" class="form-label">Daftar PIC</label>
+            <table class="table align-middle table-bordered table-strip mb-0" id="pic-table">
+              <thead>
+                <tr>
+                  <th>PIC</th>
+                  <th style="width: 15%;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card-header">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0 flex-grow-1">Table Formulir</h5>
+          <div class="flex-shrink-0">
+            <div class="d-flex flex-wrap gap-2">
+                <a href="javascript:;" onclick="add_column()" class="btn btn-primary">Tambah Kolom</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="mb-3 col-12">
+            <table class="table align-middle table-bordered table-strip mb-0" id="formu-table">
+              <thead>
+                <tr>
+                  <th style="width: 10%;">ID Kolom</th>
+                  <th style="width: 10%;">Sub ID Kolom</th>
+                  <th style="width: 25%;">Nama Kolom</th>
+                  <th style="width: 10%;">Tipe Kolom</th>
+                  <th style="width: 25%;">Hint Kolom</th>
+                  <th style="width: 10%;">Show Table</th>
+                  <th style="width: 10%;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="float-end">
+          {% if mode == 'add' %}
+          <a href="master/remove_maturity/{{ matlev_detail.id }}/{{ matlev_kriteria.id }}" class="btn btn-outline-light text-dark">Batal</a>
+          <a href="master/detail/{{ matlev_kriteria.id }}" class="btn btn-primary">Simpan</a>
+          {% else %}
+          <a href="master/detail/{{ matlev_kriteria.id }}" class="btn btn-outline-light text-dark">Kembali</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-option" class="modal fade" tabindex="-1" aria-labelledby="modalOptionLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalOptionLabel">Opsi Kolom</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3 col-12" id="negative_input">
+          <div class="form-check form-check-inline">
+            <label for="negative" class="form-label">Isian Negative</label>
+            <input class="form-check-input" id="negative" type="checkbox">
+          </div>
+        </div>
+        <div class="mb-3 col-12" id="equation_input">
+          <label for="equation" class="form-label">Rumus</label>
+          <input type="text" name="equation" id="equation" class="form-control">
+        </div>
+      </div>
+      <input type="hidden" id="option_id">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-light text-dark" data-bs-dismiss="modal">Batal</button>
+        <button type="button" onclick="save_option()" class="btn btn-primary">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  const choice_option = {
+    searchResultLimit: 20,
+    shouldSort: false
+  }
+  const data_type_select = new Choices('#data_type_select', choice_option)
+  const pic_select = new Choices('#pic_select', choice_option)
+  var table = $('#pic-table').DataTable({
+    ordering: false,
+    paging: false,
+    searching: false
+  })
+
+  var table_formu = $('#formu-table').DataTable({
+    ordering: false,
+    paging: false,
+    searching: false
+  })
+
+  get_master_pic()
+  get_pic_list()
+  get_column()
+
+  function get_master_pic(){
+    $.ajax({
+      url: `master/get_pic_master/{{ matlev_detail.id }}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        pic_select.clearChoices()
+        pic_select.removeActiveItems()
+        var pic_opt = []
+        pic_opt.push({
+          value: '',
+          label: '-- Pilih PIC --',
+          selected: true,
+          disabled: true
+        })
+        for (var i = 0; i < res.data.length; i++) {
+          const dt = res.data[i]
+          pic_opt.push({
+            value: dt.id,
+            label: dt.pic
+          })
+        }
+        pic_select.setChoices(pic_opt, 'value', 'label', false)
+      }
+    })
+  }
+
+  function get_pic_list(){
+    $.ajax({
+      url: `master/get_pic_list/{{ matlev_detail.id }}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        table.clear().draw()
+        for (var i = 0; i < res.data.length; i++){
+          const dt = res.data[i]
+          table.row.add([
+            dt.pic__pic,
+            `<a href="javascript:;" onclick="remove_pic(${dt.id})" class="btn btn-light btn-icon waves-effect"><i class="fi fi-rr-trash align-middle" style="color: #FF4F4F;"></i></a>`
+          ]).draw()
+        }
+      }
+    })
+  }
+
+  function save_pic(){
+    choosen = pic_select.getValue().value
+    $.ajax({
+      url: `master/save_pic/{{ matlev_detail.id }}/${choosen}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        get_master_pic()
+        get_pic_list()
+      }
+    })
+  }
+
+  function remove_pic(id){
+    $.ajax({
+      url: `master/remove_pic/${id}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        get_master_pic()
+        get_pic_list()
+      }
+    })
+  }
+
+  function save_maturity(){
+    var formData = new FormData()
+    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}')
+    formData.append('maturity', $('#maturity').val())
+    formData.append('evidence', $('#evidence').val())
+    formData.append('data_type', data_type_select.getValue().value)
+    $.ajax({
+      url: `master/save_maturity/{{ matlev_detail.id }}`,
+      type: 'POST',
+      dataType: 'json',
+      data: formData,
+      processData: false,
+      contentType: false,
+      async: true,
+      success: (res) => {
+
+      }
+    })
+  }
+
+  function add_column(){
+    $.ajax({
+      url: `master/add_column/{{ matlev_detail.id }}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        get_column()
+      }
+    })
+  }
+
+  function get_column(){
+    $.ajax({
+      url: `master/get_column/{{ matlev_detail.id }}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        table_formu.clear().draw()
+        for (var i = 0; i < res.data.length; i++){
+          const dt = res.data[i]
+          tombol_gear = `<a href="javascript:;" id="btn_gear${dt.id}" onclick="option_column(${dt.id})" class="d-none btn btn-light btn-icon waves-effect"><i class="fi fi-sr-settings align-middle" style="color: #00A2E9;"></i></a>`
+          
+          if (dt.column_type=="equation"){
+            tombol_gear = `<a href="javascript:;" id="btn_gear${dt.id}" onclick="option_column(${dt.id},'${dt.equation}')" class="btn btn-light btn-icon waves-effect"><i class="fi fi-sr-settings align-middle" style="color: #00A2E9;"></i></a>`
+          }
+            table_formu.row.add([
+            dt.id,
+            `<input type="text" class="form-control" id="sub_column_id${dt.id}" value="${dt.sub_column_id == null ? '':dt.sub_column_id}">`,
+            `<input type="text" class="form-control" id="column_name${dt.id}" value="${dt.column_name == null ? '':dt.column_name}" onfocusout="save_column(${dt.id})">`,
+            `<select class="form-select" id="column_type${dt.id}" onchange="save_column(${dt.id})">
+              <option value="">-- Pilih Tipe Data --</option>
+              <option value="text" ${dt.column_type == 'text'?'selected':''}>Text</option>
+              <option value="decimal" ${dt.column_type == 'decimal'?'selected':''}>Decimal</option>
+              <option value="month" ${dt.column_type == 'month'?'selected':''}>Month Choice</option>
+              <option value="year" ${dt.column_type == 'year'?'selected':''}>Year Choice</option>
+              <option value="file" ${dt.column_type == 'file'?'selected':''}>File</option>
+              <option value="equation" ${dt.column_type == 'equation'?'selected':''}>Equation</option>
+              <option value="sub" ${dt.column_type == 'sub'?'selected':''}>Sub Form</option>
+            </select>`,
+            `<input type="text" class="form-control" id="hints${dt.id}" value="${dt.hints == null ? '':dt.hints}" onfocusout="save_column(${dt.id})">`,
+            ` <div class="form-check form-check-inline">
+                <input class="form-check-input" id="show_table${dt.id}" type="checkbox" ${dt.show_table == true ? 'checked':''} onclick="save_column(${dt.id})">
+              </div>`,
+            `
+            ${tombol_gear}
+            <a href="javascript:;" onclick="delete_column(${dt.id})" class="btn btn-light btn-icon waves-effect"><i class="fi fi-rr-trash align-middle" style="color: #FF4F4F;"></i></a>
+            `
+          ]).draw()
+          
+        }
+      }
+    })
+  }
+
+  function option_column(id, equation='null'){
+    // console.log(equation, )
+    $('#negative_input').addClass('d-none')
+    $('#equation_input').addClass('d-none')
+    $(`#option_id`).val(id)
+
+    column_type = $(`#column_type${id}`).val()
+    if (column_type == 'decimal'){
+      $('#negative_input').removeClass('d-none')
+    }else if(column_type == 'equation'){
+      $('#equation_input').removeClass('d-none')
+      if(equation != "null"){
+        
+        $('#equation').val(equation)
+      }else{
+        $('#equation').val("")
+        
+      }
+    }
+    $('#modal-option').modal('show')
+  }
+
+  function save_option(){
+    id = $(`#option_id`).val()
+    var formData = new FormData()
+    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}')
+    formData.append('column_name', $(`#column_name${id}`).val())
+    formData.append('column_type', $(`#column_type${id}`).val())
+    formData.append('hints', $(`#hints${id}`).val())
+    formData.append('show_table', $(`#show_table${id}`).is(':checked'))
+    formData.append('sub_column', $(`#sub_column_id${id}`).val())
+
+    column_type = $(`#column_type${id}`).val()
+    if (column_type == 'decimal'){
+      formData.append('negative', $(`#negative`).is(':checked'))
+    }else if(column_type == 'equation'){
+      formData.append('equation', $(`#equation`).val())
+      console.log(id)
+    }
+
+    $.ajax({
+      url: `master/save_column/${id}`,
+      type: 'POST',
+      dataType: 'json',
+      data: formData,
+      processData: false,
+      contentType: false,
+      async: true,
+      success: (res) => {
+        $('#modal-option').modal('hide')
+      }
+    })
+  }
+
+  function save_column(id){
+    var formData = new FormData()
+    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}')
+    formData.append('column_name', $(`#column_name${id}`).val())
+    formData.append('column_type', $(`#column_type${id}`).val())
+    formData.append('hints', $(`#hints${id}`).val())
+    formData.append('show_table', $(`#show_table${id}`).is(':checked'))
+    formData.append('sub_column', $(`#sub_column_id${id}`).val())
+    $.ajax({
+      url: `master/save_column/${id}`,
+      type: 'POST',
+      dataType: 'json',
+      data: formData,
+      processData: false,
+      contentType: false,
+      async: true,
+      success: (res) => {
+        if($(`#column_type${id}`).val()=="equation"){
+          
+          $(`#btn_gear${id}`).removeClass('d-none')
+        }else{
+          
+          $(`#btn_gear${id}`).addClass('d-none')
+        }
+      }
+    })
+  }
+
+  function delete_column(id) {
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Kolom yang dihapus tidak dapat dikembalikan!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: `master/remove_column/${id}`,
+          success: (res) => {
+            if (res.success) {
+              Swal.fire('Terhapus!', 'Kolom berhasil dihapus.', 'success').then(function () {
+                get_column()
+              })
+            } else {
+              Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus kolom.', 'error')
+            }
+          },
+          error: (err) => {
+            Swal.fire('Error!', 'Tidak dapat menghapus kolom. Silakan coba lagi.', 'error')
+          }
+        })
+      }
+    })
+  }
+</script>
+{% endblock %}

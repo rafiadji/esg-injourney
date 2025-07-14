@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Master
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <a href="master"><h4 class="mb-sm-0"><i class="fi fi-sr-undo"></i> {{ matlev_kriteria.number }} {{ matlev_kriteria.kriteria }}</h4></a>
+
+        <div class="page-title-right">
+          {% if counter_matlev < 3 %}
+            <a href="master/form/{{ matlev_kriteria.id }}/add" class="btn btn-primary"><i class="fi fi-sr-add align-middle me-1"></i> Indikasi Kematangan</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{ matlev_kriteria.number }} {{ matlev_kriteria.kriteria }}</h5>
+            <div class="flex-shrink-0">
+              <div class="d-flex flex-wrap gap-2">
+                {% comment %} <button class="btn btn-primary" onclick="add_fleet()"><i class="ri-add-line align-bottom me-1"></i> Add Fleet</button> {% endcomment %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table align-middle table-bordered table-strip mb-0" id="matlev-table">
+            <thead>
+              <tr>
+                <th style="width:10%">No</th>
+                <th style="width:30%">Indikasi Kematangan</th>
+                <th style="width:20%">Level</th>
+                <th style="width:30%">Jenis Evidence</th>
+                <th style="width:10%">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for ml in matlev %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ ml.maturity }}</td>
+                  <td>{{ ml.level }}</td>
+                  <td>{{ ml.evidence }}</td>
+                  <td>
+                    <a href="master/form/{{ matlev_kriteria.id }}/{{ ml.id }}" class="btn btn-light waves-effect"><i class="fi fi-rr-edit align-middle" style="color: #00A2E9;"></i> Edit</a>
+                    {% if counter_matlev == ml.level %}
+                    <a href="javacsript:;" onclick="delete_maturity({{ ml.id }})" class="btn btn-light btn-icon waves-effect"><i class="fi fi-rr-trash align-middle" style="color: #FF4F4F;"></i></a>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+    var table = $('#matlev-table').DataTable({ ordering: false })
+    function delete_maturity(id) {
+      Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: 'Data yang dihapus tidak dapat dikembalikan!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `master/delete_maturity/${id}`,
+            success: (res) => {
+              if (res.success) {
+                Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success').then(function () {
+                  location.reload()
+                })
+              } else {
+                Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus data.', 'error')
+              }
+            },
+            error: (err) => {
+              Swal.fire('Error!', 'Tidak dapat menghapus data. Silakan coba lagi.', 'error')
+            }
+          })
+        }
+      })
+    }
+  </script>
+{% endblock %}

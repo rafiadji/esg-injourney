@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Data
+{% endblock %}
+
+{% block head %}
+<!-- CSS Dropzone -->
+  <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css">
+
+  <style>
+    /* Style untuk Dropzone */
+    .dropzone {
+        border: 2px dashed #ced4da;
+        border-radius: 6px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        min-height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+    }
+
+    .dropzone:hover {
+        border-color: #80bdff;
+        background-color: rgba(0, 123, 255, 0.05);
+    }
+
+    .dz-message {
+        text-align: center;
+    }
+
+    .dz-preview .dz-progress {
+        height: 5px;
+    }
+
+    .dz-preview .dz-error-message {
+        color: white;
+        background: #dc3545;
+        border-radius: 4px;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <a href="data"><h4 class="mb-sm-0"><i class="fi fi-sr-undo"></i> {{ matlev_detail.kriteria.kriteria }}</h4></a>
+
+        {% comment %} <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Advance UI</a>
+            </li>
+            <li class="breadcrumb-item active">Animation</li>
+          </ol>
+        </div> {% endcomment %}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{ matlev_detail.maturity }}</h5>
+            <div class="flex-shrink-0">
+              <div class="d-flex flex-wrap gap-2">
+                <a href="data/form/add/{{ matlev_detail.id }}" class="btn btn-primary" style="border-radius: 8px;"><i class="fi fi-sr-add align-middle me-1"></i> Data</a>
+                <button class="btn btn-success" style="border-radius: 8px;" data-bs-toggle="modal" data-bs-target="#importExcelModal">
+                  <i class="fi fi-sr-file-import align-middle me-1"></i> Import Excel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table align-middle table-bordered table-strip mb-0" id="matlev-table">
+            <thead>
+                <tr>
+                    {% for cl in column %}
+                    <th>{{ cl.column_name }}</th>
+                    {% endfor %}
+                    <th style="width:150px">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for matlev_id, cl_vl in matlev %}
+              <tr>
+                {% for vl,tp in cl_vl %}
+                  {% if tp == 'file' %}
+                    <td>
+                      {% if vl %}  <!-- Cek jika vl ada -->
+                        {% if 'http' in vl.url|stringformat:"s" %}
+                        
+                          <a href="{{ vl }}" target="_blank">Lihat Dokumen</a>
+                          
+                        {% else %}
+                          <!-- Jika tidak ada URL tapi vl ada -->
+                           <a href="{{ vl.url }}" target="_blank">
+                            {{ vl.name|cut:"uploads/"|default:"Dokumen" }}
+                          </a>
+                        {% endif %}
+                      {% else %}
+                        <!-- Jika vl None/null -->
+                        <span class="text-muted">-</span>
+                      {% endif %}
+                    </td>
+                  {% else %}
+                    <td>{{ vl }}</td>
+                  {% endif %}
+                {% endfor %}
+                <td style="width:150px">
+                  <a href="data/form/{{ matlev_id }}/{{ matlev_detail.id }}" class="btn btn-light waves-effect"><i class="fi fi-rr-edit align-middle" style="color: #00A2E9;"></i> Edit</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Import Excel -->
+  <div class="modal fade" id="importExcelModal" tabindex="-1" aria-labelledby="importExcelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="excelUploadForm" enctype="multipart/form-data">
+          <div class="modal-header">
+            <h5 class="modal-title" id="importExcelModalLabel">Import Data dari Excel</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Link download format excel -->
+            <div class="mb-3">
+              <BUTTON type="button" onclick="generateExcel()" class="btn btn-outline-primary btn-sm">
+                <i class="fi fi-sr-download align-middle me-1"></i> Download Format Excel
+              </BUTTON>
+            </div>
+            
+            <!-- Dropzone Area -->
+            <div class="dropzone needsclick" id="excelDropzone">
+              <div class="dz-message">
+                <i class="fi fi-sr-file-spreadsheet display-4 text-muted"></i>
+                <h5>Drop file excel di sini atau klik untuk upload</h5>
+                <span class="text-muted font-size-13">Hanya file excel (.xlsx, .xls) yang didukung</span>
+              </div>
+            </div>
+            
+            <!-- Form tambahan untuk mengirim matlev_id -->
+            <input type="hidden" name="matlev_id" value="{{ matlev_detail.id }}">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-primary" id="uploadExcelBtn">Upload</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="assets/js/dataTables.rowsGroup.js"></script>
+  <script src="//cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.js"></script>
+  <script src="//cdn.datatables.net/fixedcolumns/5.0.1/js/fixedColumns.dataTables.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  
+  <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+  <script>
+    var table = $('#matlev-table').DataTable({
+      scrollX: true,
+      ordering: false,
+    }).columns.adjust()
+    {% comment %} table.row.add(['Risk and Crisis Management', '1.1', 'Business Continuity Management', 'Memiliki komitmen untuk menerapkan Business Continuity Management System (BCMS)', '1', 'Komitmen untuk menerapkan Business Continuity Management System', 'Upload Dokumen', 'RMD', '0', '0', '0', 'On Progress', '2025-03-25, 10:22:54 oleh Administrator', ''])
+    table.draw()
+    table.row.add(['Risk and Crisis Management', '1.1', 'Business Continuity Management', 'Mengimplementasikan ISO 22301- Business Continuity Management System (BCMS)', '2', 'Evidence level 1 + Pedoman/Prosedur yang mencakup Penerapan BCMS', 'Upload Dokumen', 'RMD', '0', '0', '0', 'On Progress', '2025-03-25, 10:22:54 oleh Administrator', ''])
+    table.draw() {% endcomment %}
+
+    function generateExcel() {
+    // Filter kolom yang bukan tipe file
+      const columns = [];
+      {% for cl in all_column %}
+              columns.push({
+                  name: "{{ cl.column_name|safe }}",
+                  // Anda bisa tambahkan metadata lain jika perlu
+                  type: "{{ cl.column_type|safe }}"
+              });
+      {% endfor %}
+      
+      // Buat worksheet data
+      const wsData = [
+          columns.map(col => col.name), // Header row
+          columns.map(col => ""),       // Contoh baris kosong
+      ];
+      
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      
+      // Atur width kolom (opsional)
+      const colWidths = columns.map(col => ({ wch: Math.max(col.name.length, 10) }));
+      ws['!cols'] = colWidths;
+      
+      // Buat workbook
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Import Format");
+      
+      // Export ke file
+      XLSX.writeFile(wb, `Import_Format_{{ matlev_detail.maturity }}.xlsx`);
+      e.preventDefault();
+      return false;
+  }
+
+ 
+// Inisialisasi Dropzone yang disesuaikan
+// Fungsi inisialisasi Dropzone
+function initDropzone() {
+    const dropzoneElement = document.getElementById('excelDropzone');
+    
+    // Reset element (penting!)
+    dropzoneElement.innerHTML = `
+        <div class="dz-message">
+            Drop file Excel di sini atau klik untuk upload
+        </div>
+    `;
+
+    // Hancurkan instance lama
+    if (dropzoneElement.dropzone) {
+        dropzoneElement.dropzone.destroy();
+    }
+
+    // Inisialisasi baru
+    const dz = new Dropzone(dropzoneElement, {
+        url: "{% url 'import_excel' %}",
+        paramName: "excel_file",
+        maxFiles: 1,
+        acceptedFiles: ".xlsx,.xls",
+        autoProcessQueue: false,
+        headers: {
+            'X-CSRFToken': "{{ csrf_token }}"
+        },
+        init: function() {
+            this.on("sending", function(file, xhr, formData) {
+                formData.append("matlev_id", "{{ matlev_detail.id }}");
+                console.log("Mengirim:", file.name, "| matlev_id:", "{{ matlev_detail.id }}");
+            });
+            
+            this.on("success", function(file, response) {
+                if (response.success) {
+                    window.location.reload();
+                } else {
+                    this.removeFile(file);
+                    alert(response.error || "Import gagal");
+                }
+            });
+            
+            this.on("error", function(file, message) {
+                this.removeFile(file);
+                alert(message || "Error saat upload");
+            });
+        }
+    });
+
+    return dz;
+}
+
+// Event modal show
+document.getElementById('importExcelModal').addEventListener('shown.bs.modal', function() {
+    window.excelDropzone = initDropzone();
+});
+
+// Event tombol upload
+document.getElementById('uploadExcelBtn').addEventListener('click', function() {
+    if (window.excelDropzone && window.excelDropzone.files.length > 0) {
+        window.excelDropzone.processQueue();
+    } else {
+        alert("Pilih file Excel terlebih dahulu!");
+    }
+});
+  </script>
+  
+{% endblock %}

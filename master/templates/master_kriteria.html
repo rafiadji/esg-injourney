@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Master
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+      <h4 class="mb-sm-0">Kertas Kerja ESG Level Sustainability</h4>
+
+      <div class="page-title-right">
+        <a href="javascript:;" onclick="add_form()" class="btn btn-primary"><i class="fi fi-sr-add align-middle me-1"></i> Kertas Kerja</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-0">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0 flex-grow-1">List Kertas Kerja</h5>
+          <div class="flex-shrink-0">
+            <div class="d-flex flex-wrap gap-2">
+                {% comment %} <button class="btn btn-primary" onclick="add_fleet()"><i class="ri-add-line align-bottom me-1"></i> Add Fleet</button> {% endcomment %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table align-middle table-bordered table-strip mb-0" id="matlev-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Pillar</th>
+              <th>Indikator</th>
+              <th>Kriteria Sustainability</th>
+              <th>Maksimal Level</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for mk in matlev_kriteria %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>
+                {% if mk.indicator.pillar == 'gov' %}
+                Governance
+                {% elif mk.indicator.pillar == 'env' %}
+                Environment
+                {% elif mk.indicator.pillar == 'soc' %}
+                Social
+                {% endif %}
+              </td>
+              <td>{{ mk.indicator.indicator}}</td>
+              <td>{{ mk.number}} {{ mk.kriteria}}</td>
+              <td>{{ mk.max_level}}</td>
+              <td>
+                <a href="javascript:;" onclick="edit_form({{mk.id}})" class="btn btn-light waves-effect"><i class="fi fi-rr-edit align-middle" style="color: #00A2E9;"></i> Edit</a>
+                <a href="master/detail/{{mk.id}}" class="btn btn-light btn-icon waves-effect"><i class="fi fi-rr-folder align-middle" style="color: #00A2E9;"></i></a>
+                <a href="javascript:;" onclick="delete_kriteria({{mk.id}})" class="btn btn-light btn-icon waves-effect"><i class="fi fi-rr-trash align-middle" style="color: #FF4F4F;"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-form" class="modal fade" tabindex="-1" aria-labelledby="modalFormLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" id="kriteria_id" name="kriteria_id">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalFormLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3 col-12">
+            <label for="pillar_select" class="form-label">Pillar *</label>
+            <select name="pillar" id="pillar_select" class="form-control"></select>
+            <input type="text" class="form-control-plaintext d-none" id="pillar_read" readonly>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="indicator_select" class="form-label">Indikator</label>
+            <select name="indicator" id="indicator_select" class="form-control"></select>
+            <input type="text" class="form-control-plaintext d-none" id="indicator_read" readonly>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="number" class="form-label">Nomor *</label>
+            <input type="text" name="number" id="number" class="form-control" readonly>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="kriteria" class="form-label">Kriteria Sustainability *</label>
+            <input type="text" name="kriteria" id="kriteria" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-light text-dark" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">
+            Simpan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  const choice_option = {
+    searchResultLimit: 20,
+    shouldSort: false
+  }
+
+  const pill = [{'value':'gov', 'label':'Governance'},{'value':'env', 'label':'Environment'},{'value':'soc', 'label':'Social'}]
+
+  var table = $('#matlev-table').DataTable({ordering: false})
+  var pillar_select = new Choices('#pillar_select', choice_option)
+  var indicator_select = new Choices('#indicator_select', choice_option)
+
+  $('#pillar_select').on('change', function(){
+    $.ajax({
+      url: `master/get_indicator/${pillar_select.getValue().value}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        indicator_select.clearChoices()
+        indicator_select.removeActiveItems()
+        var indicator_opt = []
+        indicator_opt.push({
+          value: '',
+          label: '-- Pilih Indikator --',
+          selected: true,
+          disabled: true
+        })
+        for (var i = 0; i < res.data.length; i++) {
+          const dt = res.data[i]
+          indicator_opt.push({
+            value: dt.id,
+            label: dt.indicator
+          })
+        }
+        indicator_select.setChoices(indicator_opt, 'value', 'label', false)
+        $('#number').val('')
+      }
+    })
+
+  })
+
+  $('#indicator_select').on('change', function(){
+    $.ajax({
+      url: `master/get_number/${indicator_select.getValue().value}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        $('#number').val(res.number)
+      }
+    })
+
+  })
+
+  function add_form(){
+    $('#modalFormLabel').html('Tambah Kertas Kerja')
+    if (!pillar_select.initialised){
+      $('#pillar_read').addClass('d-none')
+      $('#pillar_select').removeClass('d-none')
+      pillar_select.init()
+    }
+    pillar_select.clearChoices()
+    pillar_select.removeActiveItems()
+    var pillar_opt = []
+    pillar_opt.push({
+      value: '',
+      label: '-- Pilih Pillar --',
+      selected: true,
+      disabled: true
+    })
+    for (var i = 0; i < pill.length; i++) {
+      const dt = pill[i]
+      pillar_opt.push({
+        value: dt.value,
+        label: dt.label
+      })
+    }
+    pillar_select.setChoices(pillar_opt, 'value', 'label', false)
+
+    if (!indicator_select.initialised){
+      $('#indicator_read').addClass('d-none')
+      $('#indicator_select').removeClass('d-none')
+      indicator_select.init()
+    }
+
+    indicator_select.clearChoices()
+    indicator_select.removeActiveItems()
+    var indicator_opt = []
+    indicator_opt.push({
+      value: '',
+      label: '-- Pilih Indikator --',
+      selected: true,
+      disabled: true
+    })
+    indicator_select.setChoices(indicator_opt, 'value', 'label', false)
+
+    $('#number').val('')
+    $('#kriteria').val('')
+    $('#kriteria_id').val('add')
+    $('#modal-form').modal('show')
+  }
+
+  function edit_form(id){
+    $.ajax({
+      url: `master/get_edit_kriteria/${id}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        const dta = res.data
+        $('#modalFormLabel').html('Ubah Kertas Kerja')
+        $('#pillar_read').removeClass('d-none')
+        $('#pillar_select').addClass('d-none')
+        pillar_select.destroy()
+
+        for (var i = 0; i < pill.length; i++) {
+          const dt = pill[i]
+          if (dta.indicator__pillar == dt.value){
+            $('#pillar_read').val(dt.label)
+          }
+        }
+
+        
+        $('#indicator_read').removeClass('d-none')
+        $('#indicator_select').addClass('d-none')
+        indicator_select.destroy()
+
+        $('#indicator_read').val(dta.indicator__indicator)
+
+        $('#number').val(dta.number)
+        $('#kriteria').val(dta.kriteria)
+
+        $('#kriteria_id').val(id)
+        $('#modal-form').modal('show')
+      }
+    })
+  }
+
+  function delete_kriteria(id) {
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Data yang dihapus tidak dapat dikembalikan!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: `master/delete_kriteria/${id}`,
+          success: (res) => {
+            if (res.success) {
+              Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success').then(function () {
+                location.reload()
+              })
+            } else {
+              Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus data.', 'error')
+            }
+          },
+          error: (err) => {
+            Swal.fire('Error!', 'Tidak dapat menghapus data. Silakan coba lagi.', 'error')
+          }
+        })
+      }
+    })
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Data
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <h4 class="mb-sm-0">{{ matlev_title }}</h4>
+
+        {% comment %} <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item">
+              <a href="javascript: void(0);">Advance UI</a>
+            </li>
+            <li class="breadcrumb-item active">Animation</li>
+          </ol>
+        </div> {% endcomment %}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="d-flex align-items-center">
+            <h5 class="card-title mb-0 flex-grow-1">{{ mode_title }}</h5>
+            <div class="flex-shrink-0">
+              <div class="d-flex flex-wrap gap-2">
+                {% comment %} <button class="btn btn-primary"><i class="ri-add-line align-bottom me-1"></i> Add Data</button> {% endcomment %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="card-body">
+            <div class="row">
+              {% for cl in column %}
+                {% if cl.column_type == 'sub' %}
+                <hr class="mt-3">
+                <h5 class="mb-1">{{cl.column_name}}</h5>
+                <span class="mb-4 text-muted">{{cl.hints|default:""}}</span>
+                {% for cln in column %}
+                  {% if cln.sub_column_id == cl.id %}
+                  <div class="mb-3 col-6">
+                      <label for="{{ cln.id }}" class="form-label">{{cln.column_name}} </label>
+                      {% if cln.column_type == 'year' %}
+                        <select name="{{ cln.id }}" id="{{ cln.id }}" class="form-control year-select">
+                          <option value="" {% if not cln.value %}selected{% endif %}>Pilih Tahun</option>
+                          {% for x in year %}
+                          <option value="{{x}}" {% if cln.value == x|safe %}selected{% endif %}>{{x}}</option>
+                        {% endfor %}
+                      </select>
+                      {% elif cln.column_type == 'month' %}
+                        <select name="{{ cln.id }}" id="{{ cln.id }}" class="form-control month-select">
+                          <option value="" {% if not cln.value %}selected{% endif %}>Pilih Bulan</option>
+                          {% for x in month %}
+                          <option value="{{ x }}" {% if cln.value == x %}selected{% endif %}>{{ x }}</option>
+                          {% endfor %}
+                      </select>
+                      {% elif cln.column_type == 'text' %}
+                        <input type="text" class="form-control" id="{{ cln.id }}" name="{{ cln.id }}" value="{{ cln.value }}">
+                      {% elif cln.column_type == 'decimal' %}
+                        {% if cln.negative_input == True %}
+                        <input type="text" class="form-control num-neg-input" onfocusout="proses_equation()" id="{{ cln.id }}" name="{{ cln.id }}" value="{{ cln.value|default:"0" }}">
+                        {% else %}
+                          <input type="text" class="form-control num-input" onfocusout="proses_equation()" id="{{ cln.id }}" name="{{ cln.id }}" value="{{ cln.value|default:"0" }}">
+                        {% endif %}
+                      {% elif cln.column_type == 'file' %}
+                        <input type="file" class="form-control" id="{{ cln.id }}" name="{{ cln.id }}">
+                      {% elif cln.column_type == 'equation' %}
+                        <input type="text" class="form-control" id="{{ cln.id }}" name="{{ cln.id }}" readonly>
+                      {% endif %}
+                      <div id="help{{ cln.id }}" class="form-text">{{ cln.hints|default:"&nbsp;" }}</div>
+                  </div>
+                  {% endif %}
+                {% endfor %}
+                <hr class="mt-3">
+                {% elif cl.sub_column_id == '' or cl.sub_column_id == None %}
+                <div class="mb-3 col-6">
+                    <label for="{{ cl.id }}" class="form-label">{{cl.column_name}}</label>
+                    {% if cl.column_type == 'year' %}
+                      <select name="{{ cl.id }}" id="{{ cl.id }}" class="form-control year-select">
+                        <option value="" {% if not cl.value %} selected {% endif %}>Pilih Tahun {{cl.value}}</option>
+                        {% for x in year %}
+                        <option value="{{x}}" {% if cl.value == x|safe %} selected {% endif %}>{{x}}</option>
+                        {% endfor %}
+                      </select>
+                    {% elif cl.column_type == 'month' %}
+                      <select name="{{ cl.id }}" id="{{ cl.id }}" class="form-control month-select">
+                          <option value="" {% if not cl.value %}selected{% endif %}>Pilih Bulan</option>
+                          {% for x in month %}
+                          <option value="{{ x }}" {% if cl.value == x %}selected{% endif %}>{{ x }}</option>
+                          {% endfor %}
+                      </select>
+                    {% elif cl.column_type == 'text' %}
+                      <input type="text" class="form-control" id="{{ cl.id }}" name="{{ cl.id }}" value="{{ cl.value }}">
+                    {% elif cl.column_type == 'decimal' %}
+                      
+                      {% if cl.negative_input == True %}
+                        <input type="text" class="form-control num-neg-input" onfocusout="proses_equation()" id="{{ cl.id }}" name="{{ cl.id }}" value="{{ cl.value|default:"0" }}">
+                      {% else %}
+                        <input type="text" class="form-control num-input" onfocusout="proses_equation()" id="{{ cl.id }}" name="{{ cl.id }}" value="{{ cl.value|default:"0" }}">
+                      {% endif %}
+                    {% elif cl.column_type == 'file' %}
+                      <input type="file" class="form-control" id="{{ cl.id }}" name="{{ cl.id }}">
+                      <div id="upload{{ cl.id }}" class="form-text">{{ cl.value|default:"&nbsp;" }}</div>
+                    {% elif cl.column_type == 'equation' %}
+                      <input type="text" class="form-control" id="{{ cl.id }}" name="{{ cl.id }}" readonly>
+                    {% endif %}
+                    <div id="help{{ cl.id }}" class="form-text">{{ cl.hints|default:"&nbsp;" }}</div>
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="hstack gap-2 justify-content-end">
+              <a href="data/detail/{{matlev_detail.id}}" class="btn btn-light">Batal</a>
+              <button type="submit" class="btn btn-info">Simpan</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="assets/libs/cleave.js/cleave.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.9.0/math.min.js"></script>
+  
+  <script>
+    const choice_option = {
+      searchResultLimit: 20,
+      shouldSort: false
+    }
+    var equ = []
+
+    var table = $('#matlev-table').DataTable({})
+    if ($(".year-select").length > 0){
+      const year_select = new Choices('.year-select', choice_option)
+    }
+
+    if ($(".month-select").length > 0){
+      const month_select = new Choices('.month-select', choice_option)
+    }
+
+    if ($(".num-input").length > 0){
+      const inputElements = document.querySelectorAll('.num-input');
+      inputElements.forEach(element => {
+        new Cleave(element, {
+          numeral: true,
+          numeralDecimalScale: 2,
+          numeralPositiveOnly: true,
+          numeralDecimalMark: ',',
+          delimiter: '.'
+        })
+      });
+    }
+
+    if ($(".num-neg-input").length > 0){
+      const inputElements = document.querySelectorAll('.num-neg-input');
+      inputElements.forEach(element => {
+        new Cleave(element, {
+          numeral: true,
+          numeralDecimalScale: 2,
+          numeralPositiveOnly: false,
+          numeralDecimalMark: ',',
+          delimiter: '.'
+        })
+      });
+    }    
+
+    {% for cl in column %}
+      {% if cl.column_type == 'sub' %}
+      {% for cln in column %}
+        {% if cln.sub_column_id == cl.id %}
+          {% if cln.column_type == 'equation' %}
+            add_equ({{cln.id}}, '{{cln.equation}}')
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      {% elif cl.sub_column_id == '' or cl.sub_column_id == None %}
+          {% if cl.column_type == 'equation' %}
+            add_equ({{cl.id}}, '{{cl.equation}}')
+          {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    function add_equ(id, equation){
+      var temp = [id, equation]
+      equ.push(temp)
+      console.log(equ)
+    }
+
+    function proses_equation(){
+      for(let i = 0;i < equ.length; i++){
+        formula = equ[i][1]
+        
+        let ids = formula.match(/#(\d+)/g).map(item => item.replace(/#/g, ""));
+        formula = formula.replace(/#/g, "")
+    
+        if (!ids) console.log("Formula tidak valid");
+
+        let values = {};
+        ids.forEach(id => {
+            let inputElement = document.getElementById(id);
+            values[id] = inputElement ? parseFloat(inputElement.value) || 0 : 0;
+        });
+        Object.keys(values).forEach(id => {
+            formula = formula.replace(id, values[id]);
+        });
+
+        try {
+            hasil = math.evaluate(formula);
+            hasil = hasil.toFixed(2);
+            $('#'+equ[i][0]).val(hasil)
+        } catch (error) {
+            console.log("Error dalam evaluasi rumus")
+            console.log(error)
+        }
+      }
+    }
+    {% comment %} table.row.add(['Risk and Crisis Management', '1.1', 'Business Continuity Management', 'Memiliki komitmen untuk menerapkan Business Continuity Management System (BCMS)', '1', 'Komitmen untuk menerapkan Business Continuity Management System', 'Upload Dokumen', 'RMD', '0', '0', '0', 'On Progress', '2025-03-25, 10:22:54 oleh Administrator', ''])
+    table.draw()
+    table.row.add(['Risk and Crisis Management', '1.1', 'Business Continuity Management', 'Mengimplementasikan ISO 22301- Business Continuity Management System (BCMS)', '2', 'Evidence level 1 + Pedoman/Prosedur yang mencakup Penerapan BCMS', 'Upload Dokumen', 'RMD', '0', '0', '0', 'On Progress', '2025-03-25, 10:22:54 oleh Administrator', ''])
+    table.draw() {% endcomment %}
+  </script>
+{% endblock %}
