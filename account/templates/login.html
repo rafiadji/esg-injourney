@@ -23,19 +23,96 @@
     <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 
     <style>
-        body { 
-            background: url('assets/images/mandalika.jpg') ; 
-            -webkit-background-size: contain;
-            -moz-background-size: contain;
-            -o-background-size: contain;
-            background-size: contain;
+        #myVideo {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+        }
+        .login-container{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: auto;
+            width: 400px;
+            height: 445.94px;
+            border: 3px solid black;
+            padding: 50px;
+            border-radius: 24px;
+
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        .form-login{
+            width: 300px;
+            height: 44px;
+        }
+        footer{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 
 </head>
 
 <body>
-    <div class="container-fluid h-100 ">
+    <div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center ">
+        <video autoplay muted loop id="myVideo" >
+        <source src="assets/images/Sequence01.mp4" type="video/mp4">
+    </video>
+    <div class="content">
+        <div class="login-container">
+            <center>
+                <div class="mb-4">
+                    <img src="assets/images/injourney.png" alt="" height="85.94px" />
+                </div>
+            </center>
+            <form action="#" method="post">
+                 {% csrf_token %}
+                <div class="mb-4">
+                    <label for ="username" class="form-label text-white">Username</label>
+                    <input type="text" class="form-control form-login" name="username" id="username" placeholder="Username">
+                </div>
+                <label class="form-label text-white" for="password-input">Password</label>
+                <div class="position-relative auth-pass-inputgroup mb-4">
+                    <input type="password" class="form-control pe-5 password-input form-login" placeholder="Enter password" name="password" id="password-input">
+                    <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                </div>
+                <div class="mb-4">
+                    <button class="btn btn-success w-100 form-login" type="submit">Masuk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- footer -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <p class="mb-0">
+                                 PT Aviasi Pariwisata Indonesia (Persero) &copy; <script>document.write(new Date().getFullYear())</script>. All Rights Reserved
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- end Footer -->
+    
+    </div>
+    
+
+    {% comment %} <div class="container-fluid h-100 ">
         <div class="row h-100">
             
         </div>
@@ -97,7 +174,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 
     {% comment %} <div class="auth-page-wrapper pt-5">
         <!-- auth page bg -->
@@ -194,6 +271,11 @@
     <script src="assets/js/pages/particles.app.js"></script>
     <!-- password-addon init -->
     <script src="assets/js/pages/password-addon.init.js"></script>
+    <script> 
+        var video = document.getElementById("myVideo");
+        {% comment %} video.muted = false {% endcomment %}
+
+    </script>
 </body>
 
 </html>
