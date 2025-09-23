@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" data-layout="horizontal" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
   <head>
     <meta charset="utf-8" />
     <base href="//localhost:8000/" />
     <title>
       ESG Dashboard |{% block title %}
+
       {% endblock %}
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
-    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="csrf-token" content="{{ csrf_token }}" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico" />
 
@@ -18,6 +19,9 @@
 
     <!-- plugin css -->
     <link href="assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Swiper slider css -->
+    <link href="assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Layout config Js -->
     <script src="assets/js/layout.js"></script>
@@ -29,44 +33,39 @@
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css -->
     <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
-    
-    <link rel="stylesheet" href="assets/css/shepherd.css">
-    <link href="//cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css" />
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/all/all.min.css">
 
     <style>
       @media (min-width: 1024.1px) {
-        [data-layout="horizontal"] .container-fluid,
-        [data-layout="horizontal"] .layout-width {
+        [data-layout='horizontal'] .container-fluid,
+        [data-layout='horizontal'] .layout-width {
           max-width: calc(100% - 1.5rem) !important;
           padding-left: 0 !important;
           padding-right: 0 !important;
         }
       }
-     
-      #tahun_periode{
-        padding:10px;
+      
+      #tahun_periode {
+        padding: 10px;
       }
-      .status-revisi{
+      .status-revisi {
         padding: 10px;
         background: #c7195c;
         color: white;
         border-radius: 20px;
       }
-      .status-verified{
+      .status-verified {
         padding: 10px;
-        background: #2AACE3;
+        background: #2aace3;
         color: white;
         border-radius: 20px;
       }
-      .status-submitted{
+      .status-submitted {
         padding: 10px;
         background: #efd15d;
         color: white;
         border-radius: 20px;
       }
-      .status-belum{
+      .status-belum {
         padding: 10px;
         background: #4c4c4b;
         color: white;
@@ -78,266 +77,197 @@
         -webkit-transition: all 0.1s ease-out !important;
         transition: all 0.1s ease-out !important;
       }
-
-      .header-menu-wika.active,.header-menu-wika:hover{
-        cursor:pointer;
+      
+      .header-menu-inj.active,
+      .header-menu-inj:hover {
+        cursor: pointer;
         border-bottom: 2px solid rgba(0, 162, 233, 1);
       }
-      .header-menu-wika.active .menu-link,
-      .header-menu-wika:hover .menu-link {
+      .header-menu-inj.active .menu-link,
+      .header-menu-inj:hover .menu-link {
         color: rgba(0, 162, 233, 1) !important;
       }
 
+      .nav-inj{
+        color: #fff;
+      }
+      
+      
       .btn {
         border-radius: 8px !important;
       }
+      .bg-overlay-black {
+        background-image: url('../images/landing/bg-pattern.png');
+        background-color: transparent;
+        background-position: center;
+        background-size: cover;
+        opacity: 0.2;
+      }
+      box-overlay {
+        width: 100;
+        height: 20%;
+        background-color: black;
+      }
+      
+      .heroinj {
+        position: relative;
+        width: 100%;
+        height: 100%%;
+        background-size: cover;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .heroinj2 {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.5));
+      }
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 40px;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .logo img {
+        height: 40px;
+        transition: 0.3s;
+      }
+
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .nav-link.active {
+        color: #00c36d;
+      }
+
+      .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #00c36d;
+      }
+      .navbar.dark .is-sticky .nav-link {
+        color: white;
+      }
+
+      .navbar.dark .nav-link.active {
+        color: #00c36d;
+      }
+
+
+      .navbar.light .nav-link {
+        color: black;
+      }
+
+      .navbar.light .nav-link.active {
+        color: #00c36d;
+      }
+
     </style>
+
     {% block head %}
+
     {% endblock %}
   </head>
 
-  <body>
+  <body data-bs-spy="scroll" data-bs-target="#navbar-example">
     <!-- Begin page -->
-    <div id="layout-wrapper">
-      <header id="page-topbar">
-        <div class="layout-width">
-          <div class="navbar-header">
-            <div class="d-flex">
-              <!-- LOGO -->
-              <div class="navbar-brand-box horizontal-logo">
-                <a href="" class="logo logo-dark">
-                  <span class="logo-sm"><img src="assets/images/injourney.png" alt="" height="50" /></span>
-                  <span class="logo-lg"><img src="assets/images/injourney.png" alt="" height="50" /></span>
-                </a>
+    <div class="layout-wrapper landing">
+      <nav class="navbar navbar-expand-lg navbar-landing fixed-top dark" id="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="index.html">
+            <img src="assets/images/inj-white.png" class="card-logo card-logo-dark" alt="logo dark" height="50" />
+            <img src="assets/images/injourney.png" class="card-logo card-logo-light" alt="logo light" height="50" />
+          </a>
+          <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="mdi mdi-menu"></i></button>
 
-                <a href="" class="logo logo-light">
-                  <span class="logo-sm"><img src="assets/images/injourney.png" alt="" height="50" /></span>
-                  <span class="logo-lg"><img src="assets/images/injourney.png" alt="" height="50" /></span>
-                </a>
-              </div>
-
-              {% comment %} <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger shadow-none" id="topnav-hamburger-icon">
-                <span class="hamburger-icon">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </span>
-              </button> {% endcomment %}
-            </div>
-
-            <div class="d-flex w-100">
-              <div id="menu_dashboard" class="mx-3 header-item header-menu-wika d-none d-sm-flex {% if menu == 'dashboard' %} active {% endif %}">
-                  <a href="dashboard" class="nav-link menu-link text-muted d-flex align-items-center">
-                      <i class="me-2 fs-5 fi fi-rr-home"></i>
-                      <span data-key="t-dashboard">Dashboard</span>
-                  </a>
-              </div>
-              <div id="menu_data" class="mx-3 header-item header-menu-wika d-none d-sm-flex {% if menu == 'data' %} active {% endif %}">
-                  <a href="data" class="nav-link menu-link text-muted d-flex align-items-center">
-                      <i class="me-2 fs-5 fi fi-sr-briefcase"></i>
-                      <span data-key="t-data">Data</span>
-                  </a>
-              </div>
+          <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            <ul class="navbar-nav menu-inj mx-auto mt-2 mt-lg-0" id="navbar-example">
+              <li class="nav-item ">
+                <a class="nav-link fs-14 active" href="dashboard">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fs-14" href="data">Emission Monitor</a>
+              </li>
               {% if request.user.is_superuser %}
-                  <div id="menu_master" class="mx-3 header-item header-menu-wika d-none d-sm-flex {% if menu == 'master' %} active {% endif %}">
-                      <a href="master" class="nav-link menu-link text-muted d-flex align-items-center">
-                          <i class="me-2 fs-5 fi fi-rr-database"></i>
-                          <span data-key="t-master">Master</span>
-                      </a>
-                  </div>
+                <li class="nav-item">
+                  <a class="nav-link fs-14" href="master">Master</a>
+                </li>
               {% endif %}
-              
-              <!-- Menu Aktivitas Baru -->
-              <div id="menu_activity" class="mx-3 header-item header-menu-wika d-none d-sm-flex {% if menu == 'activity' %} active {% endif %}">
-                  <a href="{% url 'user-activity-list' %}" class="nav-link menu-link text-muted d-flex align-items-center">
-                      <i class="me-2 fs-5 fi fi-rr-clock"></i>
-                      <span data-key="t-activity">Aktivitas</span>
-                  </a>
-              </div>
-          </div>
+            </ul>
 
-            <div class="d-flex align-items-center">
-              {% comment %} <div class="ms-1 header-item d-none d-sm-flex">
-                <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none" data-toggle="fullscreen"><i class="bx bx-fullscreen fs-22"></i></button>
-              </div>
-
-              <div class="ms-1 header-item d-none d-sm-flex">
-                <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode shadow-none"><i class="bx bx-moon fs-22"></i></button>
-              </div> {% endcomment %}
-              <div class="ms-1 header-item d-none d-sm-flex">
-                <select name="tahun_periode" id="tahun_periode">
-                     {% with selected_year=request.session.tahun_periode|default:"2024" %}
-                        {% for i in "x"|rjust:"22" %}
-                            {% with year=2024|add:forloop.counter0 %}
-                                <option value="{{ year }}" {% if selected_year == year|stringformat:"s" %}selected{% endif %}>
-                                    {{ year }}
-                                </option>
-                            {% endwith %}
-                        {% endfor %}
-                    {% endwith %}
-                </select>
-              </div>
-              <div class="ms-1 header-item d-none d-sm-flex">
-                <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode shadow-none" onclick="tour_on()"><i class="bx bx-help-circle fs-22"></i></button>
-              </div>
-              <div class="dropdown ms-sm-3 header-item topbar-user">
-                <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="d-flex align-items-center">
-                    <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" />
-                    <span class="text-start ms-xl-2">
-                      <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text" style="white-space: nowrap;">{{request.user.first_name}} {{request.user.last_name}}</span>
-                      
-                        <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"  style="white-space: nowrap;">
-                          <!-- Di base.html -->
-                          {% if request.user.is_authenticated %}
-                              {% with user_pic=request.user.userpic_set.first %}
-                                  {% if user_pic %}
-                                      {{ user_pic.pic.pic }}
-                                  {% else %}
-                                     - 
-                                  {% endif %}
-                              {% endwith %}
-                          {% endif %}
+            <div class="">
+              <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-flex align-items-center">
+                            <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar">
+                            <span class="text-start ms-xl-2">
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Administrator</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">admin@injourney.id</span>
+                            </span>
                         </span>
-                    </span>
-                  </span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <!-- item -->
-                  <!-- <h6 class="dropdown-header">Welcome {{request.user.first_name}}!</h6> -->
-                  {% comment %} <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
-                  <a class="dropdown-item" href="apps-chat.html"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Messages</span></a>
-                  <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Taskboard</span></a>
-                  <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a>
-                  <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
-                  <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a> {% endcomment %}
-                  <a class="dropdown-item" href="logout"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
-                </div>
+                    </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- end navbar -->
+      <div class="vertical-overlay" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent.show"></div>
+      <section class="section" id="contents">
+        {% block content %}
+
+        {% endblock %}
+      </section>
+
+      <!-- Start footer -->
+      <footer class="custom-footer bg-light p-4 position-relative">
+        <div class="container">
+          <div class="row text-center text-sm-start align-items-center mt-">
+            <div class="col-sm-12">
+              <div>
+                <p class="text-center">
+                  PT Aviasi Pariwisata Indonesia (Persero) ©<script>
+                                                              document.write(new Date().getFullYear())
+                                                            </script>. All Rights Reserved
+                </p>
               </div>
             </div>
           </div>
         </div>
-      </header>
-      <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="NotificationModalbtn-close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="mt-2 text-center">
-                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                  <h4>Are you sure ?</h4>
-                  <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
-                </div>
-              </div>
-              <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn w-sm btn-danger" id="delete-notification">Yes, Delete It!</button>
-              </div>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
+      </footer>
       </div>
-      <!-- /.modal -->
-      <!-- ========== App Menu ========== -->
-      <div class="app-menu navbar-menu">
-        <!-- LOGO -->
-        <div class="navbar-brand-box">
-          <!-- Dark Logo -->
-          <a href="index.html" class="logo logo-dark">
-            <span class="logo-sm"><img src="assets/images/logo-sm.png" alt="" height="22" /></span>
-            <span class="logo-lg"><img src="assets/images/logo-dark.png" alt="" height="17" /></span>
-          </a>
-          <!-- Light Logo -->
-          <a href="index.html" class="logo logo-light">
-            <span class="logo-sm"><img src="assets/images/logo-sm.png" alt="" height="22" /></span>
-            <span class="logo-lg"><img src="assets/images/logo-light.png" alt="" height="17" /></span>
-          </a>
-          <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover"><i class="ri-record-circle-line"></i></button>
-        </div>
 
-        <div id="scrollbar">
-          <div class="container-fluid">
-            <div id="two-column-menu"></div>
-            {% comment %} <ul class="navbar-nav" id="navbar-nav">
-              <li class="menu-title">
-                <span data-key="t-menu">Menu</span>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link menu-link {% if menu == 'dashboard' %} active {% endif %}" href="dashboard"><i class="mdi mdi-home"></i> <span data-key="t-dashboard">Dashboard</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link menu-link {% if menu == 'data' %} active {% endif %}" href="data"><i class="mdi mdi-briefcase"></i> <span data-key="t-data">Data</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link menu-link {% if menu == 'master' %} active {% endif %}" href="master"><i class="mdi mdi-database"></i> <span data-key="t-master">Master</span></a>
-              </li>
-            </ul> {% endcomment %}
-          </div>
-          <!-- Sidebar -->
-        </div>
+      <!-- end footer -->
 
-        <div class="sidebar-background"></div>
-      </div>
-      <!-- Left Sidebar End -->
-      <!-- Vertical Overlay -->
-      <div class="vertical-overlay"></div>
-
-      <!-- ============================================================== -->
-      <!-- Start right Content here -->
-      <!-- ============================================================== -->
-      <div class="main-content">
-        <div class="page-content" style="padding-top: 20px;">
-          <div class="container-fluid">
-            {% block content %}
-            {% endblock %}
-          </div>
-          <!-- container-fluid -->
-        </div>
-        <!-- End Page-content -->
-
-        <footer class="footer" style="background-color: #004899;">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-sm-12">
-                <center style="color: white;">
-                  Copyright © <script>
-                    document.write(new Date().getFullYear())
-                  </script> PT Wijaya Karya (Persero) Tbk.
-                </center>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
-      <!-- end main content -->
+      <!-- start back-to-top -->
+      <button onclick="topFunction()" class="btn btn-danger btn-icon landing-back-top" id="back-to-top"><i class="ri-arrow-up-line"></i></button>
+      <!-- end back-to-top -->
     </div>
-    <!-- END layout-wrapper -->
-
-    <!-- start back-to-top -->
-    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top"><i class="ri-arrow-up-line"></i></button>
-    <!-- end back-to-top -->
-
-    <!-- preloader -->
-    <div id="preloader">
-      <div id="status">
-        <div class="spinner-border text-primary avatar-sm" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    </div>
-
-    {% comment %} <div class="customizer-setting d-none d-md-block">
-      <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
-        <i class="mdi mdi-spin mdi-cog-outline fs-22"></i>
-      </div>
-    </div> {% endcomment %}
+    <!-- end layout wrapper -->
 
     <!-- JAVASCRIPT -->
     <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -345,42 +275,34 @@
     <script src="assets/libs/node-waves/waves.min.js"></script>
     <script src="assets/libs/feather-icons/feather.min.js"></script>
     <script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
-    {% comment %} <script src="assets/js/plugins.js"></script> {% endcomment %}
-    <script src="//cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-    <script src="//cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" ></script>
-    <script src="assets/numeral/numeral.min.js"></script>
-    <script src="assets/numeral/locales/idr.min.js"></script>
-    <script>numeral.locale('idr')</script>
+    <script src="assets/js/plugins.js"></script>
+
+    <!-- Swiper slider js -->
+    <script src="assets/libs/swiper/swiper-bundle.min.js"></script>
+
+    <!-- landing init -->
+    <script src="assets/js/pages/landing.init.js"></script>
 
     <script>
-      ;(document.querySelectorAll('[toast-list]') || document.querySelectorAll('[data-choices]') || document.querySelectorAll('[data-provider]')) && (document.writeln(`<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"><\/script>`), document.writeln(`<script type="text/javascript" src="{{ BASE_URL }}/assets/libs/choices.js/public/assets/scripts/choices.min.js"><\/script>`), document.writeln(`<script type="text/javascript" src="{{ BASE_URL }}/assets/libs/flatpickr/flatpickr.min.js"><\/script>`))
-    </script>
+      document.addEventListener("DOMContentLoaded", () => {
+  const navbar = document.getElementById("navbar");
+  const logo = document.getElementById("logo");
 
-    {% block script %}
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      navbar.classList.remove("dark");
+      navbar.classList.add("light");
+      logo.src = "logo-dark.png";
+    } else {
+      navbar.classList.remove("light");
+      navbar.classList.add("dark");
+      logo.src = "logo-light.png";
+    }
+  });
+});
+
+   {% block script %}
     {% endblock %}
-
-    <!-- App js -->
-    <script src="assets/js/app.js"></script>
-    <script>
-      document.getElementById('tahun_periode').addEventListener('change', function() {
-          const selectedYear = this.value;
-          fetch('master/set-tahun-session/', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': '{{ csrf_token }}'
-              },
-              body: JSON.stringify({ tahun_periode: selectedYear })
-          }).then(response => {
-            location.reload();
-              console.log('Session updated');
-          });
-      });
-</script>
-    <script>
-      
     </script>
   </body>
 </html>

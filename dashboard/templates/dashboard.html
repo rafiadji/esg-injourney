@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% comment %} {% extends 'b_base.html' %} {% endcomment %}
 
 {% block title %}
   Dashboard
@@ -6,771 +7,437 @@
 
 {% block head %}
   <style type="text/css">
-    .matlev-link {
-      color: inherit !important;
-    }
-    #matlev-table tbody tr {
-          transition: background-color 0.2s ease;
-      }
-
-      #matlev-table tbody tr:hover {
-          background-color: #c2c5c8 !important;
-      }
-    .matlev-link:hover {
-      text-decoration-line: underline;
-    }
-    
-    .help {
-      text-align: left;
-      padding-left: 5px;
-      margin-top: 5px;
-      cursor: help;
-    }
-    
-    .help-text-container {
-      width: 14%;
-    }
-    
-    .outer-matlev-indicator {
-      width: 7.666667%;
-      text-align: -webkit-center;
-    }
-    
-    .dot {
-      aspect-ratio: 1 / 1;
+    .boxheader {
       width: 100%;
-      background-color: #4884f2;
-      border-radius: 50%;
+      height: 800px;
+      margin: 0;
+      padding: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    .imagehead {
+      height: 100%;
+      object-fit: cover;
+    }
+    .rowheader {
+      position: relative;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+    .rowshead {
+      position: relative;
+      margin-top: -95px;
+      position: relative;
+      z-index: 0;
+    }
+    .cardgas {
+      width: 100%;
+      padding: 10px;
+      background-color: #82ab40;
+      border-radius: 12px;
+    }
+    .cardenv {
+      width: 100%;
+      height: 100%;
+    }
+    .titlecard {
       display: flex;
-      color: white;
-      text-align: center;
+      justify-content: center;
       align-items: center;
+      font-size: 32px;
+      padding-bottom: 6%;
+      color: #ffffff;
     }
-    
-    .dot-ket {
-      text-align: center;
-    }
-    
-    .container-circle {
-      align-items: center;
+    .cardcontent {
       display: flex;
-      height: 70px;
-    }
-    
-    .container-matlev-indicator {
-      height: 150px;
-      width: 8.33%;
-    }
-    
-    .target_matlev {
-      width: 50px;
-      height: 40px;
+      justify-content: center;
       align-items: center;
-      display: flex;
-      place-content: center;
-    
-      border-radius: 10%;
-      background-color: #4884f2;
-      color: white;
-      font-size: 14px;
-      margin-left: 20px;
+      height: 100%;
     }
-    .circle {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #444;
-    position: relative;
+    .card{
+        border-radius: 12px;
     }
-
-  .yellow {
-    background: #f9a825;
-  }
-
-  .red {
-    background: #D6002A;
-  }
-  .circle::before {
-  content: "";
-  position: absolute;
-  width: 70%;
-  height: 70%;
-  background: #fff;
-  border-radius: 50%;
-}
-
-.circle span {
-  position: relative;
-  z-index: 1;
-}
-.rating{
-  display: flex;
-  justify-content: center; 
-  align-items: center;   
-}
+    .cardusage{
+        justify-content: center;
+    }
   </style>
-
-<style>
-  .bg-warning-task, .bg-warning-task td{
-    color: #FAC96B !important;
-    
-  }
-</style>
 {% endblock %}
 
 {% block content %}
   <div class="container-fluid">
-    <h2 class="mb-3">Dashboard</h2>
-    <div class="row mb-4">
-      <div class="col-lg-4 rating">
-          <div class="mb-0">
-            <h1 class="mb-3 ff-secondary fw-semibold lh-base">Nilai <span class="text-primary text-decoration-underline">ESG</span> Rating</h1>
-            <p class="text-muted">InJourney telah meraih nilai ESG yang solid, mencerminkan komitmennya terhadap keberlanjutan melalui pengelolaan 
-            dampak lingkungan, sosial, dan tata kelola yang baik.</p>
-            </div>
-      </div>
-      <div class="col-lg-4" id="card_sustainalytics">
-        <div class="card p-2">
-          <div class="card-body">
-            <div class="process-card">
-              <div class=" mx-auto mb-4">
-                <div class=" bg-transparent text-success">
-                  <img src="assets/fe/images/default/g6184.png" alt="" class="img-fluid">
+    <div class="row rowshead">
+      <div class="col-xxl-4 col-lg-4 p-0 justify-content-center">
+        <div class="card card-overlay boxheader cardenv">
+          <img class="card-img img-fluid heroinj heroinj2 imagehead" src="assets/images/env.jpg" alt="Card image" />
+          <div class="heroinj heroinj2"></div>
+          <div class="card-img-overlay text-center">
+            <div class="cardcontent">
+              <div class="card-body text">
+                <div class="card-title titlecard">
+                  <h1 class="text-white">Environment</h1>
                 </div>
-              </div>
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <div class="circle yellow">
-                    <h2 class="mb-0 text-center">
-                      <span class="counter-value" data-target="33.5">0</span>
-                    </h2>
-                  </div>
-                </div>
-                <div class="col">
-                  <p class="text-muted ff-secondary mb-0" style="text-align: left">Risk Rating 33.5 Per Quarter 1 2025</p>
-                </div>
+                <p class="card-text text-white mb-2 pb-4">We are committed to preserving the planet by reducing carbon footprints, managing natural resources responsibly, and driving eco-friendly innovation.</p>
+                <button type="button" class="btn btn-outline-success btnrounded waves-effect waves-light shadow-none text-white">Selengkapnya</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-4"  id="card_snp">
-        <div class="card p-2">
-          <div class="card-body">
-            <div class="process-card ">
-            <div class=" mx-auto mb-4">
-              <div class=" bg-transparent text-success">
-                <img src="assets/fe/images/default/S&P Global Logo 1.png" alt="" class="img-fluid">
-              </div>
-            </div>
-            <div class="row align-items-center">
-              <div class="col-auto">
-                <div class="circle red">
-                  <h2 class="mb-0 text-center">
-                    <span class="counter-value" data-target="53">0</span>
-                  </h2>
+      <div class="col-xxl-4 col-lg-4 p-0 justify-content-center covertrans">
+        <div class="card card-overlay boxheader cardenv">
+          <img class="card-img img-fluid heroinj heroinj2 imagehead" src="assets/images/soc.jpg" alt="Card image" />
+          <div class="heroinj heroinj2"></div>
+          <div class="card-img-overlay text-center">
+            {% comment %} <div class="heroinj heroinj2"></div> {% endcomment %}
+            <div class="cardcontent">
+              <div class="card-body text">
+                <div class="card-title titlecard">
+                  <h1 class="text-white">Social</h1>
                 </div>
-              </div>
-              <div class="col">
-                <p class="text-muted ff-secondary mb-0" style="text-align: left">Score Average 53 Per Maret 2025</p>
+                <p class="card-text text-white mb-2 pb-4">Empowering communities through inclusion, employee well-being, and supporting fair, sustainable growth for all.</p>
+                <button type="button" class="btn btn-outline-success btnrounded waves-effect waves-light shadow-none text-white">Selengkapnya</button>
               </div>
             </div>
-          </div>
           </div>
         </div>
-          
+      </div>
+      <div class="col-xxl-4 col-lg-4 p-0 justify-content-center">
+        <div class="card card-overlay boxheader">
+          <img class="card-img img-fluid heroinj heroinj2 imagehead" src="assets/images/gov.jpg" alt="Card image" />
+          <div class="heroinj heroinj2"></div>
+          <div class="card-img-overlay text-center">
+            <div class="cardcontent">
+              <div class="card-body text">
+                <div class="card-title titlecard">
+                  <h1 class="text-white">Governance</h1>
+                </div>
+                <p class="card-text text-white mb-2 pb-4">Building trust with transparency, integrity, and responsible governance to create long-term value.</p>
+                <button type="button" class="btn btn-outline-success btnrounded waves-effect waves-light shadow-none text-white">Selengkapnya</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
-        <div class="col-md-4" id="nilai_pilar_governance">
-          <div class="card card-height-500">
-            <div class="card-header align-items-center d-flex">
-              <h4 class="card-title mb-0 flex-grow-1">Governance</h4>
+      <div class="col-md-12 pt-5">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+          <li class="nav-item nav-item-menuinj">
+            <a class="nav-link active" data-bs-toggle="tab" href="#home1" role="tab"><img src="assets/images/injourney.png" data-default="assets/images/injourney.png" data-active="assets/images/injourney.png" class="card-logo" height="50" /></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-muted" data-bs-toggle="tab" href="#profile1" role="tab"><img src="assets/images/logotab/inj-airport-white.png" data-default="assets/images/logotab/inj-airport-white.png" data-active="assets/images/logotab/inj-airport-act.png" class="card-logo" /></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-muted" data-bs-toggle="tab" href="#messages1" role="tab"><img src="assets/images/logotab/inj-aviation-white.png" data-default="assets/images/logotab/inj-aviation-white.png" data-active="assets/images/logotab/inj-aviation-act.png" class="card-logo" /></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-muted" data-bs-toggle="tab" href="#settings1" role="tab"><img src="assets/images/logotab/inj-retail-white.png" data-default="assets/images/logotab/inj-retail-white.png" data-active="assets/images/logotab/inj-retaiil-act.png" class="card-logo" /></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-muted" data-bs-toggle="tab" href="#settings1" role="tab"><img src="assets/images/logotab/inj-hospi-white.png" data-default="assets/images/logotab/inj-hospi-white.png" data-active="assets/images/logotab/inj-hospi-act.png" class="card-logo" /></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-muted" data-bs-toggle="tab" href="#settings1" role="tab"><img src="assets/images/logotab/inj-desti-white.png" data-default="assets/images/logotab/inj-desti-white.png" data-active="assets/images/logotab/inj-desti-act.png" class="card-logo" /></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-muted" data-bs-toggle="tab" href="#settings1" role="tab"><img src="assets/images/logotab/inj-tourisn-white.png" data-default="assets/images/logotab/inj-tourisn-white.png" data-active="assets/images/logotab/inj-tourisn-act.png" class="card-logo" /></a>
+          </li>
+        </ul>
 
-            </div><!-- end card header -->
-            <div class="card-body">
-              {% comment %} <div id="gov-eco-charts" class="e-charts" style="width: 100%; height: 400px;"></div> {% endcomment %}
-              <div id="gov" style="height: 400px"></div>
-            </div>
-          </div> <!-- .card-->
-        </div> <!-- .col-->
-        <div class="col-md-4" id="nilai_pilar_environmental">
-          <div class="card card-height-100">
-            <div class="card-header align-items-center d-flex">
-              <h4 class="card-title mb-0 flex-grow-1">Environmental</h4>
-              
-            </div><!-- end card header -->
-            <div class="card-body">
-              {% comment %} <div id="charts1" class="e-charts" style="width: 100%; height: 400px;"></div> {% endcomment %}
-              <div id="env" style="height: 400px"></div>
-            </div>
-          </div> <!-- .card-->
-        </div> <!-- .col-->
-        <div class="col-md-4" id="nilai_pilar_social">
-          <div class="card card-height-100">
-            <div class="card-header align-items-center d-flex">
-              <h4 class="card-title mb-0 flex-grow-1">Social</h4>
-              
-            </div><!-- end card header -->
-            <div class="card-body">
-              {% comment %} <div id="charts2"class="e-charts" style="width: 100%; height: 400px;"></div> {% endcomment %}
-              <div id="soc" style="height: 400px"></div>
-            </div>
-          </div> <!-- .card-->
-        </div> <!-- .col-->
-    </div>
-    <div class="row">
-      <div class="col-md-4"  id="nilai_indikator_governance">
-        <div class="card">
-          <div class="card-header">
-            <h6 class="card-title mb-0"><i class="ri-flag-fill align-middle fs-12 text-danger"></i> Governance</h6>
-          </div>
-          <div class="card-body text-danger">
-            {% for item in gov %}
-              <div style="margin-top: 5px; margin-bottom: 5px;">
-                <div class="d-flex">
-                  <div class="flex-grow-1">
-                    <h6 class="mb-10"><b>{{item.indicator.number}}. {{item.indicator.indicator}}</b></h6>
+        <!-- Tab panes -->
+        <div class="tab-content text-muted p-4">
+          <div class="tab-pane active" id="home1" role="tabpanel">
+            <div class="row">
+              <div class="col-lg-5">
+                <div class="card card-animate cardgas">
+                  <div class="card-body">
+                    <h4 class="fs-17 text-white">Total Gas Emissions<i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i></h4>
+                    <div class="d-flex align-items-center mt-4">
+                      <div class="flex-shrink-1">
+                        <h1 class="mb-0 text-white"><span class="counter-value" data-target="49271.79">0</span></h1>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <span class="text-white">ton CO2eq</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="flex-shrink-0">
-                    <h5 class="mb-0"><b class="text-danger">{{item.indicator_current_score|floatformat:0}}</b><small class="text-muted">/ 3</small></h5>
+                  <!-- end card body -->
+                </div>
+                <!-- end card -->
+                <div class="card border card-border-light">
+                    <div class="card-header">
+                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Emissions scope 1</p>
+                    </div>
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mt-2">
+                      <div class="flex-shrink-1">
+                        <h1 class="mb-0"><span class="counter-value" data-target="49271.79">0</span></h1>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <span class="text-muted">ton CO2eq</span>
+                      </div>
+                      <div class="flex-shrink-1">
+                        <span class="mb-0 text-muted">Direct Greenhouse <br /> Gas Emissions.</span>
+                      </div>
+                    </div>
                   </div>
+                  <!-- end card body -->
                 </div>
-                <div class="progress animated-progress" style="margin-top: 5px; margin-bottom: 15px;">
-                  <div class="progress-bar bg-danger" role="progressbar" style="width: {{item.progress}}%" aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+                <!-- end card -->
+                <div class="card border card-border-light">
+                    <div class="card-header">
+                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Emissions scope 2</p>
+                    </div>
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mt-2">
+                      <div class="flex-shrink-1">
+                        <h1 class="mb-0"><span class="counter-value" data-target="49271.79">0</span></h1>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <span class="text-muted">ton CO2eq</span>
+                      </div>
+                      <div class="flex-shrink-1">
+                        <span class="mb-0 text-muted">Direct Greenhouse <br /> Gas Emissions.</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end card body -->
                 </div>
-                <div class="mt-0">
-                  <dl class="row mb-0">
-                    {% for items in item.kriteria %}
-                      <dt class="col-sm-10">
-                      <a href="data/?kriteria={{items.kriteria}}" class="text-danger">{{items.number}} {{items.kriteria}}</a>
-                      </dt>
-                      <dd class="col-sm-2 text-end">{{items.level_get}}</dd>  
-                    {% endfor %}
-                  </dl>
+                <!-- end card -->
+                <div class="card border card-border-light">
+                    <div class="card-header">
+                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Emissions scope 3</p>
+                    </div>
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mt-2">
+                      <div class="flex-shrink-1">
+                        <h1 class="mb-0"><span class="counter-value" data-target="49271.79">0</span></h1>
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <span class="text-muted">ton CO2eq</span>
+                      </div>
+                      <div class="flex-shrink-1">
+                        <span class="mb-0 text-muted">Direct Greenhouse <br /> Gas Emissions.</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end card body -->
                 </div>
+                <!-- end card -->
               </div>
-            {% endfor %}
-            
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4"  id="nilai_indikator_environmental">
-        <div class="card">
-          <div class="card-header">
-            <h6 class="card-title mb-0"><i class="ri-plant-fill align-middle text-success"></i>Environmental</h6>
-          </div>
-          <div class="card-body text-success">
-            {% for item in env %}
-              <div style="margin-top: 5px; margin-bottom: 5px;">
-                <div class="d-flex">
-                  <div class="flex-grow-1">
-                    <h6 class="mb-10"><b>{{item.indicator.number}}. {{item.indicator.indicator}}</b></h6>
-                  </div>
-                  <div class="flex-shrink-0">
-                    <h5 class="mb-0"><b class="text-success">{{item.indicator_current_score|floatformat:0}}</b><small class="text-muted">/ 3</small></h5>
-                  </div>
-                </div>
-                <div class="progress animated-progress" style="margin-top: 5px; margin-bottom: 15px;">
-                  <div class="progress-bar bg-success" role="progressbar" style="width: {{item.progress}}%" aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <div class="mt-0">
-                  <dl class="row mb-0">
-                    {% for items in item.kriteria %}
-                      <dt class="col-sm-10">
-                      <a href="data/?kriteria={{items.kriteria}}" class="text-success">{{items.number}} {{items.kriteria}}</a>
-                      </dt>
-                      <dd class="col-sm-2 text-end">{{items.level_get}}</dd>  
-                    {% endfor %}
-                  </dl>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4"  id="nilai_indikator_social">
-        <div class="card">
-          <div class="card-header">
-            <h6 class="card-title mb-0"><i class="ri-team-fill align-middle text-primary"></i>Social</h6>
-          </div>
-          <div class="card-body text-primary">
-            {% for item in soc %}
-              <div style="margin-top: 5px; margin-bottom: 5px;">
-                <div class="d-flex">
-                  <div class="flex-grow-1">
-                    <h6 class="mb-10"><b>{{item.indicator.number}}. {{item.indicator.indicator}}</b></h6>
-                  </div>
-                  <div class="flex-shrink-0">
-                    <h5 class="mb-0"><b class="text-primary">{{item.indicator_current_score|floatformat:0}}</b><small class="text-muted">/ 3</small></h5>
-                  </div>
-                </div>
-                <div class="progress animated-progress" style="margin-top: 5px; margin-bottom: 15px;">
-                  <div class="progress-bar bg-primary" role="progressbar" style="width: {{item.progress}}%" aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <div class="mt-0">
-                  <dl class="row mb-0">
-                    {% for items in item.kriteria %}
-                      <dt class="col-sm-10">
-                      <a href="data/?kriteria={{items.kriteria}}" class="text-primary">{{items.number}} {{items.kriteria}}</a>
-                      </dt>
-                      <dd class="col-sm-2 text-end">{{items.level_get}}</dd>  
-                    {% endfor %}
-                  </dl>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    </div>
+              <div class="col-lg-4">
+                <div class="card border card-border-light">
+                    <div class="card-header">
+                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Emissions Reduction</p>
+                        <div class="d-flex align-items-center mt-2">
+                            <div class="flex-shrink-1">
+                                <h1 class="mb-0"><span class="counter-value" data-target="266006.410">0</span></h1>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <span class="text-muted">ton CO2eq</span>
+                            </div>
+                            <div class="flex-shrink-1">
+                                <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0">74.59 %  <i class="ri-arrow-up-line align-middle"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                  <div class="card-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-pills nav-custom-outline nav-success mb-3" role="tablist">
+                                        <li class="nav-item waves-effect waves-light">
+                                            <a class="nav-link active" data-bs-toggle="tab" href="#border-nav-home" role="tab">All</a>
+                                        </li>
+                                        <li class="nav-item waves-effect waves-light">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#border-nav-profile" role="tab">Scope 1</a>
+                                        </li>
+                                        <li class="nav-item waves-effect waves-light">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#border-nav-messages" role="tab">Scope 2</a>
+                                        </li>
+                                        <li class="nav-item waves-effect waves-light">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#border-nav-settings" role="tab">Scope 33</a>
+                                        </li>
+                                    </ul>
+                                    <!-- Tab panes -->
+                                    <div class="tab-content text-muted">
+                                        <div class="tab-pane active" id="border-nav-home" role="tabpanel">
+                                            <div id="container-chart" style="height: 440px"></div>
 
-    <div class="row">
-      <div class="col-lg-12" id="card_tasklist">
-        <div class="card">
-          <div class="card-header border-0">
-            <div class="d-flex align-items-center">
-              <h5 class="card-title mb-0 flex-grow-1">Task List</h5>
+                                        </div>
+                                        <div class="tab-pane" id="border-nav-profile" role="tabpanel">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0">
+                                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-2">
+                                                    In some designs, you might adjust your tracking to create a certain artistic effect. It can also help
+                                                    you fix fonts that are poorly spaced to begin with.
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="flex-shrink-0">
+                                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-2">
+                                                    A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I
+                                                    enjoy with my whole heart.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="border-nav-messages" role="tabpanel">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0">
+                                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-2">
+                                                    Each design is a new, unique piece of art birthed into this world, and while you have the opportunity to
+                                                    be creative and make your own style choices.
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="flex-shrink-0">
+                                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-2">
+                                                    For that very reason, I went on a quest and spoke to many different professional graphic designers and
+                                                    asked them what graphic design tips they live.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="border-nav-settings" role="tabpanel">
+                                            <div class="d-flex mt-2">
+                                                <div class="flex-shrink-0">
+                                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-2">
+                                                    For that very reason, I went on a quest and spoke to many different professional graphic designers and
+                                                    asked them what graphic design tips they live.
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mt-2">
+                                                <div class="flex-shrink-0">
+                                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-2">
+                                                    After gathering lots of different opinions and graphic design basics, I came up with a list of 30
+                                                    graphic design tips that you can start implementing.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                  </div>
+                  <!-- end card body -->
+                </div>
+                <!-- end card -->
+              </div>
+              <div class="col-lg-3">
+                <div class="card card-animate cardusage">
+                    <div class="card-body">
+                        <div class="justify-content-center">
+                            <div>
+                                <p class="fw-medium text-muted mb-0">Electricity usage</p>
+                                <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="2789199">0</span>kWh</h2>
+                                <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0">74.59 %  <i class="ri-arrow-up-line align-middle"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="profile1" role="tabpanel">
+            <div class="d-flex">
               <div class="flex-shrink-0">
-                <div class="d-flex flex-wrap gap-2">
-                    <select id="pillar-select" class="form-control">
-                      <option value="" selected>Semua Pillar</option>
-                      <option value="gov">Governance</option>
-                      <option value="env">Environment</option>
-                      <option value="soc">Social</option>
-                    </select>
-                  {% comment %} <button class="btn btn-primary" onclick="add_fleet()"><i class="ri-add-line align-bottom me-1"></i> Add Fleet</button> {% endcomment %}
+                <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+              </div>
+              <div class="flex-grow-1 ms-2">
+                When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray gleams steal into the inner sanctuary, I throw myself down among the tall grass by the trickling stream; and, as I lie close to the earth, a thousand unknown.<div class="mt-2">
+                  <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="card-body">
-            <table class="table align-middle table-bordered border-dark mb-0 table-striped hover" style="cursor: pointer;" id="matlev-table">
-              <thead>
-                <tr>
-                  <th>Pilar</th>
-                  <th>Indikator</th>
-                  <th>No</th>
-                  <th>Kriteria Sustainability</th>
-                  <th>Indikasi Kematangan</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for md in matlev_detail %}
-                  <tr onclick="goto_data_detail({{md.id}})" class="">
-                    <td>{{ md.kriteria.indicator.pillar }}</td>
-                    <td style="white-space: nowrap;">{{ md.kriteria.indicator.indicator }}</td>
-                    <td>{{ md.kriteria.number }}</td>
-                    <td style="white-space: nowrap;">{{ md.kriteria.kriteria }}</td>
-                    <td>{{ md.maturity }}</td>
-                    <td style="white-space: nowrap;">
-                      {% if md.status == 'belum' %}
-                        <span class="status-belum"> Belum </span>
-                      {% elif md.status == 'submitted' %}
-                        
-                        <span class="status-submitted"> Submitted </span>
-                      {% elif md.status == 'revisi' %}
-
-                        <span class="status-revisi"> Perlu Revisi </span>
-                      {% elif md.status == 'verified' %}
-
-                        <span class="status-verified"> Verified </span>
-                      {% endif %}
-                    </td>
-                  </tr>
-                {% endfor %}
-
-              </tbody>
-            </table>
+          <div class="tab-pane" id="messages1" role="tabpanel">
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+              </div>
+              <div class="flex-grow-1 ms-2">
+                Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony.<div class="mt-2">
+                  <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="settings1" role="tabpanel">
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+              </div>
+              <div class="flex-grow-1 ms-2">
+                when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the.<div class="mt-2">
+                  <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 {% endblock %}
-
 {% block script %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
-<script type="text/javascript">
-  function goto_data_detail(id){
-    location.href="/data/detail/"+id
-  }
-  var table = $('#matlev-table')
-      .DataTable({
-        columnDefs: [
-        {
-          target: 0,
-          visible:false
-        }]
-      });
-      
-  const choice_option = {
-    searchResultLimit: 20,
-    shouldSort: false
-  }
-  const pillar_select = new Choices('#pillar-select', choice_option)
-   pillar_select.passedElement.element.addEventListener('change',function(event) {
-        table.column(0).search(event.detail.value).draw();
-      },
-      false,
-    );
-  const gauges = [
-    {
-      id: 'gov',
-      name: 'Governance',
-      value: {{ gov_progress|default:0|floatformat:2 }},
-      color: '#F06548'
-    },
-    {
-      id: 'env',
-      name: 'Environmental',
-      value: {{ env_progress|default:0|floatformat:2 }},
-      color: '#45CB85'
-    },
-    {
-      id: 'soc',
-      name: 'Social',
-      value: {{ soc_progress|default:0|floatformat:2 }},
-      color: '#00A2E9'
-    }
-  ];
+<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
+  <script type="text/javascript">
+    document.querySelectorAll('.nav-link').forEach((link) => {
+      link.addEventListener('shown.bs.tab', function () {
 
-  gauges.forEach(gauge => {
-    const dom = document.getElementById(gauge.id);
-    const chart = echarts.init(dom, null, {
+        document.querySelectorAll('.nav-link img').forEach((img) => {
+          img.src = img.getAttribute('data-default')
+        })
+        
+        let img = this.querySelector('img')
+        img.src = img.getAttribute('data-active')
+      })
+    })
+  </script>
+  <script type="text/javascript">
+    var dom = document.getElementById('container-chart');
+    var myChart = echarts.init(dom, null, {
       renderer: 'canvas',
       useDirtyRect: false
     });
+    var app = {};
+    
+    var option;
 
-    const option = {
-      series: [
-        {
-          type: 'gauge',
-          startAngle: 90,
-          endAngle: -270,
-          pointer: {
-            show: false
-          },
-          progress: {
-            show: true,
-            overlap: false,
-            roundCap: true,
-            clip: false,
-            itemStyle: {
-              borderWidth: 1,
-              color: gauge.color,
-              borderColor: gauge.color
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              width: 30
-            }
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            show: false
-          },
-          data: [
-            {
-              value: gauge.value,
-              name: gauge.name,
-              title: {
-                offsetCenter: ['0%', '-10%']
-              },
-              detail: {
-                valueAnimation: true,
-                offsetCenter: ['0%', '20%']
-              }
-            }
-          ],
-          title: {
-            fontSize: 16,
-            fontWeight: 600
-          },
-          detail: {
-            width: 50,
-            height: 14,
-            fontSize: 14,
-            color: gauge.color,
-            borderColor: gauge.color,
-            borderRadius: 20,
-            borderWidth: 1,
-            formatter: '{value}%',
-          }
-        }
-      ]
-    };
-
-    chart.setOption(option);
-    window.addEventListener('resize', chart.resize);
-  });
-</script>
-
-<script src="assets/js/shepherd.min.js"></script>
-<script type="text/javascript">
-  const counters = document.querySelectorAll('.counter-value');
-
-  counters.forEach(counter => {
-    const updateCount = () => {
-      const target = +counter.getAttribute('data-target');
-      const count = +counter.innerText;
-      const speed = 400;
-
-      const increment = Math.ceil(target / speed);
-
-      if (count < target) {
-        counter.innerText = count + increment;
-        setTimeout(updateCount, 10);
-      } else {
-        counter.innerText = target;
-      }
-    };
-
-    updateCount();
-  });
-
-
-  function tour_on(){
-    var tour=new Shepherd.Tour({defaultStepOptions:{cancelIcon:{enabled:!0},classes:"shadow-md bg-purple-dark",scrollTo:{behavior:"smooth",block:"center"}},useModalOverlay:{enabled:!0}});document.querySelector("#logo-tour")&&tour.addStep({title:"Welcome Back !",text:"This is Step 1",attachTo:{element:"#logo-tour",on:"bottom"},buttons:[{text:"Next",classes:"btn btn-success",action:tour.next}]}),document.querySelector("#register-tour")&&tour.addStep({title:"Register your account",text:"Get your Free Velzon account now.",attachTo:{element:"#register-tour",on:"bottom"},buttons:[{text:"Back",classes:"btn btn-light",action:tour.back},{text:"Next",classes:"btn btn-success",action:tour.next}]}),document.querySelector("#login-tour")&&tour.addStep({title:"Login your account",text:"Sign in to continue to Velzon.",attachTo:{element:"#login-tour",on:"bottom"},buttons:[{text:"Back",classes:"btn btn-light",action:tour.back},{text:"Next",classes:"btn btn-success",action:tour.next}]}),document.querySelector("#getproduct-tour")&&tour.addStep({title:"Get yout Product",text:"Sign in to continue to Velzon.",attachTo:{element:"#getproduct-tour",on:"bottom"},buttons:[{text:"Back",classes:"btn btn-light",action:tour.back},{text:"Next",classes:"btn btn-success",action:tour.next}]}),document.querySelector("#thankyou-tour")&&tour.addStep({title:"Thank you !",text:"Sign in to continue to Velzon.",attachTo:{element:"#thankyou-tour",on:"bottom"},buttons:[{text:"Back",classes:"btn btn-light",action:tour.back},{text:"Thank you !",classes:"btn btn-primary",action:tour.complete}]}),tour.start();var tour = new Shepherd.Tour({
-      defaultStepOptions: {
-          cancelIcon: {
-              enabled: !0
-          },
-          classes: "shadow-md bg-purple-dark",
-          scrollTo: {
-              behavior: "smooth",
-              block: "center"
-          }
-      },
-      useModalOverlay: {
-          enabled: !0
-      }
-  });
-  document.querySelector("#menu_dashboard") && tour.addStep({
-      title: "Menu Dashboard",
-      text: "Menampilkan Executive Summary dan Nilai ESG Rating",
-      attachTo: {
-          element: "#menu_dashboard",
-          on: "bottom"
-      },
-      buttons: [{
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#menu_data") && tour.addStep({
-      title: "Menu Data",
-      text: "Menampilkan Data Kertas Kerja ESG Level Susatainability",
-      attachTo: {
-          element: "#menu_data",
-          on: "bottom"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#menu_master") && tour.addStep({
-      title: "Menu Master",
-      text: "Pengaturan Kriteria dan Indikator ESG",
-      attachTo: {
-          element: "#menu_master",
-          on: "bottom"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector(".topbar-user") && tour.addStep({
-      title: "Informasi User",
-      text: "Informasi User dan Role",
-      attachTo: {
-          element: ".topbar-user",
-          on: "bottom"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#card_sustainalytics") && tour.addStep({
-      title: "Rating Sustainalytics",
-      text: "Nilai Risk Rating yang telah diberikan oleh Sustainalytics",
-      attachTo: {
-          element: "#card_sustainalytics",
-          on: "bottom"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#card_snp") && tour.addStep({
-      title: "Score S&P Global",
-      text: "Nilai ESG Rating yang telah diberikan oleh S&P Global",
-      attachTo: {
-          element: "#card_snp",
-          on: "bottom"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#nilai_pilar_governance") && tour.addStep({
-      title: "Kinerja Pilar Governance",
-      text: "Nilai Kinerja Pilar Governance",
-      attachTo: {
-          element: "#nilai_pilar_governance",
-          on: "right"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#nilai_pilar_environmental") && tour.addStep({
-      title: "Kinerja Pilar Environmental",
-      text: "Nilai Kinerja Pilar Environmental",
-      attachTo: {
-          element: "#nilai_pilar_environmental",
-          on: "right"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#nilai_pilar_social") && tour.addStep({
-      title: "Kinerja Pilar Social",
-      text: "Nilai Kinerja Pilar Social",
-       attachTo: {
-          element: "#nilai_pilar_social",
-          on: "left"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#nilai_indikator_governance") && tour.addStep({
-      title: "Kinerja Indikator - Indikator Governance",
-      text: "Nilai Kinerja Indikator - Indikator Governance",
-      attachTo: {
-          element: "#nilai_indikator_governance",
-          on: "right"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#nilai_indikator_environmental") && tour.addStep({
-      title: "Kinerja Indikator - Indikator Environmental",
-      text: "Nilai Kinerja Indikator - Indikator Environmental",
-      attachTo: {
-          element: "#nilai_indikator_environmental",
-          on: "right"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#nilai_indikator_social") && tour.addStep({
-      title: "Kinerja Indikator - Indikator Social",
-      text: "Nilai Kinerja Indikator - Indikator Social",
-      attachTo: {
-          element: "#nilai_indikator_social",
-          on: "left"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Next",
-          classes: "btn btn-success",
-          action: tour.next
-      }]
-  }), document.querySelector("#card_tasklist") && tour.addStep({
-      title: "Task List",
-      text: "Informasi Status Indikasi Kematangan Apakah Done atau masih On Progress",
-      attachTo: {
-          element: "#card_tasklist",
-          on: "top"
-      },
-      buttons: [{
-          text: "Back",
-          classes: "btn btn-light",
-          action: tour.back
-      }, {
-          text: "Finish",
-          classes: "btn btn-primary",
-          action: tour.complete
-      }]
-  }), tour.start();
+    option = {
+  xAxis: {
+    type: 'category',
+    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      type: 'line',
+      smooth: true
     }
-</script>
+  ]
+};
 
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
 {% endblock %}
