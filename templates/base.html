@@ -15,11 +15,6 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico" />
 
-    <script src="//code.jquery.com/jquery-3.7.1.js"></script>
-
-    <!-- plugin css -->
-    <link href="assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
-
     <!-- Swiper slider css -->
     <link href="assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
 
@@ -33,7 +28,6 @@
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css -->
     <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
-
     <style>
       @media (min-width: 1024.1px) {
         [data-layout='horizontal'] .container-fluid,
@@ -43,205 +37,96 @@
           padding-right: 0 !important;
         }
       }
-      
-      #tahun_periode {
-        padding: 10px;
-      }
-      .status-revisi {
-        padding: 10px;
-        background: #c7195c;
-        color: white;
-        border-radius: 20px;
-      }
-      .status-verified {
-        padding: 10px;
-        background: #2aace3;
-        color: white;
-        border-radius: 20px;
-      }
-      .status-submitted {
-        padding: 10px;
-        background: #efd15d;
-        color: white;
-        border-radius: 20px;
-      }
-      .status-belum {
-        padding: 10px;
-        background: #4c4c4b;
-        color: white;
-        border-radius: 20px;
-      }
-      .navbar-brand-boxs {
-        padding-left: 0.2rem !important;
-        text-align: center !important;
-        -webkit-transition: all 0.1s ease-out !important;
-        transition: all 0.1s ease-out !important;
-      }
-      
-      .header-menu-inj.active,
-      .header-menu-inj:hover {
-        cursor: pointer;
-        border-bottom: 2px solid rgba(0, 162, 233, 1);
-      }
-      .header-menu-inj.active .menu-link,
-      .header-menu-inj:hover .menu-link {
-        color: rgba(0, 162, 233, 1) !important;
-      }
-
-      .nav-inj{
-        color: #fff;
-      }
-      
-      
-      .btn {
-        border-radius: 8px !important;
-      }
-      .bg-overlay-black {
-        background-image: url('../images/landing/bg-pattern.png');
-        background-color: transparent;
-        background-position: center;
+      .esg-hero {
+        
         background-size: cover;
-        opacity: 0.2;
+        background-position: bottom;
+        padding: 280px 0 150px 0;
+        height: 800px;
       }
-      box-overlay {
-        width: 100;
-        height: 20%;
-        background-color: black;
-      }
-      
-      .heroinj {
-        position: relative;
-        width: 100%;
-        height: 100%%;
-        background-size: cover;
-        background-position: center;
-        margin: 0;
-        padding: 0;
-      }
-      
-      .heroinj2 {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+      .esg-hero .bg-overlay {
         background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.5));
+        opacity: 0.85;
       }
-      .navbar {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        padding: 15px 40px;
-        transition: all 0.3s ease;
-        z-index: 1000;
+      .container-fluid > .row.row-fix {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
       }
-
-      .logo img {
-        height: 40px;
-        transition: 0.3s;
+      .container-fluid > .row.row-fix > [class*='col-'] {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
       }
-
-      .nav-menu {
-        list-style: none;
-        display: flex;
-        gap: 30px;
+      .cardsum{
+        
+        border-radius: 12px;
       }
-
-      .nav-link {
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        position: relative;
-      }
-
-      .nav-link.active {
-        color: #00c36d;
-      }
-
-      .nav-link.active::after {
-        content: "";
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: #00c36d;
-      }
-      .navbar.dark .is-sticky .nav-link {
-        color: white;
-      }
-
-      .navbar.dark .nav-link.active {
-        color: #00c36d;
-      }
-
-
-      .navbar.light .nav-link {
-        color: black;
-      }
-
-      .navbar.light .nav-link.active {
-        color: #00c36d;
-      }
-
+      .cardgas {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      background-color: #82ab40;
+    }
     </style>
-
-    {% block head %}
-
-    {% endblock %}
   </head>
 
   <body data-bs-spy="scroll" data-bs-target="#navbar-example">
     <!-- Begin page -->
     <div class="layout-wrapper landing">
-      <nav class="navbar navbar-expand-lg navbar-landing fixed-top dark" id="navbar">
+      <nav class="navbar navbar-expand-lg navbar-landing navbar-light fixed-top" id="navbar">
         <div class="container-fluid">
           <a class="navbar-brand" href="index.html">
-            <img src="assets/images/inj-white.png" class="card-logo card-logo-dark" alt="logo dark" height="50" />
-            <img src="assets/images/injourney.png" class="card-logo card-logo-light" alt="logo light" height="50" />
+            <img src="assets/images/injourney.png" class="card-logo card-logo-dark" alt="logo dark" height="50" />
+            <img src="assets/images/inj-white.png" class="card-logo card-logo-light" alt="logo light" height="50" />
           </a>
           <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="mdi mdi-menu"></i></button>
 
-          <div class="collapse navbar-collapse " id="navbarSupportedContent">
-            <ul class="navbar-nav menu-inj mx-auto mt-2 mt-lg-0" id="navbar-example">
-              <li class="nav-item ">
-                <a class="nav-link fs-14 active" href="dashboard">Dashboard</a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto mt-2 mt-lg-0" id="navbar-example">
+              <li class="nav-item">
+                <a class="nav-link fs-15 active" href="dashboard">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link fs-14" href="data">Emission Monitor</a>
+                <a class="nav-link fs-15" href="data">Emission Monitor</a>
               </li>
-              {% if request.user.is_superuser %}
-                <li class="nav-item">
-                  <a class="nav-link fs-14" href="master">Master</a>
-                </li>
-              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link fs-15" href="master">Master</a>
+              </li>
             </ul>
 
             <div class="">
-              <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar">
-                            <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Administrator</span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">admin@injourney.id</span>
-                            </span>
-                        </span>
-                    </button>
+              <div class="dropdown ms-sm-3 header-item" id="navbarSupportedContent">
+                <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="d-flex align-items-center">
+                    <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" />
+                    <span class="text-start ms-xl-2 text-white">
+                      <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Administrator</span>
+                      <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">admin@injourney.id</span>
+                    </span>
+                  </span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <!-- item -->
+                  <h6 class="dropdown-header">Welcome Anna!</h6>
+                  <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
+                  <a class="dropdown-item" href="apps-chat.html"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Messages</span></a>
+                  <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Taskboard</span></a>
+                  <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a>
+                  <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
+                  <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
+                  <a class="dropdown-item" href="auth-logout-basic.html"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </nav>
+      
       <!-- end navbar -->
-      <div class="vertical-overlay" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent.show"></div>
-      <section class="section" id="contents">
-        {% block content %}
+      {% block content %}
 
-        {% endblock %}
-      </section>
+      {% endblock %}
 
       <!-- Start footer -->
       <footer class="custom-footer bg-light p-4 position-relative">
@@ -259,9 +144,6 @@
           </div>
         </div>
       </footer>
-      </div>
-
-      <!-- end footer -->
 
       <!-- start back-to-top -->
       <button onclick="topFunction()" class="btn btn-danger btn-icon landing-back-top" id="back-to-top"><i class="ri-arrow-up-line"></i></button>
@@ -280,29 +162,12 @@
     <!-- Swiper slider js -->
     <script src="assets/libs/swiper/swiper-bundle.min.js"></script>
 
+    <script src="assets/js/pages/nft-landing.init.js"></script>
+
     <!-- landing init -->
     <script src="assets/js/pages/landing.init.js"></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-  const navbar = document.getElementById("navbar");
-  const logo = document.getElementById("logo");
-
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
-      navbar.classList.remove("dark");
-      navbar.classList.add("light");
-      logo.src = "logo-dark.png";
-    } else {
-      navbar.classList.remove("light");
-      navbar.classList.add("dark");
-      logo.src = "logo-light.png";
-    }
-  });
-});
-
-   {% block script %}
+     {% block script %}
     {% endblock %}
-    </script>
+    
   </body>
 </html>
