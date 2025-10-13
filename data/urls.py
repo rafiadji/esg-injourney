@@ -13,6 +13,7 @@ urlpatterns = [
     path("get_detail_status/<int:id>", views.get_detail_status),
     path("get_detail_pic/<int:id>", views.get_detail_pic),
     path('import-excel/', views.import_excel, name='import_excel'),
+    path('envindex/', views.envindex)
 ]
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

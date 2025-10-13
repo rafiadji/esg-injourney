@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Environment
+{% endblock %}
+
+{% block head %}
+  <style type="text/css">
+    .esg-hero-idx {
+      background-size: cover;
+      background-position: bottom;
+      padding: 0px 0 0px 0;
+      height: 434px;
+    }
+    .esg-hero-idx .bg-overlay {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.5));
+      opacity: 0.85;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 p-0">
+          <section class="section esg-hero-idx" id="hero" style="background-image: url('assets/images/env.jpg');">
+            <div class="bg-overlay"></div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-7 col-sm-10">
+                  <div class="p-5">
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white">Environment</h1>
+                    <p class="card-text text-white mb-2 pb-4">We are committed to preserving the planet by reducing carbon footprints, managing natural resources responsibly, and driving eco-friendly innovation.</p>
+                    <hr style="color: #fff;" />
+                    <a type="button" href="data/envindex" class="btn btn-outline-success btnrounded waves-effect waves-light shadow-none text-white mt-4">Go to Dashboard</a>
+                    <a type="button" href="data/envindex" class="btn btn-outline-success btnrounded waves-effect waves-light shadow-none text-white mt-4">Go to Social Working Paper</a>
+                    <a type="button" href="data/envindex" class="btn btn-outline-success btnrounded waves-effect waves-light shadow-none text-white mt-4">Go to Governance Working Paper</a>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+            </div>
+            <!-- end container -->
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3 p-5">
+          <h1 class="heading-txt fw-semibold">Working Paper</h1>
+        </div>
+        <div class="col-md-9 pt-5">
+          <a href="#" class="btn dropdown-toggle btn-outline-success btnrounded waves-effect waves-light shadow-none" data-bs-toggle="dropdown" aria-expanded="false">2025</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">2024</a>
+            <a class="dropdown-item" href="#">2022</a>
+            <a class="dropdown-item" href="#">2021</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+            <li class="nav-item nav-item-menuinj">
+              <a class="nav-link active" data-bs-toggle="tab" href="#inj" role="tab"><img src="assets/images/injourney.png" data-default="assets/images/injourney.png" data-active="assets/images/injourney.png" class="card-logo" height="40" /></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="#airport" role="tab"><img src="assets/images/logotab/inj-airport-white.png" data-default="assets/images/logotab/inj-airport-white.png" data-active="assets/images/logotab/inj-airport-act.png" class="card-logo" /></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="#aviation" role="tab"><img src="assets/images/logotab/inj-aviation-white.png" data-default="assets/images/logotab/inj-aviation-white.png" data-active="assets/images/logotab/inj-aviation-act.png" class="card-logo" /></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="#retail" role="tab"><img src="assets/images/logotab/inj-retail-white.png" data-default="assets/images/logotab/inj-retail-white.png" data-active="assets/images/logotab/inj-retaiil-act.png" class="card-logo" /></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="#hospi" role="tab"><img src="assets/images/logotab/inj-hospi-white.png" data-default="assets/images/logotab/inj-hospi-white.png" data-active="assets/images/logotab/inj-hospi-act.png" class="card-logo" /></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="#desti" role="tab"><img src="assets/images/logotab/inj-desti-white.png" data-default="assets/images/logotab/inj-desti-white.png" data-active="assets/images/logotab/inj-desti-ac.png" class="card-logo" /></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="#tourisn" role="tab"><img src="assets/images/logotab/inj-tourisn-white.png" data-default="assets/images/logotab/inj-tourisn-white.png" data-active="assets/images/logotab/inj-touris-act.png" class="card-logo" /></a>
+            </li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content text-muted">
+            <div class="tab-pane active" id="inj" role="tabpanel">
+              <div class="row">
+                <div class="col-md-2">
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3 Sidebar" role="tablist">
+                    <li class="nav-item nav-item-menuinj">
+                      <a class="nav-link  active" data-bs-toggle="tab" href="#1" role="tab">Climate Change Adaptation & Mitigation Actions</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-muted" data-bs-toggle="tab" href="#2" role="tab">GHG Emissions Management</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-muted" data-bs-toggle="tab" href="#3" role="tab">Waste Management</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-muted" data-bs-toggle="tab" href="#4" role="tab">Water Management</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-muted" data-bs-toggle="tab" href="#5" role="tab">Energy Management</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-muted" data-bs-toggle="tab" href="#6" role="tab">Environmental Management</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-muted" data-bs-toggle="tab" href="#7" role="tab">Biodiversity</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-10">
+                  <!-- Tab panes -->
+                  <div class="tab-content text-muted">
+                    <div class="tab-pane active" id="1" role="tabpanel">
+                      Test1
+                    </div>
+                    <div class="tab-pane" id="2" role="tabpanel">
+                      Test2
+                    </div>
+                    <div class="tab-pane" id="3" role="tabpanel">
+                      Test3
+                    </div>
+                    <div class="tab-pane" id="4" role="tabpanel">
+                      Test4
+                    </div>
+                    <div class="tab-pane" id="5" role="tabpanel">
+                      Test5
+                    </div>
+                    <div class="tab-pane" id="6" role="tabpanel">
+                      Test6
+                    </div>
+                    <div class="tab-pane" id="7" role="tabpanel">
+                      Test7
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="aviation" role="tabpanel">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+                </div>
+                <div class="flex-grow-1 ms-2">
+                  When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray gleams steal into the inner sanctuary, I throw myself down among the tall grass by the trickling stream; and, as I lie close to the earth, a thousand unknown.<div class="mt-2">
+                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="retail" role="tabpanel">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+                </div>
+                <div class="flex-grow-1 ms-2">
+                  Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony.<div class="mt-2">
+                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="hospi" role="tabpanel">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+                </div>
+                <div class="flex-grow-1 ms-2">
+                  when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the.<div class="mt-2">
+                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="desti" role="tabpanel">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+                </div>
+                <div class="flex-grow-1 ms-2">
+                  when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the.<div class="mt-2">
+                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tourisn" role="tabpanel">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+                </div>
+                <div class="flex-grow-1 ms-2">
+                  when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the.<div class="mt-2">
+                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

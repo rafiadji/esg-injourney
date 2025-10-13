@@ -328,3 +328,8 @@ def import_excel(request):
             }, status=400)
     
     return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+
+
+def envindex(request):
+    return render(request, "envindex.html", context)
+    
