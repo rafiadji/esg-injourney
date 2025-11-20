@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Environment
+{% endblock %}
+
+{% block head %}
+  <style type="text/css">
+    .esg-hero-idx {
+      background-size: cover;
+      background-position: bottom;
+      padding: 0px 0 0px 0;
+      height: 434px;
+    }
+    .esg-hero-idx .bg-overlay {
+      background: linear-gradient(to bottom, rgba(166, 166, 166, 1), rgba(184, 184, 184, 0.75), rgba(155, 155, 155, 0.5));
+      opacity: 0.85;
+    }
+    .boxs {
+      height: 400px;
+      position: relative;
+      border: 3px solid green;
+    }
+    
+    .boxs p {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 p-0">
+          <section class="section esg-hero-idx" id="hero" style="background-image: url('assets/images/addworkingpaper.jpg'); background-position: center center; height: 434px;">
+            <div class="bg-overlay"></div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-7 col-sm-10">
+                  <div class="p-5" style="margin: 0;  position: absolute; top: 50%;  left: 0%; transform: translateY(40%);">
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/envindex" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Add New Working Paper</h1>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+            </div>
+            <!-- end container -->
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 p-5">
+          <h2 class="heading-txt fw-semibold text-black">Form</h2>
+          <form action="" method="post" enctype="multipart/form-data">
+            <div class="row gy-4 pt-5">
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+                <div>
+                  <label for="basiInput" class="form-label">Indicator</label>
+                  <div class="input-group">
+                    <select class="form-select" id="inputGroupSelect01">
+                      <option selected>Choose...</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+                <div>
+                  <label for="basiInput" class="form-label">Sub Indicator</label>
+                  <div class="input-group">
+                    <select class="form-select" id="inputGroupSelect01">
+                      <option selected>Choose...</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+                <div>
+                  <label for="basiInput" class="form-label">Level</label>
+                  <div class="input-group">
+                    <select class="form-select" id="inputGroupSelect01">
+                      <option selected>Choose...</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row gy-4 pt-5">
+              <div class="col-xxl-12 col-md-12">
+                <div>
+                  <label for="basiInput" class="form-label">Description</label>
+                  <input type="password" class="form-control" id="basiInput" />
+                </div>
+              </div>
+            </div>
+            <div class="row gy-4 pt-5">
+              <div class="col-xxl-8 col-md-12">
+                <div>
+                  <label for="basiInput" class="form-label">Type of Evidence</label>
+                  <input type="password" class="form-control" id="basiInput" />
+                </div>
+              </div>
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+                <div>
+                  <label for="basiInput" class="form-label">Level</label>
+                  <div class="input-group">
+                    <select class="form-select" id="inputGroupSelect01">
+                      <option selected>Choose...</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row gy-4 pt-5">
+              <hr />
+            </div>
+            <div class="row gy-4 pt-2">
+              <h4>Form of Table</h4>
+              <table class="table table-nowrap">
+                <thead>
+                  <tr>
+                    <th scope="col">Column Id</th>
+                    <th scope="col">Sub Column Id</th>
+                    <th scope="col">Column Name</th>
+                    <th scope="col">Column Type</th>
+                    <th scope="col">Column Hint</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      <div>
+                        <input type="text" class="form-control" id="basiInput" placeholder="Column Id" />
+                      </div>
+                    </th>
+                    <td>
+                      <div>
+                        <input type="text" class="form-control" id="basiInput" placeholder="Sub Column Id" />
+                      </div>
+                    </td>
+                    <td>
+                      <div>
+                        <input type="text" class="form-control" id="basiInput" placeholder="Column Name" />
+                      </div>
+                    </td>
+                    <td>
+                      <div>
+                        <div class="input-group">
+                          <select class="form-select" id="inputGroupSelect01">
+                            <option selected>Column Type</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row">
+                        <div class="col-6">
+                          <input type="password" class="form-control" id="basiInput" placeholder="Column Hint" />
+                        </div>
+                        <div class="form-check mb-2 col-3">
+                          <input class="form-check-input" type="checkbox" id="formCheck1" />
+                          <label class="form-check-label" for="formCheck1">Show table</label>
+                        </div>
+                        <div class="col-3">
+                          <button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none">Delete Column</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+            </div>
+            <div class="row gy-4 pt-2" style="align-items: right; float: right;">
+                <div>
+                  <button type="button" class="btn btn-ghost-danger waves-effzect waves-light shadow-none">Batal</button>
+                  <button type="button" class="btn btn-success waves-effect waves-light"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</button>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

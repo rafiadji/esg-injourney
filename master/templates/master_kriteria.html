@@ -1,288 +1,344 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Master
+  Environment
 {% endblock %}
 
 {% block head %}
-
+  <style type="text/css">
+    .esg-hero-idx {
+      background-size: cover;
+      background-position: bottom;
+      padding: 0px 0 0px 0;
+      height: 434px;
+    }
+    .esg-hero-idx .bg-overlay {
+      background: linear-gradient(to bottom, rgba(166, 166, 166, 1), rgba(184, 184, 184, 0.75), rgba(155, 155, 155, 0.5));
+      opacity: 0.85;
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-12">
-    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-      <h4 class="mb-sm-0">Kertas Kerja ESG Level Sustainability</h4>
-
-      <div class="page-title-right">
-        <a href="javascript:;" onclick="add_form()" class="btn btn-primary"><i class="fi fi-sr-add align-middle me-1"></i> Kertas Kerja</a>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 p-0">
+          <section class="section esg-hero-idx" id="hero" style="background-image: url('assets/images/masterhead.jpg'); background-position: center center;">
+            <div class="bg-overlay"></div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-7 col-sm-10">
+                  <div class="p-5">
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white pt-5">Master</h1>
+                    <p class="card-text text-white mb-2 pb-4">Serves as the main configuration area of the ESG dashboard.</p>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+            </div>
+            <!-- end container -->
+          </section>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-lg-12">
-    <div class="card">
-      <div class="card-header border-0">
-        <div class="d-flex align-items-center">
-          <h5 class="card-title mb-0 flex-grow-1">List Kertas Kerja</h5>
-          <div class="flex-shrink-0">
-            <div class="d-flex flex-wrap gap-2">
-                {% comment %} <button class="btn btn-primary" onclick="add_fleet()"><i class="ri-add-line align-bottom me-1"></i> Add Fleet</button> {% endcomment %}
+  </section>
+
+  <section>
+    <div class="container-fluid">
+      <div class="row pt-5">
+        <div class="col-md-12">
+          <!-- Tab panes -->
+          <div class="tab-content text-muted">
+            <div class="tab-pane active" id="inj" role="tabpanel">
+              <div class="row p-2">
+                <div class="col-md-3">
+                  <!-- Nav tabs -->
+                  <ul class="nav flex-column nav-tabs nav-tabs-custom nav-success mb-3 Sidebar" role="tablist" aria-orientation="vertical">
+                    <li class="nav-item nav-item-menuinj">
+                      <a class="nav-link active" data-bs-toggle="tab" href="#1" role="tab"><span><i class="ri-arrow-right-line align-bottom me-1"></i></span>Users</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-muted" data-bs-toggle="tab" href="#2" role="tab">Role</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-muted" data-bs-toggle="tab" href="#3" role="tab">Indicator</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-9">
+                  <!-- Tab panes -->
+                  <div class="tab-content text-muted">
+                    <div class="tab-pane active" id="1" role="tabpanel">
+                      <div class="row">
+                        <div class="col-md-10">
+                          <h1 class="heading-txt fw-semibold">Users</h1>
+                        </div>
+                        <div class="col-md-2">
+                          <a href="master/mast_form" class="btn btn-success active"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New User</span></a>
+                        </div>
+                      </div>
+                      <div class="pt-5">
+                        <table class="table table-nowrap">
+                          <thead>
+                            <tr>
+                              <th>Entity</th>
+                              <th>Username</th>
+                              <th>Email</th>
+                              <th>Role</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>InJourney Holding</td>
+                              <td>Admin</td>
+                              <td>Admin@injourney.id</td>
+                              <td>Super Admin</td>
+                              <td>
+                                <div class="btn-group" style="float: right;">
+                                  <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                  <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>InJourney Airport</td>
+                              <td>Admin</td>
+                              <td>admin_airport@injourney.id</td>
+                              <td>Super Admin</td>
+                              <td>
+                                <div class="btn-group" style="float: right;">
+                                  <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                  <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>InJourney Aviation</td>
+                              <td>Admin</td>
+                              <td>Admin_avtiation@injourney.id</td>
+                              <td>Super Admin</td>
+                              <td>
+                                <div class="btn-group" style="float: right;">
+                                  <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                  <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>InJourney Retail</td>
+                              <td>Admin</td>
+                              <td>Admin_retail@injourney.id</td>
+                              <td>Super Admin</td>
+                              <td>
+                                <div class="btn-group" style="float: right;">
+                                  <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                  <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>InJourney Hospitality</td>
+                              <td>Admin</td>
+                              <td>Admin_hospitality@injourney.id</td>
+                              <td>Super Admin</td>
+                              <td>
+                                <div class="btn-group" style="float: right;">
+                                  <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                  <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>InJourney Destination Management</td>
+                              <td>Admin</td>
+                              <td>Admin_destination@injourney.id</td>
+                              <td>Super Admin</td>
+                              <td>
+                                <div class="btn-group" style="float: right;">
+                                  <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                  <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>InJourney Tourism Development Corporation</td>
+                              <td>Admin</td>
+                              <td>Admin_torism@injourney.id</td>
+                              <td>Super Admin</td>
+                              <td>
+                                <div class="btn-group" style="float: right;">
+                                  <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                  <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="2" role="tabpanel">Test2</div>
+                    <div class="tab-pane" id="3" role="tabpanel">
+                      <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                        <li class="nav-item nav-item-menuinj">
+                          <a class="nav-link active" data-bs-toggle="tab" href="#env" role="tab">Environmental</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link text-muted" data-bs-toggle="tab" href="#soc" role="tab">Social</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link text-muted" data-bs-toggle="tab" href="#gov" role="tab">Governance</a>
+                        </li>
+                      </ul>
+                      <div class="tab-content text-muted">
+                        <div class="tab-pane active" id="env" role="tabpanel">
+                          <div class="d-flex">
+                            <div class="flex-grow-1 ms-2">
+                              <div class="row pt-3">
+                                <div class="col-md-9">
+                                  <h1 class="heading-txt fw-semibold">Indicators</h1>
+                                </div>
+                                <div class="col-md-3">
+                                  <a href="master/mast_formind" class="btn btn-success active"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Indicators</span></a>
+                                </div>
+                              </div>
+                              <div class="pt-5">
+                                <table class="table table-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Indicator Name</th>
+                                      <th>Sub Indicator Name</th>
+                                      <th></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>Climate Change Adaptation & Mitigation Actions</td>
+                                      <td>Corporate Physical and Transition Risks</td>
+                                      <td>
+                                        <div class="btn-group" style="float: right;">
+                                          <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                          <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                            <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>Climate Change Adaptation & Mitigation Actions</td>
+                                      <td>Financial Risks Due to Climate Change</td>
+                                      <td>
+                                        <div class="btn-group" style="float: right;">
+                                          <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                          <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                            <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>GHG Emissions Management</td>
+                                      <td>Greenhouse Gas Emissions Scope 1, 2, and 3</td>
+                                      <td>
+                                        <div class="btn-group" style="float: right;">
+                                          <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                          <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                            <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane" id="soc" role="tabpanel">
+                          <div class="d-flex">
+                            <div class="flex-shrink-0">
+                              <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the.<div class="mt-2">
+                                <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane" id="gov" role="tabpanel">
+                          <div class="d-flex">
+                            <div class="flex-shrink-0">
+                              <i class="ri-checkbox-multiple-blank-fill text-success"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the.<div class="mt-2">
+                                <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="card-body">
-        <table class="table align-middle table-bordered table-strip mb-0" id="matlev-table">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Pillar</th>
-              <th>Indikator</th>
-              <th>Kriteria Sustainability</th>
-              <th>Maksimal Level</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for mk in matlev_kriteria %}
-            <tr>
-              <td>{{ forloop.counter }}</td>
-              <td>
-                {% if mk.indicator.pillar == 'gov' %}
-                Governance
-                {% elif mk.indicator.pillar == 'env' %}
-                Environment
-                {% elif mk.indicator.pillar == 'soc' %}
-                Social
-                {% endif %}
-              </td>
-              <td>{{ mk.indicator.indicator}}</td>
-              <td>{{ mk.number}} {{ mk.kriteria}}</td>
-              <td>{{ mk.max_level}}</td>
-              <td>
-                <a href="javascript:;" onclick="edit_form({{mk.id}})" class="btn btn-light waves-effect"><i class="fi fi-rr-edit align-middle" style="color: #00A2E9;"></i> Edit</a>
-                <a href="master/detail/{{mk.id}}" class="btn btn-light btn-icon waves-effect"><i class="fi fi-rr-folder align-middle" style="color: #00A2E9;"></i></a>
-                <a href="javascript:;" onclick="delete_kriteria({{mk.id}})" class="btn btn-light btn-icon waves-effect"><i class="fi fi-rr-trash align-middle" style="color: #FF4F4F;"></i></a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
     </div>
-  </div>
-</div>
-
-<div id="modal-form" class="modal fade" tabindex="-1" aria-labelledby="modalFormLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <form action="" method="post">
-        {% csrf_token %}
-        <input type="hidden" id="kriteria_id" name="kriteria_id">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalFormLabel"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3 col-12">
-            <label for="pillar_select" class="form-label">Pillar *</label>
-            <select name="pillar" id="pillar_select" class="form-control"></select>
-            <input type="text" class="form-control-plaintext d-none" id="pillar_read" readonly>
-          </div>
-          <div class="mb-3 col-12">
-            <label for="indicator_select" class="form-label">Indikator</label>
-            <select name="indicator" id="indicator_select" class="form-control"></select>
-            <input type="text" class="form-control-plaintext d-none" id="indicator_read" readonly>
-          </div>
-          <div class="mb-3 col-12">
-            <label for="number" class="form-label">Nomor *</label>
-            <input type="text" name="number" id="number" class="form-control" readonly>
-          </div>
-          <div class="mb-3 col-12">
-            <label for="kriteria" class="form-label">Kriteria Sustainability *</label>
-            <input type="text" name="kriteria" id="kriteria" class="form-control">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-light text-dark" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary">
-            Simpan
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+  </section>
 {% endblock %}
-
 {% block script %}
-<script>
-  const choice_option = {
-    searchResultLimit: 20,
-    shouldSort: false
-  }
-
-  const pill = [{'value':'gov', 'label':'Governance'},{'value':'env', 'label':'Environment'},{'value':'soc', 'label':'Social'}]
-
-  var table = $('#matlev-table').DataTable({ordering: false})
-  var pillar_select = new Choices('#pillar_select', choice_option)
-  var indicator_select = new Choices('#indicator_select', choice_option)
-
-  $('#pillar_select').on('change', function(){
-    $.ajax({
-      url: `master/get_indicator/${pillar_select.getValue().value}`,
-      dataType: 'json',
-      async: true,
-      success: (res) => {
-        indicator_select.clearChoices()
-        indicator_select.removeActiveItems()
-        var indicator_opt = []
-        indicator_opt.push({
-          value: '',
-          label: '-- Pilih Indikator --',
-          selected: true,
-          disabled: true
-        })
-        for (var i = 0; i < res.data.length; i++) {
-          const dt = res.data[i]
-          indicator_opt.push({
-            value: dt.id,
-            label: dt.indicator
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navLinks = document.querySelectorAll('.Sidebar .nav-link')
+    
+      navLinks.forEach((link) => {
+        link.addEventListener('click', function () {
+          navLinks.forEach((l) => {
+            l.classList.remove('active')
+            l.classList.add('text-muted')
+    
+            const iconSpan = l.querySelector('span')
+            if (iconSpan) iconSpan.remove()
           })
-        }
-        indicator_select.setChoices(indicator_opt, 'value', 'label', false)
-        $('#number').val('')
-      }
-    })
-
-  })
-
-  $('#indicator_select').on('change', function(){
-    $.ajax({
-      url: `master/get_number/${indicator_select.getValue().value}`,
-      dataType: 'json',
-      async: true,
-      success: (res) => {
-        $('#number').val(res.number)
-      }
-    })
-
-  })
-
-  function add_form(){
-    $('#modalFormLabel').html('Tambah Kertas Kerja')
-    if (!pillar_select.initialised){
-      $('#pillar_read').addClass('d-none')
-      $('#pillar_select').removeClass('d-none')
-      pillar_select.init()
-    }
-    pillar_select.clearChoices()
-    pillar_select.removeActiveItems()
-    var pillar_opt = []
-    pillar_opt.push({
-      value: '',
-      label: '-- Pilih Pillar --',
-      selected: true,
-      disabled: true
-    })
-    for (var i = 0; i < pill.length; i++) {
-      const dt = pill[i]
-      pillar_opt.push({
-        value: dt.value,
-        label: dt.label
-      })
-    }
-    pillar_select.setChoices(pillar_opt, 'value', 'label', false)
-
-    if (!indicator_select.initialised){
-      $('#indicator_read').addClass('d-none')
-      $('#indicator_select').removeClass('d-none')
-      indicator_select.init()
-    }
-
-    indicator_select.clearChoices()
-    indicator_select.removeActiveItems()
-    var indicator_opt = []
-    indicator_opt.push({
-      value: '',
-      label: '-- Pilih Indikator --',
-      selected: true,
-      disabled: true
-    })
-    indicator_select.setChoices(indicator_opt, 'value', 'label', false)
-
-    $('#number').val('')
-    $('#kriteria').val('')
-    $('#kriteria_id').val('add')
-    $('#modal-form').modal('show')
-  }
-
-  function edit_form(id){
-    $.ajax({
-      url: `master/get_edit_kriteria/${id}`,
-      dataType: 'json',
-      async: true,
-      success: (res) => {
-        const dta = res.data
-        $('#modalFormLabel').html('Ubah Kertas Kerja')
-        $('#pillar_read').removeClass('d-none')
-        $('#pillar_select').addClass('d-none')
-        pillar_select.destroy()
-
-        for (var i = 0; i < pill.length; i++) {
-          const dt = pill[i]
-          if (dta.indicator__pillar == dt.value){
-            $('#pillar_read').val(dt.label)
-          }
-        }
-
-        
-        $('#indicator_read').removeClass('d-none')
-        $('#indicator_select').addClass('d-none')
-        indicator_select.destroy()
-
-        $('#indicator_read').val(dta.indicator__indicator)
-
-        $('#number').val(dta.number)
-        $('#kriteria').val(dta.kriteria)
-
-        $('#kriteria_id').val(id)
-        $('#modal-form').modal('show')
-      }
-    })
-  }
-
-  function delete_kriteria(id) {
-    Swal.fire({
-      title: 'Apakah Anda yakin?',
-      text: 'Data yang dihapus tidak dapat dikembalikan!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Ya, Hapus!',
-      cancelButtonText: 'Batal'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $.ajax({
-          url: `master/delete_kriteria/${id}`,
-          success: (res) => {
-            if (res.success) {
-              Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success').then(function () {
-                location.reload()
-              })
-            } else {
-              Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus data.', 'error')
-            }
-          },
-          error: (err) => {
-            Swal.fire('Error!', 'Tidak dapat menghapus data. Silakan coba lagi.', 'error')
-          }
+    
+          this.classList.add('active')
+          this.classList.remove('text-muted')
+    
+          const arrow = document.createElement('span')
+          arrow.innerHTML = `<i class="ri-arrow-right-line align-bottom me-1"></i>`
+          this.prepend(arrow)
         })
-      }
+      })
     })
-  }
-</script>
+  </script>
 {% endblock %}

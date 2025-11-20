@@ -275,3 +275,50 @@ def set_tahun_session(request):
         request.session['tahun_periode'] = data.get('tahun_periode', '2024')
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'}, status=400)
+
+def mast_form(request):
+    # if submenu == 'user':
+    #         context['title'] = "Users"
+    #         context['entity'] = [
+    #             'InJourney Holding',
+    #             'InJourney Airport',
+    #             'InJourney Aviation',
+    #             'InJourney Retail',
+    #             'InJourney Hospitality',
+    #             'InJourney Destination Management',
+    #             'InJourney Tourism Development Corporation'
+    #         ]
+    #         context['username'] = [
+    #             'admin'
+    #         ]
+    #         context['email'] = [
+    #             'Admin@injourney.id',
+    #             'admin_airport@injourney.id',
+    #             'Admin_avtiation@injourney.id',
+    #             'Admin_retail@injourney.id',
+    #             'Admin_hospitality@injourney.id',
+    #             'Admin_destination@injourney.id',
+    #             'Admin_torism@injourney.id'
+    #         ]
+    #         context['email'] = [
+    #             'Super Admin'
+    #         ]
+    # elif submenu == 'role':
+    #         context['title'] = "Role"
+            
+    # elif submenu == 'indicator':
+    #         context['title'] = "Indicator"
+    #         context['indicatorname'] = [
+    #             'Climate Change Adaptation & Mitigation Actions',
+    #             'Climate Change Adaptation & Mitigation Actions',
+    #             'GHG Emissions Management'
+    #         ]
+    #         context['subindicatorname'] = [
+    #             'Corporate Physical and Transition Risks',
+    #             'Financial Risks Due to Climate Change',
+    #             'Greenhouse Gas Emissions Scope 1, 2, and 3'
+    #         ]
+    return render(request, "mast_form.html", context)
+
+def mast_formind(request):
+    return render(request, "mast_formind.html", context)

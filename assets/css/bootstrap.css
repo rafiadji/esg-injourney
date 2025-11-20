@@ -23,7 +23,7 @@ File: Custom Bootstrap Css File
   --vz-red: #f06548;
   --vz-orange: #f1963b;
   --vz-yellow: #ffbe0b;
-  --vz-green: #45CB85;
+  --vz-green: #82AB40;
   --vz-teal: #02a8b5;
   --vz-cyan: #299cdb;
   --vz-white: #fff;
@@ -40,7 +40,7 @@ File: Custom Bootstrap Css File
   --vz-gray-900: #212529;
   --vz-primary: #4b38b3;
   --vz-secondary: #3577f1;
-  --vz-success: #45CB85;
+  --vz-success: #82AB40;
   --vz-info: #299cdb;
   --vz-warning: #ffbe0b;
   --vz-danger: #f06548;
@@ -56,7 +56,8 @@ File: Custom Bootstrap Css File
   --vz-dark-rgb: 33, 37, 41;
   --vz-primary-text-emphasis: #403098;
   --vz-secondary-text-emphasis: #2d65cd;
-  --vz-success-text-emphasis: #3bad71;
+  /* --vz-success-text-emphasis: #3bad71; */
+  --vz-success-text-emphasis: #82AB40;
   --vz-info-text-emphasis: #2385ba;
   --vz-warning-text-emphasis: #d9a209;
   --vz-danger-text-emphasis: #cc563d;
@@ -128,8 +129,8 @@ File: Custom Bootstrap Css File
   --vz-focus-ring-width: 0.25rem;
   --vz-focus-ring-opacity: 0.25;
   --vz-focus-ring-color: rgba(var(--vz-primary-rgb), 0.25);
-  --vz-form-valid-color: #45CB85;
-  --vz-form-valid-border-color: #45CB85;
+  --vz-form-valid-color: #82AB40;
+  --vz-form-valid-border-color: #82AB40;
   --vz-form-invalid-color: #f06548;
   --vz-form-invalid-border-color: #f06548;
 }
@@ -3443,10 +3444,10 @@ textarea.form-control-lg {
 
 .btn-success {
   --vz-btn-color: #fff;
-  --vz-btn-bg: #45CB85;
-  --vz-btn-border-color: #45CB85;
+  --vz-btn-bg: #82AB40;
+  --vz-btn-border-color: #82AB40;
   --vz-btn-hover-color: #fff;
-  --vz-btn-hover-bg: #3bad71;
+  --vz-btn-hover-bg: #82AB40;
   --vz-btn-hover-border-color: #37a26a;
   --vz-btn-focus-shadow-rgb: 97, 211, 151;
   --vz-btn-active-color: #fff;
@@ -3454,8 +3455,8 @@ textarea.form-control-lg {
   --vz-btn-active-border-color: #349864;
   --vz-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --vz-btn-disabled-color: #fff;
-  --vz-btn-disabled-bg: #45CB85;
-  --vz-btn-disabled-border-color: #45CB85;
+  --vz-btn-disabled-bg: #82AB40;
+  --vz-btn-disabled-border-color: #82AB40;
 }
 
 .btn-info {
@@ -3578,19 +3579,19 @@ textarea.form-control-lg {
 }
 
 .btn-outline-success {
-  --vz-btn-color: #45CB85;
-  --vz-btn-border-color: #45CB85;
+  --vz-btn-color: #82AB40;
+  --vz-btn-border-color: #82AB40;
   --vz-btn-hover-color: #fff;
-  --vz-btn-hover-bg: #45CB85;
-  --vz-btn-hover-border-color: #45CB85;
+  --vz-btn-hover-bg: #82AB40;
+  --vz-btn-hover-border-color: #82AB40;
   --vz-btn-focus-shadow-rgb: 69, 203, 133;
   --vz-btn-active-color: #fff;
-  --vz-btn-active-bg: #45CB85;
-  --vz-btn-active-border-color: #45CB85;
+  --vz-btn-active-bg: #82AB40;
+  --vz-btn-active-border-color: #82AB40;
   --vz-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --vz-btn-disabled-color: #45CB85;
+  --vz-btn-disabled-color: #82AB40;
   --vz-btn-disabled-bg: transparent;
-  --vz-btn-disabled-border-color: #45CB85;
+  --vz-btn-disabled-border-color: #82AB40;
   --vz-gradient: none;
 }
 

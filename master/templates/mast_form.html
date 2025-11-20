@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Environment
+{% endblock %}
+
+{% block head %}
+  <style type="text/css">
+    .esg-hero-idx {
+      background-size: cover;
+      background-position: bottom;
+      padding: 0px 0 0px 0;
+      height: 434px;
+    }
+    .esg-hero-idx .bg-overlay {
+      background: linear-gradient(to bottom, rgba(166, 166, 166, 1), rgba(184, 184, 184, 0.75), rgba(155, 155, 155, 0.5));
+      opacity: 0.85;
+    }
+    .boxs {
+      height: 400px;
+      position: relative;
+      border: 3px solid green;
+    }
+    
+    .boxs p {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 p-0">
+          <section class="section esg-hero-idx" id="hero" style="background-image: url('assets/images/master_form.jpg'); background-position: center center; height: 434px;">
+            <div class="bg-overlay"></div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-7 col-sm-10">
+                  <div class="p-5" style="margin: 0;  position: absolute; top: 50%;  left: 0%; transform: translateY(40%);">
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/envindex" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Add New Users</h1>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+            </div>
+            <!-- end container -->
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 p-5">
+          <h2 class="heading-txt fw-semibold text-black">Form</h2>
+          <form action="" method="post" enctype="multipart/form-data">
+            <div class="row gy-4 pt-5">
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+                <div>
+                  <label for="EntityInput" class="form-label">Entity</label>
+                  <input type="text" class="form-control" id="EntityInput" placeholder="Entity" />
+                </div>
+              </div>
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+                <div>
+                  <label for="nameInput" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="nameInput" placeholder="Name" />
+                </div>
+              </div>
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+                <div>
+                  <label for="usernameInput" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="usernameInput" placeholder="Placeholder" />
+                </div>
+              </div>
+            </div>
+            <div class="row gy-4 pt-5">
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="basiInput" class="form-label">Email</label>
+                  <input type="text" class="form-control" id="basiInput" placeholder="Email" />
+                </div>
+              </div>
+              <div class="col-xxl-6 col-md-6">
+                <div>
+                  <label for="basiInput" class="form-label">Role</label>
+                  <input type="text" class="form-control" id="basiInput" placeholder="Role" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row gy-4 pt-5">
+              <h4>Confirm a Password</h4>
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+                <div>
+                  <label for="iconInput" class="form-label">Password</label>
+                  <div class="form-icon">
+                    <input type="password" class="form-control form-control-icon" id="iconInput" placeholder="Password" />
+                    <i class="ri-eye-off-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+                <div>
+                  <label for="iconInput" class="form-label">Confirm Password</label>
+                  <div class="form-icon">
+                    <input type="password" class="form-control form-control-icon" id="iconInput" placeholder="Confirm Password" />
+                    <i class="ri-eye-off-line"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xxl-4 col-md-6">
+                <!-- Select -->
+              </div>
+            </div>
+            <div class="row gy-4 pt-5">
+              <hr />
+            </div>
+            <div class="row gy-4 pt-2" style="align-items: right; float: right;">
+              <div>
+                <button type="button" class="btn btn-ghost-danger waves-effzect waves-light shadow-none">Batal</button>
+                <button type="button" class="btn btn-success waves-effect waves-light"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

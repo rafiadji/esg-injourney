@@ -25,6 +25,8 @@ urlpatterns = [
     path("delete_maturity/<int:id>", views.delete_maturity),
     path("delete_kriteria/<int:id>", views.delete_kriteria),
     path('set-tahun-session/', views.set_tahun_session, name='set_tahun_session'),
+    path("mast_form/", views.mast_form),
+    path('mast_formind/', views.mast_formind),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
