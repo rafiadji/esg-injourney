@@ -37,7 +37,7 @@
                     <h1 class="display-8 fw-medium mb-4 lh-base text-white">{{ title }}</h1>
                     <p class="card-text text-white mb-2 pb-4">{{ subtitle }}</p>
                     <hr style="color: #fff;" />
-                    <a type="button" href="data/envindex" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Dashboard</a>
+                    <a type="button" href="dashboard" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Dashboard</a>
                     {% if category == 'env' %}
                       <a type="button" href="data/esgindex/soc" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Social Working Paper</a>
                       <a type="button" href="data/esgindex/gov" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Governance Working Paper</a>
@@ -89,144 +89,69 @@
           <!-- Nav tabs -->
           <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
             <li class="nav-item nav-item-menuinj">
-              <a class="nav-link active" data-bs-toggle="tab" href="#inj" role="tab"><img src="assets/images/injourney.png" data-default="assets/images/injourney.png" data-active="assets/images/injourney.png" class="card-logo" height="40" /></a>
+              <a class="nav-link active" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/injourney.png" data-default="assets/images/injourney.png" data-active="assets/images/injourney.png" class="card-logo" height="40" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="#airport" role="tab"><img src="assets/images/logotab/inj-airport-white.png" data-default="assets/images/logotab/inj-airport-white.png" data-active="assets/images/logotab/inj-airport-act.png" class="card-logo" /></a>
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-airport-white.png" data-default="assets/images/logotab/inj-airport-white.png" data-active="assets/images/logotab/inj-airport-act.png" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="#aviation" role="tab"><img src="assets/images/logotab/inj-aviation-white.png" data-default="assets/images/logotab/inj-aviation-white.png" data-active="assets/images/logotab/inj-aviation-act.png" class="card-logo" /></a>
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-aviation-white.png" data-default="assets/images/logotab/inj-aviation-white.png" data-active="assets/images/logotab/inj-aviation-act.png" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="#retail" role="tab"><img src="assets/images/logotab/inj-retail-white.png" data-default="assets/images/logotab/inj-retail-white.png" data-active="assets/images/logotab/inj-retaiil-act.png" class="card-logo" /></a>
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-retail-white.png" data-default="assets/images/logotab/inj-retail-white.png" data-active="assets/images/logotab/inj-retaiil-act.png" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="#hospi" role="tab"><img src="assets/images/logotab/inj-hospi-white.png" data-default="assets/images/logotab/inj-hospi-white.png" data-active="assets/images/logotab/inj-hospi-act.png" class="card-logo" /></a>
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-hospi-white.png" data-default="assets/images/logotab/inj-hospi-white.png" data-active="assets/images/logotab/inj-hospi-act.png" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="#desti" role="tab"><img src="assets/images/logotab/inj-desti-white.png" data-default="assets/images/logotab/inj-desti-white.png" data-active="assets/images/logotab/inj-desti-ac.png" class="card-logo" /></a>
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-desti-white.png" data-default="assets/images/logotab/inj-desti-white.png" data-active="assets/images/logotab/inj-desti-ac.png" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="#tourisn" role="tab"><img src="assets/images/logotab/inj-tourisn-white.png" data-default="assets/images/logotab/inj-tourisn-white.png" data-active="assets/images/logotab/inj-touris-act.png" class="card-logo" /></a>
+              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-tourisn-white.png" data-default="assets/images/logotab/inj-tourisn-white.png" data-active="assets/images/logotab/inj-touris-act.png" class="card-logo" /></a>
             </li>
           </ul>
 
-          {% comment %}Section content{% endcomment %}
-          <!-- Tab panes -->
-          <div class="tab-content text-muted">
-            <div class="tab-pane active" id="inj" role="tabpanel">
-              <div class="row p-2">
-                <div class="col-md-3">
-                  <!-- Nav tabs -->
-                  <ul class="nav flex-column nav-tabs nav-success mb-3 Sidebar" role="tablist" aria-orientation="horizontal">
-                    {% for submenus in submenulist %}
-                      <li class="nav-item nav-item-menuinj">
-                        <a class="nav-link" data-bs-toggle="tab" href="#{{ forloop.counter }}" role="tab">{{ submenus }}</a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-                <div class="col-md-9">
-                  <!-- Tab panes -->
-                  <div class="tab-content text-muted">
-                    <div class="tab-pane active" id="1" role="tabpanel">
-                      <h2 class="pt-3">{{ titlecontent }}</h2>
-                      <h4 class="pt-3">{{ subtitlecontent }}</h4>
-                      {% for item in level %}
-                        {% for lvl, desc in item.items %}
-                          <div class="card">
-                            <div class="card-header">
-                              <div class="row">
-                                <div class="col-md-10">
-                                  <h6 class="card-title mb-0">{{ lvl }}</h6>
-                                </div>
-                                <div class="col-md-2">
-                                  <div class="btn-group" style="float: right;">
-                                    <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
-                                    <div class="dropdown-menu">
-                                      <a class="dropdown-item" href="data/leveldetail?category={{ category }}"><i class="ri-folder-2-line"></i> Detail</a>
-                                      <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
-                                      <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
-                                    </div>
-                                  </div>
+          <div class="row p-2">
+            <div class="col-md-3">
+              <!-- Nav tabs -->
+              <ul class="nav flex-column nav-tabs nav-success mb-3 Sidebar" role="tablist" aria-orientation="horizontal">
+                {% for submenus in submenulist %}
+                  <li class="nav-item nav-item-menuinj">
+                    <a class="nav-link" data-bs-toggle="tab" href="#{{ forloop.counter }}" onclick="get_data(1)" role="tab">{{ submenus }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-9">
+              <div class="row">
+                  <h2 class="pt-3">{{ titlecontent }}</h2>
+                  <h4 class="pt-3">{{ subtitlecontent }}</h4>
+                  {% for item in level %}
+                    {% for lvl, desc in item.items %}
+                      <div class="card">
+                        <div class="card-header">
+                          <div class="row">
+                            <div class="col-md-10">
+                              <h6 class="card-title mb-0">{{ lvl }}</h6>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="btn-group" style="float: right;">
+                                <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item" href="data/leveldetail?category={{ category }}&ind=1&sub=1&matlev=1"><i class="ri-folder-2-line"></i> Detail</a>
+                                  <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                  <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
                                 </div>
                               </div>
                             </div>
-                            <div class="card-body">
-                              <p class="card-text">{{ desc }}</p>
-                            </div>
                           </div>
-                        {% endfor %}
-                      {% endfor %}
-                    </div>
-                    <div class="tab-pane" id="2" role="tabpanel">Test2</div>
-                    <div class="tab-pane" id="3" role="tabpanel">Test3</div>
-                    <div class="tab-pane" id="4" role="tabpanel">Test4</div>
-                    <div class="tab-pane" id="5" role="tabpanel">Test5</div>
-                    <div class="tab-pane" id="6" role="tabpanel">Test6</div>
-                    <div class="tab-pane" id="7" role="tabpanel">Test7</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="tab-pane" id="aviation" role="tabpanel">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
-                </div>
-                <div class="flex-grow-1 ms-2">
-                  When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray gleams steal into the inner sanctuary, I throw myself down among the tall grass by the trickling stream; and, as I lie close to the earth, a thousand unknown.<div class="mt-2">
-                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="tab-pane" id="retail" role="tabpanel">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
-                </div>
-                <div class="flex-grow-1 ms-2">
-                  Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony.<div class="mt-2">
-                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="tab-pane" id="hospi" role="tabpanel">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
-                </div>
-                <div class="flex-grow-1 ms-2">
-                  when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the.<div class="mt-2">
-                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="tab-pane" id="desti" role="tabpanel">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
-                </div>
-                <div class="flex-grow-1 ms-2">
-                  when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the.<div class="mt-2">
-                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="tab-pane" id="tourisn" role="tabpanel">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <i class="ri-checkbox-multiple-blank-fill text-success"></i>
-                </div>
-                <div class="flex-grow-1 ms-2">
-                  when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing, Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the.<div class="mt-2">
-                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary">Read More <i class="ri-arrow-right-line ms-1 align-middle"></i></a>
-                  </div>
-                </div>
+                        </div>
+                        <div class="card-body">
+                          <p class="card-text">{{ desc }}</p>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  {% endfor %}
               </div>
             </div>
           </div>
@@ -273,5 +198,16 @@
         })
       })
     })
+
+    function get_data(indicator){
+      $.ajax({
+        url: `data/get_data/${indicator}`,
+        dataType: 'json',
+        async: true,
+        success: (res) => {
+            console.log(res)
+        }
+      })
+    }
   </script>
 {% endblock %}

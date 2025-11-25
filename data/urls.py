@@ -5,7 +5,9 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path("", views.index),
+    path("<str:category>", views.esgindex),
+    path("get_data/<int:indicator>", views.get_data),
+    
     path("detail/<int:id>", views.detail),
     path("form/<str:mode>/<int:id>", views.get_form),
     path('update_level_get', views.update_level_get, name='update_level_get'),

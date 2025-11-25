@@ -367,7 +367,7 @@ def esgindex(request,category):
             {"level 2" : "The company has preparation of a climate change risk assessment. This assessment includes a more detailed risk identification and has been validated by the responsible unit."},
             {"level 3" : "The company has prepared mitigation actions for climate risk identification that are integrated with the risk register."}
         ]
-        context['category'] = category
+
     elif category == 'soc':
         context['title'] = "Social"
         context['subtitle'] = "Empowering communities through inclusion, employee well-being, and supporting fair, sustainable growth for all."
@@ -406,6 +406,12 @@ def esgindex(request,category):
         
     context['category'] = category
     return render(request, 'esgindex.html', context)
+
+def get_data(request, indicator):
+    return JsonResponse({
+        "status": "success",
+        "data":[{'sub':'Corporate Physical and Transition Risks'}]
+    })
 
 def upload_file(request):
     if request.method == "POST":
