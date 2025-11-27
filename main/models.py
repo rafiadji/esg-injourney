@@ -11,15 +11,27 @@ class MPic(models.Model):
         db_table = 'm_pic'
 
 class UserPIC(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Relasi ke User
-    pic = models.ForeignKey(MPic, on_delete=models.CASCADE)  # Relasi ke PIC
-    created_at = models.DateTimeField(auto_now_add=True)     # Waktu pembuatan
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    pic = models.ForeignKey(MPic, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'user_pic'  # Nama tabel di database
+        db_table = 'user_pic'
 
     def __str__(self):
         return f"{self.user.username} - {self.pic.pic}"
+
+class UserDetail(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    group = models.CharField(max_length=200, blank=True, null=True, default=None)
+    lat = models.CharField(max_length=100, blank=True, null=True)
+    long = models.CharField(max_length=100, blank=True, null=True)
+    
+    class Meta:
+        managed = True
+        db_table = 'user_detail'
 
 class TMatlevIndicator(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -198,6 +210,7 @@ class ActivityLog(models.Model):
     )
 
     class Meta:
+        db_table = 't_activity_logs'
         ordering = ['-timestamp']
         verbose_name = "Activity Log"
         verbose_name_plural = "Activity Logs"
