@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Environment
+  {{ title }}
+   
 {% endblock %}
 
 {% block head %}
@@ -43,7 +44,7 @@
               <div class="row">
                 <div class="col-lg-7 col-sm-10">
                   <div class="p-5" style="margin: 0;  position: absolute; top: 50%;  left: 0%; transform: translateY(40%);">
-                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/envindex" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Add New Working Paper</h1>
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/category/{{category}}/" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Add New Working Paper</h1>
                   </div>
                 </div>
                 <!-- end col -->
@@ -64,15 +65,15 @@
           <form action="" method="post" enctype="multipart/form-data">
             <div class="row gy-4 pt-5">
               <div class="col-xxl-4 col-md-6">
-                <!-- Select -->
                 <div>
+                  {% comment %} {{ matlevind }} {% endcomment %}
                   <label for="basiInput" class="form-label">Indicator</label>
                   <div class="input-group">
-                    <select class="form-select" id="inputGroupSelect01">
-                      <option selected>Choose...</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                    <select class="js-example-basic-single indicator" name="indicator">
+                      <option value="" disabled selected hidden>---- Select ----</option>
+                      {% for indicator in matlevind %}
+                        <option value="{{ indicator.id }}">{{ indicator.indicator }}</option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
@@ -82,11 +83,9 @@
                 <div>
                   <label for="basiInput" class="form-label">Sub Indicator</label>
                   <div class="input-group">
-                    <select class="form-select" id="inputGroupSelect01">
-                      <option selected>Choose...</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                    <select class="js-example-basic-single subindicator" name="subindicator">
+                      
+                      
                     </select>
                   </div>
                 </div>
@@ -96,11 +95,8 @@
                 <div>
                   <label for="basiInput" class="form-label">Level</label>
                   <div class="input-group">
-                    <select class="form-select" id="inputGroupSelect01">
-                      <option selected>Choose...</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                    <select class="js-example-basic-single level" name="level">
+                      
                     </select>
                   </div>
                 </div>
@@ -109,28 +105,28 @@
             <div class="row gy-4 pt-5">
               <div class="col-xxl-12 col-md-12">
                 <div>
-                  <label for="basiInput" class="form-label">Description</label>
-                  <input type="password" class="form-control" id="basiInput" />
+                  <label for="desc" class="form-label">Description</label>
+                  <input type="texarea" class="form-control desc" id="desc" value="" placeholder="Description" disabled />
                 </div>
               </div>
             </div>
             <div class="row gy-4 pt-5">
               <div class="col-xxl-8 col-md-12">
-                <div>
-                  <label for="basiInput" class="form-label">Type of Evidence</label>
-                  <input type="password" class="form-control" id="basiInput" />
+                <div id="typeofe">
+                  <label class="form-label">Type of Evidence</label>
+                  <input type="text" class="form-control input-typeofe" value="" placeholder="Type of Evidence" disabled />
                 </div>
+
               </div>
               <div class="col-xxl-4 col-md-6">
                 <!-- Select -->
                 <div>
-                  <label for="basiInput" class="form-label">Level</label>
+                  <label for="basiInput" class="form-label">Data Type</label>
                   <div class="input-group">
                     <select class="form-select" id="inputGroupSelect01">
-                      <option selected>Choose...</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      <option value="" disabled selected hidden>---- Select ----</option>
+                      <option value="1">Upload</option>
+                      <option value="2">Form</option>
                     </select>
                   </div>
                 </div>
@@ -197,17 +193,89 @@
                   </tr>
                 </tbody>
               </table>
-              
             </div>
             <div class="row gy-4 pt-2" style="align-items: right; float: right;">
-                <div>
-                  <button type="button" class="btn btn-ghost-danger waves-effzect waves-light shadow-none">Batal</button>
-                  <button type="button" class="btn btn-success waves-effect waves-light"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</button>
-                </div>
+              <div>
+                <button type="button" class="btn btn-ghost-danger waves-effzect waves-light shadow-none">Batal</button>
+                <button type="button" class="btn btn-success waves-effect waves-light"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</button>
               </div>
+            </div>
           </form>
         </div>
       </div>
     </div>
   </section>
 {% endblock %}
+{% block script %}
+<script>
+    $('.indicator').select2();
+
+    $('.indicator').on('change', function () {
+        let val = $(this).val();
+        let text = $(this).find(':selected').text();
+        console.log("Value:", val);
+        console.log("Text:", text);
+        $.ajax({
+          url: `data/get_subind/${val}`,
+          dataType: 'json',
+          async: true,
+          success: (res) => {
+          console.log(res)
+          data=res.data
+          console.log(data)
+          let html = `<option value="" disabled selected hidden>---- Select ----</option>`;
+            for (let i = 0; i < data.length; i++) {
+              html += `<option value="${data[i].id}">${data[i].kriteria}</option> `
+            }
+            $('.subindicator').html(html)
+          }
+        });
+      })
+</script>
+<script>
+    $('.subindicator').select2();
+
+    $('.subindicator').on('change', function () {
+        let val = $(this).val();
+        let text = $(this).find(':selected').text();
+        console.log("Value:", val);
+        console.log("Text:", text);
+        $.ajax({
+          url: `data/get_subinddetail/${val}`,
+          dataType: 'json',
+          async: true,
+          success: (res) => {
+          console.log(res)
+          data=res.data
+          console.log(data)
+          let html = `<option value="" disabled selected hidden>---- Select ----</option>`;
+            for (let i = 0; i < data.length; i++) {
+              html += `<option value="${data[i].id}">Level ${data[i].level}</option> `
+            }
+            $('.level').html(html)
+          }
+        });
+      })
+</script>
+<script>
+    $('.level').select2();
+
+    $('.level').on('change', function () {
+        let val = $(this).val();
+        let text = $(this).find(':selected').text();
+        console.log("Value:", val);
+        console.log("Text:", text);
+        $.ajax({
+          url: `data/get_leveldetail/${val}`,
+          dataType: 'json',
+          async: true,
+          success: (res) => {
+            console.log(res)
+            data=res.data
+            console.log(data)
+           $('#typeofe').find('.input-typeofe').val(data.evidence);
+          }
+        });
+      })
+</script>
+{% endblock%}
