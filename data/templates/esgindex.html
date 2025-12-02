@@ -39,14 +39,14 @@
                     <hr style="color: #fff;" />
                     <a type="button" href="dashboard" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Dashboard</a>
                     {% if category == 'env' %}
-                      <a type="button" href="data/esgindex/soc" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Social Working Paper</a>
-                      <a type="button" href="data/esgindex/gov" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Governance Working Paper</a>
+                      <a type="button" href="data/category/soc" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Social Working Paper</a>
+                      <a type="button" href="data/category/gov" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Governance Working Paper</a>
                     {% elif category == 'gov' %}
-                      <a type="button" href="data/esgindex/env" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Environment Working Paper</a>
-                      <a type="button" href="data/esgindex/soc" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Social Working Paper</a>
+                      <a type="button" href="data/category/env" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Environment Working Paper</a>
+                      <a type="button" href="data/category/soc" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Social Working Paper</a>
                     {% elif category == 'soc' %}
-                      <a type="button" href="data/esgindex/env" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Environment Working Paper</a>
-                      <a type="button" href="data/esgindex/gov" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Governance Working Paper</a>
+                      <a type="button" href="data/category/env" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Environment Working Paper</a>
+                      <a type="button" href="data/category/gov" class="btn btn-outline-success rounded-3 waves-effect waves-light shadow-none text-white mt-4">Go to Governance Working Paper</a>
                     {% endif %}
                   </div>
                 </div>
@@ -76,7 +76,7 @@
           </div>
         </div>
         <div class="col-md-2 pt-5">
-          <a  href="data/workpaper_form" class="btn btn-success active"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Working Paper</span></a>
+          <a href="data/workpaper_form?category={{ category }}" class="btn btn-success active"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Working Paper</span></a>
         </div>
       </div>
     </div>
@@ -112,46 +112,44 @@
           </ul>
 
           <div class="row p-2">
-            <div class="col-md-3">
+            <!--         This particular code snippet is creating a sidebar navigation menu with tabs. Here's a
+             breakdown of what each part does:         -->
+            {% comment %} <div class="col-md-3">
               <!-- Nav tabs -->
               <ul class="nav flex-column nav-tabs nav-success mb-3 Sidebar" role="tablist" aria-orientation="horizontal">
                 {% for submenus in submenulist %}
                   <li class="nav-item nav-item-menuinj">
-                    <a class="nav-link" data-bs-toggle="tab" href="#{{ forloop.counter }}" onclick="get_data(1)" role="tab">{{ submenus }}</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="" onclick="get_data(1)" role="tab">{{ submenus.indicator }}</a>
                   </li>
                 {% endfor %}
               </ul>
+            </div> {% endcomment %}
+            <div class="col-md-3">
+              <ul class="nav flex-column nav-tabs nav-success mb-3 Sidebar" role="tablist" aria-orientation="horizontal">
+                {% for submenu in submenulist %}
+                  <li class="nav-item nav-item-menuinj">
+                    <a class="nav-link" href="#sidebar{{ submenu.id }}" aria-expanded="false" data-bs-toggle="collapse" role="tab">{{ submenu.indicator }}</a>
+                    <div class="collapse menu-dropdown p-3" id="sidebar{{ submenu.id }}">
+                      <ul class="nav nav-sm flex-column">
+                        {% for kriteria in submenu.kriteria %}
+                          <li class="nav-item">
+                            <a href="javascript:;" class="nav-link" onclick="get_data('{{ category }}',{{ submenu.id }},{{ kriteria.id }},'{{ submenu.indicator }}','{{ kriteria.kriteria }}')">{{ kriteria.kriteria }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </li> <!-- end Dashboard Menu -->
+                {% endfor %}
+              </ul>
             </div>
+
             <div class="col-md-9">
               <div class="row">
-                  <h2 class="pt-3">{{ titlecontent }}</h2>
-                  <h4 class="pt-3">{{ subtitlecontent }}</h4>
-                  {% for item in level %}
-                    {% for lvl, desc in item.items %}
-                      <div class="card">
-                        <div class="card-header">
-                          <div class="row">
-                            <div class="col-md-10">
-                              <h6 class="card-title mb-0">{{ lvl }}</h6>
-                            </div>
-                            <div class="col-md-2">
-                              <div class="btn-group" style="float: right;">
-                                <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="data/leveldetail?category={{ category }}&ind=1&sub=1&matlev=1"><i class="ri-folder-2-line"></i> Detail</a>
-                                  <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
-                                  <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card-body">
-                          <p class="card-text">{{ desc }}</p>
-                        </div>
-                      </div>
-                    {% endfor %}
-                  {% endfor %}
+                <h2 class="pt-3" id="indtitle"></h2>
+                <h4 class="pt-3" id="subtitle"></h4>
+                <div id="cardlevel">
+                </div>
+
               </div>
             </div>
           </div>
@@ -161,7 +159,7 @@
   </section>
 {% endblock %}
 {% block script %}
-<script type="text/javascript">
+  <script type="text/javascript">
     document.querySelectorAll('.nav-link').forEach((link) => {
       link.addEventListener('shown.bs.tab', function () {
         document.querySelectorAll('.nav-link img').forEach((img) => {
@@ -175,12 +173,10 @@
   </script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
- 
       const navLinks = document.querySelectorAll('.Sidebar .nav-link')
     
       navLinks.forEach((link) => {
         link.addEventListener('click', function () {
-    
           navLinks.forEach((l) => {
             l.classList.remove('active')
             l.classList.add('text-muted')
@@ -198,16 +194,64 @@
         })
       })
     })
-
-    function get_data(indicator){
-      $.ajax({
-        url: `data/get_data/${indicator}`,
-        dataType: 'json',
-        async: true,
-        success: (res) => {
-            console.log(res)
+    function getCookie(name) {
+      let cookieValue = null
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';')
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim()
+          if (cookie.substring(0, name.length + 1) === name + '=') {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+            break
+          }
         }
-      })
+      }
+      return cookieValue
+    }
+    function get_data(category,indicator, subindicator, indtittle, subtitle) {
+    $.ajax({
+     url: `data/get_data/${indicator}/${subindicator}`,
+     dataType: 'json',
+     async: true,
+    success: (res) => {
+     console.log(res)
+     $('#indtitle').html(indtittle)
+     $('#subtitle').html(subtitle)
+     data=res.data
+     let html = "";
+      {% comment %} console.log(data) {% endcomment %}
+      for (let i = 0; i < data.length; i++) {
+        {% comment %} console.log(data[i]);          
+        console.log(data[i].level);     
+        console.log(data[i].maturity);  {% endcomment %}
+         html += `
+           <div class="card">
+                  <div class="card-header">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h6 class="card-title mb-0">Level ${data[i].level}</h6>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="btn-group" style="float: right;">
+                          <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="data/leveldetail?category={{category}}&ind=${indicator}&sub=${data[i].kriteria_id}&matlev=${data[i].id}"><i class="ri-folder-2-line"></i> Detail</a>
+                            <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                            <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <p class="card-text">${data[i].maturity}</p>
+                  </div>
+                </div>
+        `
+      }
+      $('#cardlevel').html(html)
+     }
+    }) 
     }
   </script>
 {% endblock %}

@@ -340,78 +340,96 @@ def govindex(request):
     return render(request, "govindex.html", context)
 
 def workpaper_form(request):
+    category = request.GET.get("category")
+    print(category)
+    context['matlevind'] = TMatlevIndicator.objects.filter(pillar=category).order_by('number').values()
     return render(request, "workpaper_form.html", context)
 
 def leveldetail(request):
+
+    idlev = request.GET.get('matlev')
+    subindicator = request.GET.get('sub')
+    indicator = request.GET.get('ind')
     context['category'] = request.GET.get('category')
+    context['ind'] = request.GET.get('ind')
+    context['sub'] = request.GET.get('sub')
+    context['idlev'] = idlev
+    context['matlev'] = TMatlevKriteriaDetail.objects.filter(id=idlev).first()
+    context['matlevsubid'] = TMatlevKriteria.objects.filter(id=subindicator).first()
     return render(request, "level_detail.html", context)
 
 def esgindex(request,category):
+    
+    
     if category == 'env':
         context['title'] = "Environment"
         context['subtitle'] = "We are committed to preserving the planet by reducing carbon footprints, managing natural resources responsibly, and driving eco-friendly innovation."
         context['imgurl'] = "assets/images/env.jpg"
-        context['submenulist'] = [
-            'Climate Change Adaptation & Mitigation Actions',
-            'GHG Emissions Management',
-            'Waste Management',
-            'Water Management',
-            'Energy Management',
-            'Environmental Management',
-            'Biodiversity'
-        ]
-        context['titlecontent'] = "Climate Change Adaptation & Mitigation Actions"
-        context['subtitlecontent'] = "Corporate Physical and Transition Risks"
-        context['level'] = [
-            {"level 1" : "The company has conveyed initial commitments or policies regarding the management of both physical and transitional climate risks and the climate risk governance."},
-            {"level 2" : "The company has preparation of a climate change risk assessment. This assessment includes a more detailed risk identification and has been validated by the responsible unit."},
-            {"level 3" : "The company has prepared mitigation actions for climate risk identification that are integrated with the risk register."}
-        ]
+        context['submenulist'] = TMatlevIndicator.objects.filter(pillar='env').order_by('number')
+        for submenu in context['submenulist']:
+            kriteria = TMatlevKriteria.objects.filter(indicator_id=submenu.id).order_by('number')
+            submenu.kriteria = kriteria
+        
 
     elif category == 'soc':
         context['title'] = "Social"
         context['subtitle'] = "Empowering communities through inclusion, employee well-being, and supporting fair, sustainable growth for all."
         context['imgurl'] = "assets/images/soc.jpg"
-        context['submenulist'] = [
-            'Labor Practices (Diversity and Inclusion)',
-            'Recruitment, Development, and Retention',
-            'Safety and Health',
-            'Consumer Relations',
-            'Human Rights'
-        ]
-        context['titlecontent'] = "Labor Practices (Diversity and Inclusion)"
-        context['subtitlecontent'] = "Labor Practices (Diversity and Inclusion)"
-        context['level'] = [
-            {"level 1" : "The company has initial commitments regarding labor practices (ex : equal remuneration, working hours, paying a living wage, workers annual leave, notice period before mass termination, prohibited discrimination and harassment)."},
-            {"level 2" : "The company discloses data on women based on management level, employee data based on nationality or ethnicity and implements diversity initiatives and programs (e.g., DEI training)."},
-            {"level 3" : "The company discloses data on women based on management level, employee data based on nationality or ethnicity and implements diversity initiatives and programs (e.g., DEI training)."}
-        ]
+        context['submenulist'] = TMatlevIndicator.objects.filter(pillar='soc').order_by('number')
+        for submenu in context['submenulist']:
+            kriteria = TMatlevKriteria.objects.filter(indicator_id=submenu.id).order_by('number')
+            submenu.kriteria = kriteria
+        
         
     elif category == 'gov' :
         context['title'] = "Governance"
         context['subtitle'] = "Building trust with transparency, integrity, and responsible governance to create long-term value."
         context['imgurl'] = "assets/images/gov.jpg"
-        context['submenulist'] = [
-            'Business Ethics',
-            'Supply Chai',
-            'IT',
-            'Human Rights'
-        ]
-        context['titlecontent'] = "Business Ethics"
-        context['subtitlecontent'] = "Business Ethics"
-        context['levels'] = [
-            {"level 1" : "The company has a Code of Conduct in place which has been formally documented and socialized to employees and relevant stakeholders."},
-            {"level 2" : "The company has established a Whistleblowing System (WBS) with a clear investigation Standard Opration Procedure."}
-        ]
+        context['submenulist'] = TMatlevIndicator.objects.filter(pillar='gov').order_by('number')
+        for submenu in context['submenulist']:
+            kriteria = TMatlevKriteria.objects.filter(indicator_id=submenu.id).order_by('number')
+            submenu.kriteria = kriteria
         
     context['category'] = category
     return render(request, 'esgindex.html', context)
 
-def get_data(request, indicator):
+def get_data(request, indicator, subindicator):
+
+    # return render(request, "level_detail.html", context)
+    matlev = TMatlevKriteriaDetail.objects.filter(kriteria__id=subindicator, kriteria__indicator__id=indicator).order_by('level').values()
+    
+    
     return JsonResponse({
         "status": "success",
-        "data":[{'sub':'Corporate Physical and Transition Risks'}]
+        "data":list(matlev)
     })
+    
+
+def get_subind(request, val):
+    # print(val)
+    matlev = TMatlevKriteria.objects.filter(indicator_id=val).order_by('number').values()
+    return JsonResponse({
+        "status": "success",
+        "data":list(matlev)
+    })
+    
+def get_subinddetail(request, val):
+    # print(val)
+    matlev = TMatlevKriteriaDetail.objects.filter(kriteria__id=val).order_by('level').values()
+    return JsonResponse({
+        "status": "success",
+        "data":list(matlev)
+    })
+
+def get_leveldetail(request, val):
+    # print(val)
+    matlev = TMatlevKriteriaDetail.objects.filter(id=val).order_by('level').values()
+    return JsonResponse({
+        "status": "success",
+        "data":list(matlev)
+    })
+
+
 
 def upload_file(request):
     if request.method == "POST":

@@ -5,8 +5,12 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path("<str:category>", views.esgindex),
-    path("get_data/<int:indicator>", views.get_data),
+    path("category/<str:category>/", views.esgindex),
+    path("get_data/<int:indicator>/<int:subindicator>", views.get_data),
+    path("detail/<int:id>", views.get_data),
+    path("get_subind/<int:val>", views.get_subind),
+    path("get_subinddetail/<int:val>", views.get_subinddetail),
+    path("get_leveldetail/<int:val>", views.get_leveldetail),
     
     path("detail/<int:id>", views.detail),
     path("form/<str:mode>/<int:id>", views.get_form),
@@ -20,7 +24,7 @@ urlpatterns = [
     path('govindex/', views.govindex),
     path('workpaper_form/', views.workpaper_form),
     path('leveldetail/', views.leveldetail),
-    path('esgindex/<str:category>/', views.esgindex, name='esgindex'),
+    # path('esgindex/<str:category>/', views.esgindex, name='esgindex'),
     path("upload/", views.upload_file),
 
 ]

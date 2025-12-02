@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Environment
+{% endblock %}
+
+{% block head %}
+  <style type="text/css">
+    .esg-hero-idx {
+      background-size: cover;
+      background-position: bottom;
+      padding: 0px 0 0px 0;
+      height: 434px;
+    }
+    .esg-hero-idx .bg-overlay {
+      background: linear-gradient(to bottom, rgba(166, 166, 166, 1), rgba(184, 184, 184, 0.75), rgba(155, 155, 155, 0.5));
+      opacity: 0.85;
+    }
+    .boxs {
+      height: 400px;
+      position: relative;
+      border: 3px solid green;
+    }
+    
+    .boxs p {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 p-0">
+          <section class="section esg-hero-idx" id="hero" style="background-image: url('assets/images/detailhead.jpg'); background-position: center center; height: 434px;">
+            <div class="bg-overlay"></div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-7 col-sm-10">
+                  <div class="p-5" style="margin: 0;  position: absolute; top: 50%;  left: 0%; transform: translateY(40%);">
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/esgindex/{{ category }}" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Detail</h1>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+            </div>
+            <!-- end container -->
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 p-5">
+          
+          <h2 class="heading-txt fw-semibold text-black">{{ matlevsubid.kriteria }} <span class="badge bg-light text-success mb-0">Level {{ matlev.level }}</span></h2>
+          <dl class="row mb-0 pt-4">
+            <dt>Description</dt>
+            <dd>{{ matlev.maturity }}</dd>
+          </dl>
+          <dl class="row mb-0 pt-4">
+            <dt>Type of Evidence</dt>
+            <dd>{{ matlev.evidence }}</dd>
+          </dl>
+          <div class="mb-0 pt-4">
+            <dl>
+              <dt>
+                List of document <button type="button" class="btn btn-success active float-end" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center"><span class="icon-on"><i class="bx bx-upload large"></i> Upload Documents</span></button>
+                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">Uploads Documents</div>
+                      <div class="modal-body text-center p-5">
+                        {% comment %} <div class="dropzone">
+                          <div class="fallback">
+                            <input name="file" type="file" multiple="multiple" />
+                          </div>
+                          <div class="dz-message needsclick">
+                            <div class="mb-3">
+                              <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                            </div>
+
+                            <h4>Drop files here or click to upload.</h4>
+                          </div>
+                        </div>
+                        <ul class="list-unstyled mb-0" id="dropzone-preview">
+                          <li class="mt-2" id="dropzone-preview-list">
+                            <!-- This is used as the file preview template -->
+                            <div class="border rounded">
+                              <div class="d-flex p-2">
+                                <div class="flex-shrink-0 me-3">
+                                  <div class="avatar-sm bg-light rounded">
+                                    <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" alt="Dropzone-Image" />
+                                  </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                  <div class="pt-1">
+                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                    <strong class="error text-danger" data-dz-errormessage></strong>
+                                  </div>
+                                </div>
+                                <div class="flex-shrink-0 ms-3">
+                                  <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        </ul> {% endcomment %}
+                        <form action="data/upload/" class="dropzone" id="my-dropzone">
+                          <div class="fallback">
+                            <input name="file" type="file" multiple="multiple" />
+                          </div>
+
+                          <div class="dz-message needsclick">
+                            <div class="mb-3">
+                              <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                            </div>
+                            <h4>Drop files here or click to upload.</h4>
+                          </div>
+                        </form>
+
+                        <ul class="list-unstyled mb-0" id="dropzone-preview">
+                          <li class="mt-2" id="dropzone-preview-list">
+                            <!-- TEMPLATE PREVIEW -->
+                            <div class="border rounded">
+                              <div class="d-flex p-2">
+                                <div class="flex-shrink-0 me-3">
+                                  <div class="avatar-sm bg-light rounded">
+                                    <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" alt="Dropzone-Image" />
+                                  </div>
+                                </div>
+
+                                <div class="flex-grow-1">
+                                  <div class="pt-1">
+                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                    <strong class="error text-danger" data-dz-errormessage></strong>
+                                  </div>
+                                </div>
+
+                                <div class="flex-shrink-0 ms-3">
+                                  <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+              </dt>
+            </dl>
+            <div class="row justify-content-center">
+              <div class="col-lg-8 col-sm-10">
+                <div class="text-center">
+                  <span class="icon-on text-muted text-center" style="font-size: 100px;"><i class="bx bx-file"></i></span>
+                  <h4 class="text-muted mb-2 pb-4">No Data Available</h4>
+                </div>
+              </div>
+              <!-- end col -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+Dropzone.autoDiscover = false;
+
+var previewNode = document.querySelector("#dropzone-preview-list");
+previewNode.id = ""; 
+var previewTemplate = previewNode.parentNode.innerHTML;
+previewNode.parentNode.removeChild(previewNode);
+
+var myDropzone = new Dropzone("#my-dropzone", {
+    url: "data/upload/",
+    maxFilesize: 5, // MB
+    acceptedFiles: ".png,.jpg,.jpeg,.pdf",
+    previewsContainer: "#dropzone-preview",
+    previewTemplate: previewTemplate,
+    parallelUploads: 2,
+    addRemoveLinks: false
+});
+</script>
+
+{% endblock %}
