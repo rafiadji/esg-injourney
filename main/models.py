@@ -10,6 +10,15 @@ class MPic(models.Model):
         managed = True
         db_table = 'm_pic'
 
+class MGroup(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    group = models.CharField(max_length=200, blank=True, null=True)
+    pic = models.ForeignKey(MPic, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    class Meta:
+        managed = True
+        db_table = 'm_group'
+
 class UserPIC(models.Model):
     id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -25,7 +34,8 @@ class UserPIC(models.Model):
 class UserDetail(models.Model):
     id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    group = models.CharField(max_length=200, blank=True, null=True, default=None)
+    group = models.ForeignKey(MGroup, on_delete=models.SET_NULL, null=True, blank=True)
+    role = models.CharField(max_length=100, blank=True, null=True, default='contributor')
     lat = models.CharField(max_length=100, blank=True, null=True)
     long = models.CharField(max_length=100, blank=True, null=True)
     

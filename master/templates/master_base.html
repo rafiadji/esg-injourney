@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 p-0">
+          <section class="section esg-hero-idx" id="hero" style="background-image: url('assets/images/masterhead.jpg'); background-position: center center;">
+            <div class="bg-overlay"></div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-7 col-sm-10">
+                  <div class="p-5">
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white pt-5">Master</h1>
+                    <p class="card-text text-white mb-2 pb-4">Serves as the main configuration area of the ESG dashboard.</p>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+            </div>
+            <!-- end container -->
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container-fluid">
+      <div class="row pt-5">
+        <div class="col-md-12">
+          <div class="row p-2">
+            <div class="col-md-3">
+              <!-- Nav tabs -->
+              <ul class="nav flex-column nav-tabs nav-tabs-custom nav-success mb-3 Sidebar" role="tablist" aria-orientation="vertical">
+                <li class="nav-item nav-item-menuinj">
+                  <a class="nav-link {% if submenu == 'user' %}active{% else %}text-muted{% endif %}" href="master">{% if submenu == 'user' %}<span><i class="ri-arrow-right-line align-bottom me-1"></i></span>{% endif %}Users</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if submenu == 'entity' %}active{% else %}text-muted{% endif %}" href="master/entity">{% if submenu == 'entity' %}<span><i class="ri-arrow-right-line align-bottom me-1"></i></span>{% endif %}Entity</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if submenu == 'indicator' %}active{% else %}text-muted{% endif %}" href="master/indicator">{% if submenu == 'indicator' %}<span><i class="ri-arrow-right-line align-bottom me-1"></i></span>{% endif %}Indicator</a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-9">
+              {% block master_content %}
+
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

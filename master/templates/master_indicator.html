@@ -1,0 +1,111 @@
+{% extends 'master_base.html' %}
+
+{% block title %}
+  Master Indicator
+{% endblock %}
+
+{% block master_content %}
+  <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+    <li class="nav-item nav-item-menuinj">
+      <a class="nav-link active" data-bs-toggle="tab" href="javascript:;" role="tab" onclick="get_indicator('env')">Environmental</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab" onclick="get_indicator('soc')">Social</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab" onclick="get_indicator('gov')">Governance</a>
+    </li>
+  </ul>
+  <div class="d-flex align-items-center">
+    <h1 class="heading-txt fw-semibold flex-grow-1">Indicators</h1>
+    <div class="flex-shrink-0">
+      <div class="d-flex flex-wrap gap-2">
+        <a href="master/mast_formind" class="btn btn-success active" id="add-indicator"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Indicators</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="pt-5">
+    <table class="table align-middle table-nowrap mb-0" id="master-indicator">
+      <thead>
+        <tr>
+          <th>Indicator Name</th>
+          <th>Sub Indicator Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script>
+  var table_indicator = $('#master-indicator').DataTable({ 
+    ordering: false,
+    searching: false,
+    lengthChange: false,
+    pageLength: 10,
+  })
+
+  get_indicator('env')
+
+  function get_indicator(category){
+    $('#add-indicator').attr('href', `master/indicator_form/${category}/add`)
+    $.ajax({
+      url: `master/get_indicator_list/${category}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        table_indicator.clear().draw()
+        for (var i = 0; i < res.data.length; i++){
+          const dt = res.data[i]
+          subind = '<ol>'
+          for (var j = 0; j < dt.subindicator.length; j++){
+            subind += `<li>${dt.subindicator[j].kriteria}</li>`
+          }
+          subind += '</ol>'
+          table_indicator.row.add([
+            dt.indicator,
+            subind,
+            `
+              <div class="btn-group" style="float: right;">
+                <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="master/indicator_form/${category}/edit/${dt.id}"><i class="ri-edit-box-line"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:;" onclick="delete_indicator('${dt.id}', '${category}')"><i class="ri-delete-bin-line"></i> Hapus</a>
+                </div>
+              </div>
+            `
+          ]).draw()
+        }
+      }
+    })
+  }
+
+  function delete_indicator(id, category){
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Kolom yang dihapus tidak dapat dikembalikan!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: `master/delete_ind/${id}`,
+          dataType: 'json',
+          async: true,
+          success: (res) => {
+            get_indicator(category)
+          }
+        })
+      }
+    })
+  }
+</script>
+{% endblock %}

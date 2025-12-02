@@ -6,6 +6,16 @@ from . import views
 
 urlpatterns = [
     path("", views.index),
+    path("user_form/<str:mode>/", views.user_form),
+    path("user_form/<str:mode>/<int:id>", views.user_form),
+    path("indicator", views.indicator),
+    path("get_group_pic/<int:id>", views.get_group_pic),
+    path("get_indicator_list/<str:category>", views.get_indicator_list),
+    path("indicator_form/<str:category>/<str:mode>", views.indicator_form),
+    path("indicator_form/<str:category>/<str:mode>/<int:id>", views.indicator_form),
+    path("delete_sub/<int:id>", views.delete_sub),
+    path("delete_ind/<int:id>", views.delete_ind),
+    
     path("detail/<int:id>", views.detail),
     path("form/<int:id>/<str:mode>", views.form),
     path("save_pic/<int:id>/<int:id_pic>", views.save_pic),

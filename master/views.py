@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from main.models import *
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 
 from datetime import datetime, timedelta
 
@@ -13,37 +14,162 @@ context = {'menu' : 'master'}
 @login_required(login_url='/')
 # Create your views here.
 def index(request):
-    # [PERUBAHAN 1] Ambil tahun dari session
-    current_year = str(datetime.now().year)
-    selected_year = request.session.get('tahun_periode', current_year)
-    
-    # [PERUBAHAN 2] Tambah filter tahun di query utama
-    context['matlev_kriteria'] = TMatlevKriteria.objects.filter(
-        year=selected_year
-    ).order_by('indicator__id').all()
-    
-    if request.method == "POST":
+    context['submenu'] = 'user'
+    user = User.objects.filter(is_superuser=False)
+    for usr in user:
+        entity = UserPIC.objects.filter(user_id=usr.id).first()
+        usr.pic = entity.pic.pic
+        
+        usrdet = UserDetail.objects.filter(user_id=usr.id).first()
+        if usrdet.role == 'admin':
+            role = 'Admin Branch'
+        else :
+            role = 'Contributor'
+        usr.role = role
+        
+    context['data'] = user
+    return render(request, "master_user.html", context)
+
+def user_form(request, mode, id=None):
+    context['entity'] = MPic.objects.order_by('id').all()
+    if request.method=="POST":
         r = request.POST
-        if r['kriteria_id'] == 'add':
-            indicator = TMatlevIndicator.objects.get(id=r.get('indicator'))
-            post = TMatlevKriteria()
-            post.indicator = indicator
-            post.number = r.get('number')
-            post.kriteria = r.get('kriteria')
-            post.max_level = 3
-            post.level_get = 0
-            post.level_sum = 0
-            post.level_weight = 0
-            # [PERUBAHAN 3] Gunakan selected_year dari session untuk tahun baru
-            post.year = selected_year
-            post.save()
-        else:
-            post = TMatlevKriteria.objects.get(id=r.get('kriteria_id'))
-            post.kriteria = r.get('kriteria')
-            post.save()
-        return HttpResponseRedirect('/master')
+        if mode == 'add':
+            usr = User()
+            usr.username = r.get('username')
+            usr.first_name = r.get('name')
+            usr.email = r.get('email')
+            usr.set_password(r.get('password'))
+            usr.save()
             
-    return render(request, "master_kriteria.html", context)
+            det = UserDetail()
+            if r.get('group') != '':
+                det.group = MGroup.objects.get(id=r.get('group'))
+            det.user = usr
+            det.lat = r.get('lat')
+            det.long = r.get('long')
+            det.role = r.get('role')
+            det.save()
+            
+            pic = UserPIC()
+            pic.pic = MPic.objects.get(id=r.get('entity'))
+            pic.user = usr
+            pic.save()
+            
+            return HttpResponseRedirect('/master')
+        elif mode == 'edit':
+            # ind = TMatlevIndicator.objects.get(id=id)
+            # ind.pillar = category
+            # ind.indicator = r.get('indicator')
+            # ind.year = '2025'
+            # ind.save()
+            # TMatlevKriteria.objects.filter(indicator_id=id).delete()
+            # for kriteria, max_level in zip(r.getlist('kriteria'), r.getlist('max_level')):
+            #     last_number_sub = TMatlevKriteria.objects.filter(
+            #         indicator_id=ind.id
+            #     ).order_by('-number').values_list('number', flat=True).first()
+            #     krit = TMatlevKriteria()
+            #     krit.number = (int(last_number_sub) if last_number_sub is not None else 0) + 1
+            #     krit.kriteria = kriteria
+            #     krit.max_level = max_level
+            #     krit.level_get = 0
+            #     krit.level_weight = 0
+            #     krit.level_sum = 0
+            #     krit.year = '2025'
+            #     krit.indicator = ind
+            #     krit.save()
+            return HttpResponseRedirect('/master')
+    return render(request, "master_formuser.html", context)
+
+def get_group_pic(request, id):
+    group = MGroup.objects.order_by('id').filter(pic_id=id).values()
+    return JsonResponse({
+        'success':True,
+        'data':list(group)
+    })
+
+def indicator(request):
+    context['submenu'] = 'indicator'
+    return render(request, "master_indicator.html", context)
+
+def get_indicator_list(request, category):
+    ind_list = TMatlevIndicator.objects.order_by('number').filter(pillar=category).values('id', 'indicator')
+    for ind in ind_list:
+        subind_list = TMatlevKriteria.objects.order_by('number').filter(indicator_id=ind['id']).values('id', 'kriteria')
+        ind['subindicator'] = list(subind_list)
+    return JsonResponse({
+        'success':True,
+        'data':list(ind_list)
+    })
+
+def indicator_form(request, category, mode, id=None):
+    if mode == 'edit':
+        context['indicator_edit'] = TMatlevIndicator.objects.filter(id=id).first()
+        context['subindicator_edit'] = TMatlevKriteria.objects.filter(indicator_id=id).order_by('number')
+    if request.method=="POST":
+        r = request.POST
+        if mode == 'add':
+            last_number = TMatlevIndicator.objects.filter(
+                pillar=category
+            ).order_by('-number').values_list('number', flat=True).first()
+            ind = TMatlevIndicator()
+            ind.pillar = category
+            ind.number = (int(last_number) if last_number is not None else 0) + 1
+            ind.indicator = r.get('indicator')
+            ind.year = '2025'
+            ind.save()
+            for kriteria, max_level in zip(r.getlist('kriteria'), r.getlist('max_level')):
+                last_number_sub = TMatlevKriteria.objects.filter(
+                    indicator_id=ind.id
+                ).order_by('-number').values_list('number', flat=True).first()
+                krit = TMatlevKriteria()
+                krit.number = (int(last_number_sub) if last_number_sub is not None else 0) + 1
+                krit.kriteria = kriteria
+                krit.max_level = max_level
+                krit.level_get = 0
+                krit.level_weight = 0
+                krit.level_sum = 0
+                krit.year = '2025'
+                krit.indicator = ind
+                krit.save()
+            return HttpResponseRedirect('/master/indicator')
+        elif mode == 'edit':
+            ind = TMatlevIndicator.objects.get(id=id)
+            ind.pillar = category
+            ind.indicator = r.get('indicator')
+            ind.year = '2025'
+            ind.save()
+            TMatlevKriteria.objects.filter(indicator_id=id).delete()
+            for kriteria, max_level in zip(r.getlist('kriteria'), r.getlist('max_level')):
+                last_number_sub = TMatlevKriteria.objects.filter(
+                    indicator_id=ind.id
+                ).order_by('-number').values_list('number', flat=True).first()
+                krit = TMatlevKriteria()
+                krit.number = (int(last_number_sub) if last_number_sub is not None else 0) + 1
+                krit.kriteria = kriteria
+                krit.max_level = max_level
+                krit.level_get = 0
+                krit.level_weight = 0
+                krit.level_sum = 0
+                krit.year = '2025'
+                krit.indicator = ind
+                krit.save()
+            return HttpResponseRedirect('/master/indicator')
+            
+    return render(request, "master_formindicator.html", context)
+
+def delete_sub(request, id):
+    TMatlevKriteria.objects.filter(id=id).delete()
+    return JsonResponse({
+        'success':True
+    })
+
+def delete_ind(request, id):
+    TMatlevIndicator.objects.filter(id=id).delete()
+    TMatlevKriteria.objects.filter(indicator_id=id).delete()
+    return JsonResponse({
+        'success':True
+    })
 
 def detail(request, id):
     context['matlev_kriteria'] = TMatlevKriteria.objects.filter(id=id).first()

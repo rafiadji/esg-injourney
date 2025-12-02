@@ -1,0 +1,59 @@
+{% extends 'master_base.html' %}
+
+{% block title %}
+  Master Users
+{% endblock %}
+
+{% block master_content %}
+  <div class="d-flex align-items-center">
+    <h1 class="heading-txt fw-semibold flex-grow-1">Users</h1>
+    <div class="flex-shrink-0">
+      <div class="d-flex flex-wrap gap-2">
+        <a href="master/user_form/add" class="btn btn-success active"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New User</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="pt-5">
+    <table class="table align-middle table-nowrap mb-0" id="master-user">
+      <thead>
+        <tr>
+          <th>Entity</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dt in data %}
+        <tr>
+          <td>{{ dt.pic }}</td>
+          <td>{{ dt.username }}</td>
+          <td>{{ dt.email }}</td>
+          <td>{{ dt.role }}</td>
+          <td>
+            <div class="btn-group" style="float: right;">
+              <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script>
+  var table = $('#master-user').DataTable({ 
+    ordering: false,
+    searching: false,
+    lengthChange: false,
+    pageLength: 10,
+  })
+</script>
+{% endblock %}

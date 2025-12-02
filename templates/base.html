@@ -49,7 +49,6 @@
         }
       }
       .esg-hero {
-        
         background-size: cover;
         background-position: bottom;
         padding: 280px 0 150px 0;
@@ -67,16 +66,15 @@
         padding-left: 0 !important;
         padding-right: 0 !important;
       }
-      .cardsum{
-        
+      .cardsum {
         border-radius: 12px;
       }
       .cardgas {
-      width: 100%;
-      height: 100px;
-      padding: 10px;
-      background-color: #82ab40;
-    }
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+        background-color: #82ab40;
+      }
     </style>
   </head>
 
@@ -133,7 +131,7 @@
           </div>
         </div>
       </nav>
-      
+
       <!-- end navbar -->
       {% block content %}
 
@@ -168,8 +166,20 @@
     <script src="assets/libs/node-waves/waves.min.js"></script>
     <script src="assets/libs/feather-icons/feather.min.js"></script>
     <script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
-    <script src="assets/js/plugins.js"></script>
+    {% comment %} <script src="assets/js/plugins.js"></script> {% endcomment %}
+    <script src="//cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="//cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script src="assets/numeral/numeral.min.js"></script>
+    <script src="assets/numeral/locales/idr.min.js"></script>
+    <script>
+      numeral.locale('idr')
+    </script>
 
+    <script>
+      ;(document.querySelectorAll('[toast-list]') || document.querySelectorAll('[data-choices]') || document.querySelectorAll('[data-provider]')) && (document.writeln(`<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"><\/script>`), document.writeln(`<script type="text/javascript" src="{{ BASE_URL }}/assets/libs/choices.js/public/assets/scripts/choices.min.js"><\/script>`), document.writeln(`<script type="text/javascript" src="{{ BASE_URL }}/assets/libs/flatpickr/flatpickr.min.js"><\/script>`))
+    </script>
     <!--select2 cdn-->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -177,16 +187,13 @@
 
     <!-- Swiper slider js -->
     <script src="assets/libs/swiper/swiper-bundle.min.js"></script>
-
     <script src="assets/js/pages/nft-landing.init.js"></script>
-
     <!-- dropzone min -->
     <script src="assets/libs/dropzone/dropzone-min.js"></script>
-
     <!-- landing init -->
     <script src="assets/js/pages/landing.init.js"></script>
-     {% block script %}
+    {% block script %}
+
     {% endblock %}
-    
   </body>
 </html>
