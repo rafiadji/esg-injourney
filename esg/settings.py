@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'data.apps.DataConfig',
     'master.apps.MasterConfig',
     'user_activity.apps.UserActivityConfig',
+    'emission_monitor'
 ]
 
 MIDDLEWARE = [
