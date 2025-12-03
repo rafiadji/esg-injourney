@@ -1,15 +1,15 @@
 {% extends 'master_base.html' %}
 
 {% block title %}
-  Master Users
+  Master Entity
 {% endblock %}
 
 {% block master_content %}
   <div class="d-flex align-items-center">
-    <h1 class="heading-txt fw-semibold flex-grow-1">Users</h1>
+    <h1 class="heading-txt fw-semibold flex-grow-1">Entity</h1>
     <div class="flex-shrink-0">
       <div class="d-flex flex-wrap gap-2">
-        <a href="master/user_form/add" class="btn btn-success active"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New User</span></a>
+        <a href="master/entity_form/add" class="btn btn-success active"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Entity</span></a>
       </div>
     </div>
   </div>
@@ -18,9 +18,6 @@
       <thead>
         <tr>
           <th>Entity</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Role</th>
           <th></th>
         </tr>
       </thead>
@@ -28,15 +25,12 @@
         {% for dt in data %}
         <tr>
           <td>{{ dt.pic }}</td>
-          <td>{{ dt.username }}</td>
-          <td>{{ dt.email }}</td>
-          <td>{{ dt.role }}</td>
           <td>
             <div class="btn-group" style="float: right;">
               <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="master/user_form/edit/{{ dt.id }}"><i class="ri-edit-box-line"></i> Edit</a>
-                <a class="dropdown-item" href="javascript:;" onclick="delete_user({{ dt.id }})"><i class="ri-delete-bin-line"></i> Hapus</a>
+                <a class="dropdown-item" href="master/entity_form/edit/{{ dt.id }}"><i class="ri-edit-box-line"></i> Edit</a>
+                <a class="dropdown-item" href="javascript:;" onclick="delete_entity({{ dt.id }})"><i class="ri-delete-bin-line"></i> Hapus</a>
               </div>
             </div>
           </td>
@@ -56,7 +50,7 @@
     pageLength: 10,
   })
 
-  function delete_user(id){
+  function delete_entity(id){
     Swal.fire({
       title: 'Apakah Anda yakin?',
       text: 'Data yang dihapus tidak dapat dikembalikan!',
@@ -69,11 +63,11 @@
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: `master/delete_usr/${id}`,
+          url: `master/delete_ent/${id}`,
           dataType: 'json',
           async: true,
           success: (res) => {
-            window.location.href = '/master'
+            window.location.href = '/master/entity'
           }
         })
       }
