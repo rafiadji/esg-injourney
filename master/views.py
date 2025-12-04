@@ -32,6 +32,17 @@ def index(request):
 
 def user_form(request, mode, id=None):
     context['entity'] = MPic.objects.order_by('id').all()
+    context['mode'] = mode
+    if mode == 'edit':
+        context['data_user'] = User.objects.filter(id=id).first()
+        context['detail_user'] = UserDetail.objects.filter(user_id=id).first()
+        context['pic_user'] = UserPIC.objects.filter(user_id=id).first()
+        context['group_edit'] = MGroup.objects.order_by('id').filter(pic_id=context['pic_user'].id)
+    else:
+        context['data_user'] = []
+        context['detail_user'] = []
+        context['pic_user'] = []
+        context['group_edit'] = []
     if request.method=="POST":
         r = request.POST
         if mode == 'add':
@@ -58,34 +69,97 @@ def user_form(request, mode, id=None):
             
             return HttpResponseRedirect('/master')
         elif mode == 'edit':
-            # ind = TMatlevIndicator.objects.get(id=id)
-            # ind.pillar = category
-            # ind.indicator = r.get('indicator')
-            # ind.year = '2025'
-            # ind.save()
-            # TMatlevKriteria.objects.filter(indicator_id=id).delete()
-            # for kriteria, max_level in zip(r.getlist('kriteria'), r.getlist('max_level')):
-            #     last_number_sub = TMatlevKriteria.objects.filter(
-            #         indicator_id=ind.id
-            #     ).order_by('-number').values_list('number', flat=True).first()
-            #     krit = TMatlevKriteria()
-            #     krit.number = (int(last_number_sub) if last_number_sub is not None else 0) + 1
-            #     krit.kriteria = kriteria
-            #     krit.max_level = max_level
-            #     krit.level_get = 0
-            #     krit.level_weight = 0
-            #     krit.level_sum = 0
-            #     krit.year = '2025'
-            #     krit.indicator = ind
-            #     krit.save()
+            usr = User.objects.get(id=id)
+            usr.username = r.get('username')
+            usr.first_name = r.get('name')
+            usr.email = r.get('email')
+            usr.set_password(r.get('password'))
+            usr.save()
+            
+            det = UserDetail.objects.get(user_id=id)
+            if r.get('group') != '':
+                det.group = MGroup.objects.get(id=r.get('group'))
+            det.user = usr
+            det.lat = r.get('lat')
+            det.long = r.get('long')
+            det.role = r.get('role')
+            det.save()
+            
+            pic = UserPIC.objects.get(user_id=id)
+            pic.pic = MPic.objects.get(id=r.get('entity'))
+            pic.user = usr
+            pic.save()
+            
             return HttpResponseRedirect('/master')
     return render(request, "master_formuser.html", context)
+
+def delete_usr(request, id):
+    UserPIC.objects.filter(user_id=id).delete()
+    UserDetail.objects.filter(user_id=id).delete()
+    User.objects.filter(id=id).delete()
+    return JsonResponse({
+        'success':True
+    })
 
 def get_group_pic(request, id):
     group = MGroup.objects.order_by('id').filter(pic_id=id).values()
     return JsonResponse({
         'success':True,
         'data':list(group)
+    })
+    
+def entity(request):
+    context['submenu'] = 'entity'
+    context['data'] = MPic.objects.order_by('id').all()
+    return render(request, "master_entitas.html", context)
+
+def entity_form(request, mode, id=None):
+    if mode == 'edit':
+        context['entity_edit'] = MPic.objects.filter(id=id).first()
+        context['group_edit'] = MGroup.objects.filter(pic_id=id).order_by('id')
+    else:
+        context['entity_edit'] = []
+        context['group_edit'] = []
+    if request.method=="POST":
+        r = request.POST
+        if mode == 'add':
+            ent = MPic()
+            ent.pic = r.get('pic')
+            ent.save()
+            for group in r.getlist('group'):
+                grp = MGroup()
+                grp.group = group
+                grp.pic = ent
+                grp.save()
+            return HttpResponseRedirect('/master/entity')
+        elif mode == 'edit':
+            ent = MPic.objects.get(id=id)
+            ent.pic = r.get('pic')
+            ent.save()
+            for group, group_id in zip(r.getlist('group'), r.getlist('group_id')):
+                if group_id == '':
+                    grp = MGroup()
+                    grp.group = group
+                    grp.pic = ent
+                    grp.save()
+                else:
+                    grp = MGroup.objects.get(id=group_id)
+                    grp.group = group
+                    grp.save()
+            return HttpResponseRedirect('/master/entity')
+    return render(request, "master_formentitas.html", context)
+
+def delete_grp(request, id):
+    MGroup.objects.filter(id=id).delete()
+    return JsonResponse({
+        'success':True
+    })
+
+def delete_ent(request, id):
+    MGroup.objects.filter(pic_id=id).delete()
+    MPic.objects.filter(id=id).delete()
+    return JsonResponse({
+        'success':True
     })
 
 def indicator(request):
@@ -106,6 +180,9 @@ def indicator_form(request, category, mode, id=None):
     if mode == 'edit':
         context['indicator_edit'] = TMatlevIndicator.objects.filter(id=id).first()
         context['subindicator_edit'] = TMatlevKriteria.objects.filter(indicator_id=id).order_by('number')
+    else:
+        context['indicator_edit'] = []
+        context['subindicator_edit'] = []
     if request.method=="POST":
         r = request.POST
         if mode == 'add':
@@ -165,8 +242,8 @@ def delete_sub(request, id):
     })
 
 def delete_ind(request, id):
-    TMatlevIndicator.objects.filter(id=id).delete()
     TMatlevKriteria.objects.filter(indicator_id=id).delete()
+    TMatlevIndicator.objects.filter(id=id).delete()
     return JsonResponse({
         'success':True
     })

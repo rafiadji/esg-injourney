@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Master Indicator
+  Master Entity
 {% endblock %}
 
 {% block head %}
@@ -33,7 +33,7 @@
               <div class="row">
                 <div class="col-lg-7 col-sm-10">
                   <div class="p-5" style="margin: 0;  position: absolute; top: 50%;  left: 0%; transform: translateY(40%);">
-                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="master/indicator" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i>Add New Indicator</a></h1>
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="master/entity" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Add New Entity</h1>
                   </div>
                 </div>
                 <!-- end col -->
@@ -50,14 +50,14 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12 p-5">
-          <h2 class="heading-txt fw-semibold text-black">Form indicator</h2>
+          <h2 class="heading-txt fw-semibold text-black">Form Entity</h2>
           <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row gy-4 pt-2">
               <div class="col-12">
-                <h5>Indicator Name</h5>
+                <h5>Entity Name</h5>
                 <div class="col-5">
-                  <input type="text" class="form-control" name="indicator" placeholder="Indicator Name" value="{{ indicator_edit.indicator }}" />
+                  <input type="text" class="form-control" name="pic" placeholder="Entity Name" value="{{ entity_edit.pic }}" />
                 </div>
               </div>
               <div class="col-12">
@@ -65,31 +65,28 @@
                   <div class="flex-grow-1"></div>
                   <div class="flex-shrink-0">
                     <div class="d-flex flex-wrap gap-2">
-                      <a href="javascript:;" class="btn btn-success active" id="add-subindicator" onclick="add_sub()"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Sub Indicators</span></a>
+                      <a href="javascript:;" class="btn btn-success active" id="add-subindicator" onclick="add_sub()"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Group</span></a>
                     </div>
                   </div>
                 </div>
                 <div class="pt-5">
-                  <table class="table table-nowrap" id="master-subindicator">
+                  <table class="table table-nowrap" id="master-group">
                     <thead>
                       <tr>
-                        <th scope="col">Sub Indicator Name</th>
-                        <th scope="col">Max Level</th>
+                        <th scope="col">Group Name</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {% if subindicator_edit %}
-                        {% for subind in subindicator_edit %}
+                      {% if group_edit %}
+                        {% for grp in group_edit %}
                           <tr>
                             <td>
-                              <input type="text" class="form-control" name="kriteria" placeholder="Sub Indicator Name" value="{{ subind.kriteria }}" />
+                              <input type="hidden" name="group_id" value="{{ grp.id }}" >
+                              <input type="text" class="form-control" name="group" placeholder="Group Name" value="{{ grp.group }}" />
                             </td>
                             <td>
-                              <input type="text" class="form-control" name="max_level" placeholder="Max Level" value="{{ subind.max_level }}" />
-                            </td>
-                            <td>
-                              <button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none delete-sub-edit" data-sub="{{ subind.id }}">Delete Sub</button>
+                              <button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none delete-sub-edit" data-sub="{{ grp.id }}">Delete Group</button>
                             </td>
                           </tr>
                         {% endfor %}
@@ -101,7 +98,7 @@
             </div>
             <div class="row gy-4 pt-2" style="align-items: right; float: right;">
               <div>
-                <a href="master/indicator" class="btn btn-ghost-danger waves-effzect waves-light shadow-none">Batal</a>
+                <a href="master/entity" class="btn btn-ghost-danger waves-effzect waves-light shadow-none">Batal</a>
                 <button type="submit" class="btn btn-success waves-effect waves-light"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</button>
               </div>
             </div>
@@ -114,7 +111,7 @@
 
 {% block script %}
   <script>
-    var table_sub = $('#master-subindicator').DataTable({
+    var table_sub = $('#master-group').DataTable({
       ordering: false,
       searching: false,
       lengthChange: false,
@@ -123,14 +120,14 @@
     })
     
     function add_sub() {
-      table_sub.row.add([`<input type="text" class="form-control" name="kriteria" placeholder="Sub Indicator Name" />`, `<input type="text" class="form-control" name="max_level" placeholder="Max Level" />`, `<button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none delete-sub">Delete Sub</button>`]).draw()
+      table_sub.row.add([`<input type="hidden" name="group_id" value="" > <input type="text" class="form-control" name="group" placeholder="Group Name" />`, `<button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none delete-sub">Delete Group</button>`]).draw()
     }
     
-    $('#master-subindicator').on('click', '.delete-sub', function () {
+    $('#master-group').on('click', '.delete-sub', function () {
       table_sub.row($(this).closest('tr')).remove().draw()
     })
     
-    $('#master-subindicator').on('click', '.delete-sub-edit', function () {
+    $('#master-group').on('click', '.delete-sub-edit', function () {
       Swal.fire({
         title: 'Apakah Anda yakin?',
         text: 'Kolom yang dihapus tidak dapat dikembalikan!',
@@ -143,7 +140,7 @@
       }).then((result) => {
         if (result.isConfirmed) {
           $.ajax({
-            url: `master/delete_sub/${$(this).data('sub')}`,
+            url: `master/delete_grp/${$(this).data('sub')}`,
             dataType: 'json',
             async: true,
             success: (res) => {

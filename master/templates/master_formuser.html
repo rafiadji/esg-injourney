@@ -6,16 +6,6 @@
 
 {% block head %}
   <style type="text/css">
-    .esg-hero-idx {
-      background-size: cover;
-      background-position: bottom;
-      padding: 0px 0 0px 0;
-      height: 434px;
-    }
-    .esg-hero-idx .bg-overlay {
-      background: linear-gradient(to bottom, rgba(166, 166, 166, 1), rgba(184, 184, 184, 0.75), rgba(155, 155, 155, 0.5));
-      opacity: 0.85;
-    }
     .boxs {
       height: 400px;
       position: relative;
@@ -43,7 +33,7 @@
               <div class="row">
                 <div class="col-lg-7 col-sm-10">
                   <div class="p-5" style="margin: 0;  position: absolute; top: 50%;  left: 0%; transform: translateY(40%);">
-                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/envindex" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Add New Users</h1>
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="master" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i>Add New Users</a></h1>
                   </div>
                 </div>
                 <!-- end col -->
@@ -69,34 +59,34 @@
                 <select id="entity_select" class="form-control" name="entity">
                   <option value="" disabled selected>Choose Entity</option>
                   {% for ent in entity %}
-                    <option value="{{ ent.id }}">{{ ent.pic }}</option>
+                    <option value="{{ ent.id }}" {% if ent.id == pic_user.id %}selected{% endif %}>{{ ent.pic }}</option>
                   {% endfor %}
                 </select>
               </div>
               <div class="col-xxl-4 col-md-6">
                 <label for="nameInput" class="form-label">Name</label>
-                <input type="text" class="form-control" id="nameInput" placeholder="Name" name="name" />
+                <input type="text" class="form-control" id="nameInput" placeholder="Name" name="name" value="{{ data_user.first_name }}" />
               </div>
               <div class="col-xxl-4 col-md-6">
                 <label for="usernameInput" class="form-label">Username</label>
-                <input type="text" class="form-control" id="usernameInput" placeholder="Username" name="username" />
+                <input type="text" class="form-control" id="usernameInput" placeholder="Username" name="username" value="{{ data_user.username }}" />
               </div>
             </div>
             <div class="row gy-4 pt-5">
               <div class="col-xxl-6 col-md-6">
                 <label for="basiInput" class="form-label">Email</label>
-                <input type="text" class="form-control" id="basiInput" placeholder="Email" name="email" />
+                <input type="text" class="form-control" id="basiInput" placeholder="Email" name="email" value="{{ data_user.email }}" />
               </div>
               <div class="col-xxl-6 col-md-6">
                 <label for="basiInput" class="form-label">Role</label>
                 <select id="role_select" class="form-control" name="role">
                   <option value="" disabled selected>Choose Role</option>
-                  <option value="admin">Admin Branch</option>
-                  <option value="contributor">Contributor</option>
+                  <option value="admin" {% if detail_user.role == 'admin' %}selected{% endif %}>Admin Branch</option>
+                  <option value="contributor" {% if detail_user.role == 'contributor' %}selected{% endif %}>Contributor</option>
                 </select>
               </div>
             </div>
-
+            {% if mode == 'add' %}
             <div class="row gy-4 pt-5">
               <h4>Confirm a Password</h4>
               <div class="col-xxl-4 col-md-6">
@@ -109,22 +99,26 @@
                 <div class="invalid-feedback">Password do not match</div>
               </div>
             </div>
+            {% endif %}
             <div class="row gy-4 pt-5">
               <h4>Detail User</h4>
               <div class="col-xxl-4 col-md-6">
                 <label for="group_select" class="form-label">Group</label>
                 <select id="group_select" class="form-control" name="group">
                   <option value="" selected>Choose Group</option>
+                  {% for grp in group_edit %}
+                    <option value="{{ grp.id }}" {% if grp.id == detail_user.group_id %}selected{% endif %}>{{ grp.group }}</option>
+                  {% endfor %}
                 </select>
               </div>
               <h4>Location Coordinate</h4>
               <div class="col-xxl-4 col-md-6">
                 <label for="iconInput" class="form-label">Latitude</label>
-                <input type="text" class="form-control" placeholder="Latitude" name="lat" />
+                <input type="text" class="form-control" placeholder="Latitude" name="lat" value="{{ detail_user.lat }}" />
               </div>
               <div class="col-xxl-4 col-md-6">
                 <label for="iconInput" class="form-label">Longitude</label>
-                <input type="text" class="form-control" placeholder="Longitude" name="long" />
+                <input type="text" class="form-control" placeholder="Longitude" name="long" value="{{ detail_user.long }}" />
               </div>
             </div>
             <div class="row gy-4 pt-5">
