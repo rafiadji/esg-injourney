@@ -11,6 +11,7 @@ urlpatterns = [
     path("get_subind/<int:val>", views.get_subind),
     path("get_subinddetail/<int:val>", views.get_subinddetail),
     path("get_leveldetail/<int:val>", views.get_leveldetail),
+    path("add_column/<int:id>", views.add_column),
     
     path("detail/<int:id>", views.detail),
     path("form/<str:mode>/<int:id>", views.get_form),

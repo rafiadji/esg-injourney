@@ -75,6 +75,25 @@
         padding: 10px;
         background-color: #82ab40;
       }
+
+      .header-item button {
+          transition: 0.3s;
+      }
+
+      .header-scrolled button .user-name-text,
+      .header-scrolled button .user-name-sub-text {
+          color: #3b3b3b !important; 
+      }
+
+      .header-scrolled img.header-profile-user {
+          filter: brightness(0.9);
+      }
+
+      .header-default button .user-name-text,
+      .header-default button .user-name-sub-text {
+          color: white !important;
+      }
+
     </style>
   </head>
 
@@ -103,7 +122,8 @@
             </ul>
 
             <div class="">
-              <div class="dropdown ms-sm-3 header-item" id="navbarSupportedContent">
+              <div class="dropdown ms-sm-3 header-item header-default" id="navbarUserDropdown">
+
                 <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="d-flex align-items-center">
                     <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" />
@@ -192,6 +212,19 @@
     <script src="assets/libs/dropzone/dropzone-min.js"></script>
     <!-- landing init -->
     <script src="assets/js/pages/landing.init.js"></script>
+    <script>
+        window.addEventListener("scroll", function () {
+          const navbarUser = document.getElementById("navbarUserDropdown");
+
+          if (window.scrollY > 20) {
+              navbarUser.classList.add("header-scrolled");
+              navbarUser.classList.remove("header-default");
+          } else {
+              navbarUser.classList.add("header-default");
+              navbarUser.classList.remove("header-scrolled");
+          }
+      });
+    </script>
     {% block script %}
 
     {% endblock %}

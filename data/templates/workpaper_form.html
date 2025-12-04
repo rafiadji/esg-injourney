@@ -2,7 +2,7 @@
 
 {% block title %}
   {{ title }}
-   
+
 {% endblock %}
 
 {% block head %}
@@ -34,7 +34,7 @@
               <div class="row">
                 <div class="col-lg-7 col-sm-10">
                   <div class="p-5" style="margin: 0;  position: absolute; top: 50%;  left: 0%; transform: translateY(40%);">
-                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/category/{{category}}/" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Add New Working Paper</h1>
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/category/{{ category }}/" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Add New Working Paper</h1>
                   </div>
                 </div>
                 <!-- end col -->
@@ -55,48 +55,33 @@
           <form action="" method="post" enctype="multipart/form-data">
             <div class="row gy-4 pt-5">
               <div class="col-xxl-4 col-md-6">
-                <div>
-                  {% comment %} {{ matlevind }} {% endcomment %}
-                  <label for="basiInput" class="form-label">Indicator</label>
-                  <div class="input-group">
-                    <select class="js-example-basic-single indicator" name="indicator">
-                      <option value="" disabled selected hidden>---- Select ----</option>
-                      {% for indicator in matlevind %}
-                        <option value="{{ indicator.id }}">{{ indicator.indicator }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                </div>
+                <label for="indicator_select" class="form-label">Indicator</label>
+                <select id="indicator_select" class="form-control" name="Indicator">
+                  <option value="" disabled selected>Choose Indicator</option>
+                  {% for indicator in matlevind %}
+                    <option value="{{ indicator.id }}">{{ indicator.indicator }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-xxl-4 col-md-6">
+                <label for="subindicator_select" class="form-label">Sub Indicator</label>
+                <select id="subindicator_select" class="form-control" name="subindicator_select">
+                  <option value="" disabled selected>Choose Sub Indicator</option>
+                </select>
               </div>
               <div class="col-xxl-4 col-md-6">
                 <!-- Select -->
-                <div>
-                  <label for="basiInput" class="form-label">Sub Indicator</label>
-                  <div class="input-group">
-                    <select class="js-example-basic-single subindicator" name="subindicator">
-                      
-                      
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xxl-4 col-md-6">
-                <!-- Select -->
-                <div>
-                  <label for="basiInput" class="form-label">Level</label>
-                  <div class="input-group">
-                    <select class="js-example-basic-single level" name="level">
-                      
-                    </select>
-                  </div>
-                </div>
+                <label for="level_select" class="form-label">Level</label>
+                <select id="level_select" class="form-control" name="level_select">
+                  <option value="" disabled selected>Choose Level</option>
+                </select>
               </div>
             </div>
             <div class="row gy-4 pt-5">
               <div class="col-xxl-12 col-md-12">
                 <div>
                   <label for="desc" class="form-label">Description</label>
-                  <input type="texarea" class="form-control desc" id="desc" value="" placeholder="Description" disabled />
+                  <input type="texarea" class="form-control desc" id="desc" value="" placeholder="Description" />
                 </div>
               </div>
             </div>
@@ -104,59 +89,52 @@
               <div class="col-xxl-8 col-md-12">
                 <div id="typeofe">
                   <label class="form-label">Type of Evidence</label>
-                  <input type="text" class="form-control input-typeofe" value="" placeholder="Type of Evidence" disabled />
+                  <input type="text" class="form-control input-typeofe" value="" placeholder="Type of Evidence" />
                 </div>
-
               </div>
               <div class="col-xxl-4 col-md-6">
                 <!-- Select -->
-                <div>
-                  <label for="basiInput" class="form-label">Data Type</label>
-                  <div class="input-group">
-                    <select class="form-select" id="inputGroupSelect01">
-                      <option value="" disabled selected hidden>---- Select ----</option>
-                      <option value="1">Upload</option>
-                      <option value="2">Form</option>
-                    </select>
-                  </div>
-                </div>
+                <label for="dataType_select" class="form-label">Data Type</label>
+                <select id="dataType_select" class="form-control" name="dataType_select">
+                  <option value="" disabled selected>Choose Data Type</option>
+                  <option value="upload">Upload</option>
+                  <option value="form">Form</option>
+                </select>
               </div>
             </div>
             <div class="row gy-4 pt-5">
               <hr />
             </div>
             <div class="row gy-4 pt-2">
-              <h4>Form of Table</h4>
-              <table class="table table-nowrap">
+              <div class="col-md-10">
+                <h4>Form of Table</h4>
+              </div>
+
+              <div class="col-md-2">
+                <a href="javascript:;" onclick="add_column()" class="btn btn-ghost-success" id="addcolumn" style="align-items: right; float: right;"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add Column</span></a>
+              </div>
+            </div>
+            <hr />
+            <div class="row gy-4 pt-2">
+             <table class="table align-middle  mb-0" id="table_form">
                 <thead>
                   <tr>
-                    <th scope="col">Column Id</th>
-                    <th scope="col">Sub Column Id</th>
-                    <th scope="col">Column Name</th>
-                    <th scope="col">Column Type</th>
-                    <th scope="col">Column Hint</th>
+                    <th style="width: 10%;">Column Id</th>
+                    <th style="width: 10%;">Sub Column Id</th>
+                    <th style="width: 30%;">Column Name</th>
+                    <th style="width: 15%;">Column Type</th>
+                    <th style="width: 15%;">Column Hint</th>
+                    <th style="width: 10%;"></th>
+                    <th style="width: 10%;"></th>
                   </tr>
                 </thead>
-                <tbody>
+                {% comment %} <tbody>
                   <tr>
-                    <th scope="row">
-                      <div>
-                        <input type="text" class="form-control" id="basiInput" placeholder="Column Id" />
-                      </div>
-                    </th>
+                    <td><input type="text" class="form-control" id="columnid" placeholder="Column Id" /></td>
+                    <td><input type="text" class="form-control" id="subcolumnid" placeholder="Sub Column Id" /></td>
+                    <td><input type="text" class="form-control" id="columname" placeholder="Column Name" /></td>
                     <td>
-                      <div>
-                        <input type="text" class="form-control" id="basiInput" placeholder="Sub Column Id" />
-                      </div>
-                    </td>
-                    <td>
-                      <div>
-                        <input type="text" class="form-control" id="basiInput" placeholder="Column Name" />
-                      </div>
-                    </td>
-                    <td>
-                      <div>
-                        <div class="input-group">
+                      <div class="input-group">
                           <select class="form-select" id="inputGroupSelect01">
                             <option selected>Column Type</option>
                             <option value="1">One</option>
@@ -164,24 +142,21 @@
                             <option value="3">Three</option>
                           </select>
                         </div>
-                      </div>
                     </td>
-                    <td>
-                      <div class="row">
-                        <div class="col-6">
-                          <input type="password" class="form-control" id="basiInput" placeholder="Column Hint" />
-                        </div>
-                        <div class="form-check mb-2 col-3">
+                    <td><input type="text" class="form-control" id="basiInput" placeholder="Column Hint" /></td>
+                    <td style="vertical-align: middle;">
+                      <div class="form-check mb-2 col-3">
                           <input class="form-check-input" type="checkbox" id="formCheck1" />
                           <label class="form-check-label" for="formCheck1">Show table</label>
                         </div>
-                        <div class="col-3">
-                          <button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none">Delete Column</button>
-                        </div>
-                      </div>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none">Delete Column</button>
                     </td>
                   </tr>
-                </tbody>
+
+                </tbody> {% endcomment %}
+
               </table>
             </div>
             <div class="row gy-4 pt-2" style="align-items: right; float: right;">
@@ -197,75 +172,160 @@
   </section>
 {% endblock %}
 {% block script %}
-<script>
-    $('.indicator').select2();
+  <script>
+    const choice_option = {
+      searchResultLimit: 20,
+      shouldSort: false
+    }
+    const indicator_select = new Choices('#indicator_select', choice_option)
+    const subindicator_select = new Choices('#subindicator_select', choice_option)
+    const level_select = new Choices('#level_select', choice_option)
+    const dataType_select = new Choices('#dataType_select', choice_option)
+    const kriteriaid = 0
+    var table_form = $('#table_form').DataTable({
+    ordering: false,
+    paging: false,
+    searching: false
+  })
 
-    $('.indicator').on('change', function () {
-        let val = $(this).val();
-        let text = $(this).find(':selected').text();
-        console.log("Value:", val);
-        console.log("Text:", text);
+    
+
+    $('#indicator_select').on('change', function () {
+        choose = indicator_select.getValue().value
+        console.log(choose)
         $.ajax({
-          url: `data/get_subind/${val}`,
+          url: `data/get_subind/${choose}`,
           dataType: 'json',
           async: true,
           success: (res) => {
-          console.log(res)
-          data=res.data
-          console.log(data)
-          let html = `<option value="" disabled selected hidden>---- Select ----</option>`;
-            for (let i = 0; i < data.length; i++) {
-              html += `<option value="${data[i].id}">${data[i].kriteria}</option> `
-            }
-            $('.subindicator').html(html)
-          }
-        });
-      })
-</script>
-<script>
-    $('.subindicator').select2();
-
-    $('.subindicator').on('change', function () {
-        let val = $(this).val();
-        let text = $(this).find(':selected').text();
-        console.log("Value:", val);
-        console.log("Text:", text);
-        $.ajax({
-          url: `data/get_subinddetail/${val}`,
-          dataType: 'json',
-          async: true,
-          success: (res) => {
-          console.log(res)
-          data=res.data
-          console.log(data)
-          let html = `<option value="" disabled selected hidden>---- Select ----</option>`;
-            for (let i = 0; i < data.length; i++) {
-              html += `<option value="${data[i].id}">Level ${data[i].level}</option> `
-            }
-            $('.level').html(html)
-          }
-        });
-      })
-</script>
-<script>
-    $('.level').select2();
-
-    $('.level').on('change', function () {
-        let val = $(this).val();
-        let text = $(this).find(':selected').text();
-        console.log("Value:", val);
-        console.log("Text:", text);
-        $.ajax({
-          url: `data/get_leveldetail/${val}`,
-          dataType: 'json',
-          async: true,
-          success: (res) => {
-            console.log(res)
-            data=res.data
+            data = res.data
             console.log(data)
-           $('#typeofe').find('.input-typeofe').val(data.evidence);
+            kriteriaid = data,id
+            subindicator_select.clearChoices()
+            subindicator_select.removeActiveItems()
+            var grp_opt = []
+            grp_opt.push({
+              value: '',
+              label: 'Choose Sub Indicator',
+              selected: true,
+              disabled: true
+            })
+            for (var i = 0; i < res.data.length; i++) {
+              const dt = res.data[i]
+              grp_opt.push({
+                value: dt.id,
+                label: dt.kriteria
+              })
+            }
+            subindicator_select.setChoices(grp_opt, 'value', 'label', false)
           }
         });
       })
+
+  $('#subindicator_select').on('change', function () {
+        choose = subindicator_select.getValue().value
+        console.log(choose)
+        $.ajax({
+          url: `data/get_subinddetail/${choose}`,
+          dataType: 'json',
+          async: true,
+          success: (res) => {
+            data = res.data
+            console.log(data)
+            level_select.clearChoices()
+            level_select.removeActiveItems()
+            var grp_opt = []
+            grp_opt.push({
+              value: '',
+              label: 'Choose Level',
+              selected: true,
+              disabled: true
+            })
+            console.log(res.data.length)
+            if(res.data.length == 0){
+               grp_opt.push({
+                value: '1',
+                label: 'Level 1'
+              })
+            }else{
+              for (var i = 0; i < res.data.length; i++) {
+              const dt = res.data[i]
+                grp_opt.push({
+                  value: dt.level,
+                  label: 'Level ' + dt.level
+                })
+              }
+            }
+            level_select.setChoices(grp_opt, 'value', 'label', false)
+          }
+        });
+      })
+
+    function add_column(){
+    $.ajax({
+      url: `data/add_column/${kriteriaid}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        {% comment %} get_column() {% endcomment %}
+        data = res.data
+        console.log(data)
+        table_form.row.add([
+            `<input type="text" class="form-control" id="columnid" placeholder="Column Id" />`,
+            `<input type="text" class="form-control" id="subcolumnid" placeholder="Sub Column Id" />`,
+            `<input type="text" class="form-control" id="columname" placeholder="Column Name" />`,
+            `<div class="input-group">
+                          <select class="form-select" id="inputGroupSelect01">
+                            <option selected>Column Type</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
+                        </div>`,
+            `<input type="text" class="form-control" id="basiInput" placeholder="Column Hint" />`,
+            `<div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="formCheck1" />
+                          <label class="form-check-label" for="formCheck1">Show table</label>
+                        </div>`,
+            ` <a href="javascript:;" onclick="delete_column()" class="btn btn-ghost-danger waves-effect waves-light shadow-none">Delete Column</a>`,
+            
+          ]).draw()
+      }
+    })
+  }
+
+  function delete_column(id) {
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Kolom yang dihapus tidak dapat dikembalikan!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        {% comment %} $.ajax({
+          url: `data/remove_column/${id}`,
+          success: (res) => {
+            if (res.success) {
+              Swal.fire('Terhapus!', 'Kolom berhasil dihapus.', 'success').then(function () {
+                get_column()
+              })
+            } else {
+              Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus kolom.', 'error')
+            }
+          },
+          error: (err) => {
+            Swal.fire('Error!', 'Tidak dapat menghapus kolom. Silakan coba lagi.', 'error')
+          }
+        }) {% endcomment %}
+      }
+    })
+  }
+
+
+
 </script>
 {% endblock%}

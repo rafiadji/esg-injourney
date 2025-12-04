@@ -341,8 +341,10 @@ def govindex(request):
 
 def workpaper_form(request):
     category = request.GET.get("category")
-    print(category)
-    context['matlevind'] = TMatlevIndicator.objects.filter(pillar=category).order_by('number').values()
+    indicator = request.GET.get("indicator")
+    # print(category)
+    context['matlevind'] = TMatlevIndicator.objects.filter(id=indicator).order_by('number').values()
+    # context['matlevsub'] = TMatlevKriteria.objects.filter(id=subindicator).order_by('number').values()
     return render(request, "workpaper_form.html", context)
 
 def leveldetail(request):
@@ -397,11 +399,14 @@ def get_data(request, indicator, subindicator):
 
     # return render(request, "level_detail.html", context)
     matlev = TMatlevKriteriaDetail.objects.filter(kriteria__id=subindicator, kriteria__indicator__id=indicator).order_by('level').values()
-    
+    counting_detail = TMatlevKriteriaDetail.objects.filter(kriteria_id=subindicator).count()
+    # maxlevel = TMatlevKriteria.objects.filter(id=subindicator)
     
     return JsonResponse({
         "status": "success",
-        "data":list(matlev)
+        "data":list(matlev),
+        "counting_detail": counting_detail
+        # "maxlevel" : maxlevel
     })
     
 
@@ -415,7 +420,12 @@ def get_subind(request, val):
     
 def get_subinddetail(request, val):
     # print(val)
-    matlev = TMatlevKriteriaDetail.objects.filter(kriteria__id=val).order_by('level').values()
+    counting_detail = TMatlevKriteriaDetail.objects.filter(kriteria_id=val).count()
+    if(counting_detail) : 
+        matlev = TMatlevKriteriaDetail.objects.filter(kriteria__id=val).order_by('-level').first()
+    else:
+        matlev = []
+    
     return JsonResponse({
         "status": "success",
         "data":list(matlev)
@@ -435,4 +445,25 @@ def upload_file(request):
     if request.method == "POST":
         print("File diterima:", request.FILES)
         return JsonResponse({"status": "ok"})
+
+
+def add_column(request, id):
+    counting_detail = TMatlevKriteriaDetail.objects.filter(kriteria_id=id).count()
+    if(counting_detail) : 
+        matlev = TMatlevKriteriaDetail.objects.filter(kriteria__id=id).order_by('-level').first()
+    else:
+        matlev = []
+    
+    return JsonResponse({
+        "status": "success",
+        "data":list(matlev)
+    })
+
+# def get_column(request, id):
+#     matlev_column = TMatlevKriteriaColumn.objects.order_by('id').filter(maturity_id=id).values()
+    
+#     return JsonResponse({
+#         'success':True,
+#         'data':list(matlev_column)
+#     })
 
