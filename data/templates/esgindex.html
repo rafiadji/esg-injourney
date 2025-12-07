@@ -9,9 +9,6 @@
     .Sidebar .nav-link span {
       transition: all 0.2s ease;
     }
-    .hidden {
-      display: none;
-    }
   </style>
 {% endblock %}
 
@@ -69,7 +66,7 @@
           </div>
         </div>
         <div class="col-md-2 pt-5">
-          <a href="data/workpaper_form?category={{ category }}?indicator={{ indicator }}" class="btn btn-success active hidden" id="btnAdd" ><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Working Paper</span></a>
+          <a href="data/workpaper_form?category={{ category }}?indicator={{ indicator }}" class="btn btn-success active d-none" id="btnAdd" ><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Working Paper</span></a>
         </div>
       </div>
     </div>
@@ -202,55 +199,53 @@
       return cookieValue
     }
     function get_data(category,indicator, subindicator, indtittle, subtitle) {
-    $.ajax({
-     url: `data/get_data/${indicator}/${subindicator}`,
-     dataType: 'json',
-     async: true,
-    success: (res) => {
-     console.log(res)
-     $('#indtitle').html(indtittle)
-     $('#subtitle').html(subtitle)
-     data=res.data
-     count=res.counting_detail
-     const link = document.getElementById('btnAdd');
-     if(count<3){
-      document.getElementById('btnAdd').classList.remove('hidden');
-      link.href = `data/workpaper_form?category=${category}&indicator=${indicator}`;
-     }
-     let html = "";
-      {% comment %} console.log(data) {% endcomment %}
-      for (let i = 0; i < data.length; i++) {
-        {% comment %} console.log(data[i]);          
-        console.log(data[i].level);     
-        console.log(data[i].maturity);  {% endcomment %}
-         html += `
-           <div class="card">
-                  <div class="card-header">
-                    <div class="row">
-                      <div class="col-md-10">
-                        <h6 class="card-title mb-0">Level ${data[i].level}</h6>
-                      </div>
-                      <div class="col-md-2">
-                        <div class="btn-group" style="float: right;">
-                          <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="data/leveldetail?category={{category}}&ind=${indicator}&sub=${data[i].kriteria_id}&matlev=${data[i].id}"><i class="ri-folder-2-line"></i> Detail</a>
-                            <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
-                            <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+      $.ajax({
+        url: `data/get_data/${indicator}/${subindicator}`,
+        dataType: 'json',
+        async: true,
+        success: (res) => {
+          console.log(res)
+          $('#indtitle').html(indtittle)
+          $('#subtitle').html(subtitle)
+          data=res.data
+          count=res.counting_detail
+          const link = document.getElementById('btnAdd');
+          if(count<3){
+             $('#btnAdd').removeClass('d-none');
+            link.href = `data/workpaper_form?category=${category}&indicator=${indicator}`;
+          } else {
+            $('#btnAdd').addClass('d-none');
+          }
+          let html = "";
+            for (let i = 0; i < data.length; i++) { 
+              html += `
+                <div class="card">
+                        <div class="card-header">
+                          <div class="row">
+                            <div class="col-md-10">
+                              <h6 class="card-title mb-0">Level ${data[i].level}</h6>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="btn-group" style="float: right;">
+                                <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item" href="data/leveldetail?category={{category}}&ind=${indicator}&sub=${data[i].kriteria_id}&matlev=${data[i].id}"><i class="ri-folder-2-line"></i> Detail</a>
+                                  <a class="dropdown-item" href="#"><i class="ri-edit-box-line"></i> Edit</a>
+                                  <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
+                        <div class="card-body">
+                          <p class="card-text">${data[i].maturity}</p>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <p class="card-text">${data[i].maturity}</p>
-                  </div>
-                </div>
-        `
-      }
-      $('#cardlevel').html(html)
-     }
-    }) 
+              `
+            }
+            $('#cardlevel').html(html)
+        }
+      }) 
     }
   </script>
 {% endblock %}
