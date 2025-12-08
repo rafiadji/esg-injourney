@@ -13,5 +13,4 @@ context = {'menu' : 'emission_monitor'}
 @login_required(login_url='/')
 # Create your views here.
 def index(request):
-    print("tes")
     return render(request, "emission_monitor.html", context)

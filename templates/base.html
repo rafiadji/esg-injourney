@@ -36,9 +36,6 @@
 
     <!-- dropzone css -->
     <link rel="stylesheet" href="assets/libs/dropzone/dropzone.css" type="text/css" />
-    {% block head %}
-
-    {% endblock %}
     <style>
       @media (min-width: 1024.1px) {
         [data-layout='horizontal'] .container-fluid,
@@ -95,6 +92,9 @@
       }
 
     </style>
+    {% block head %}
+
+    {% endblock %}
   </head>
 
   <body data-bs-spy="scroll" data-bs-target="#navbar-example">
