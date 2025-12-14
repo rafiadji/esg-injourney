@@ -66,7 +66,7 @@
           </div>
         </div>
         <div class="col-md-2 pt-5">
-          <a href="data/workpaper_form?category={{ category }}?indicator={{ indicator }}" class="btn btn-success active d-none" id="btnAdd" ><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Working Paper</span></a>
+          <a href="javascript:;" class="btn btn-success active d-none" id="btnAdd" ><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Working Paper</span></a>
         </div>
       </div>
     </div>
@@ -198,6 +198,22 @@
       }
       return cookieValue
     }
+    function add_data(category,indicator, subindicator){
+      {% comment %} console.log(category)
+      console.log(indicator)
+      console.log(subindicator) {% endcomment %}
+      $.ajax({
+        url: `data/add_data/${indicator}/${subindicator}`,
+        dataType: 'json',
+        async: true,
+        success:(res) => {
+          {% comment %} console.log(res) {% endcomment %}
+          data = res.data
+          {% comment %} console.log(data) {% endcomment %}
+          window.location.href = `data/workpaper_form?cat=${category}&ind=${indicator}&sub=${subindicator}&id=${data}`
+        }
+      }) 
+    }
     function get_data(category,indicator, subindicator, indtittle, subtitle) {
       $.ajax({
         url: `data/get_data/${indicator}/${subindicator}`,
@@ -210,9 +226,9 @@
           data=res.data
           count=res.counting_detail
           const link = document.getElementById('btnAdd');
-          if(count<3){
-             $('#btnAdd').removeClass('d-none');
-            link.href = `data/workpaper_form?category=${category}&indicator=${indicator}`;
+          if(count < 3){
+            $('#btnAdd').removeClass('d-none');
+            $('#btnAdd').attr('onclick', `add_data('${category}','${indicator}','${subindicator}')`)
           } else {
             $('#btnAdd').addClass('d-none');
           }

@@ -340,11 +340,23 @@ def govindex(request):
     return render(request, "govindex.html", context)
 
 def workpaper_form(request):
-    category = request.GET.get("category")
-    indicator = request.GET.get("indicator")
+    category = request.GET.get("cat")
+    indicator = request.GET.get("ind")
+    subindicator = request.GET.get("sub")
+    idmatlev = request.GET.get("id")
+    context['category'] = category
+    context['matlevid'] = request.GET.get("id")
     # print(category)
     context['matlevind'] = TMatlevIndicator.objects.filter(id=indicator).order_by('number').values()
+    context['matlevkrit'] = TMatlevKriteria.objects.filter(id=subindicator, indicator__id=indicator).order_by('number').values()
     # context['matlevsub'] = TMatlevKriteria.objects.filter(id=subindicator).order_by('number').values()
+    context['matlevdet'] = TMatlevKriteriaDetail.objects.filter(kriteria_id = subindicator).order_by('-id').first()
+    context['matlevcol'] = TMatlevKriteriaColumn.objects.filter(maturity_id = idmatlev).order_by('id').values()
+    
+    count = TMatlevKriteriaDetail.objects.filter(kriteria_id=subindicator).count()
+    
+    # context['matlev_id'] = matlev.id
+    context['countlevel'] = count
     return render(request, "workpaper_form.html", context)
 
 def leveldetail(request):
@@ -426,6 +438,8 @@ def get_subinddetail(request, val):
     else:
         matlev = []
     
+    
+    
     return JsonResponse({
         "status": "success",
         "data":list(matlev)
@@ -448,22 +462,110 @@ def upload_file(request):
 
 
 def add_column(request, id):
-    counting_detail = TMatlevKriteriaDetail.objects.filter(kriteria_id=id).count()
-    if(counting_detail) : 
-        matlev = TMatlevKriteriaDetail.objects.filter(kriteria__id=id).order_by('-level').first()
-    else:
-        matlev = []
+    matlevcolumn = TMatlevKriteriaColumn()
+    matlevcolumn.maturity_id = id
+    matlevcolumn.save()
+    
+    columnid = matlevcolumn.id
     
     return JsonResponse({
         "status": "success",
-        "data":list(matlev)
+        "data":columnid
     })
 
-# def get_column(request, id):
-#     matlev_column = TMatlevKriteriaColumn.objects.order_by('id').filter(maturity_id=id).values()
+def add_data(request, indicator, subindicator):
+    # print(subindicator)
+    counting_detail = TMatlevKriteriaDetail.objects.filter(kriteria_id=subindicator).count()
+    if(counting_detail) : 
+        matlev = TMatlevKriteriaDetail.objects.filter(kriteria__id=subindicator).order_by('-level').first()
+    else:
+        matlev = []
     
-#     return JsonResponse({
-#         'success':True,
-#         'data':list(matlev_column)
-#     })
+    matlev = TMatlevKriteriaDetail()
+    matlev.kriteria_id = subindicator
+    matlev.save()
+    
+    matlevid = matlev.id
+    
+    
+    return JsonResponse({
+        "status": "success",
+        "data":matlevid
+    })
+        
+    
+def remove_column(request, id):
+    # print(id)
+    
+    matlevcol = TMatlevKriteriaColumn.objects.get(id=id)
+    matlevcol.delete()
+    
+    return JsonResponse({
+        'success':True,
+        # 'data':id
+    })
 
+def get_column(request, id):
+    matlev_column = TMatlevKriteriaColumn.objects.order_by('id').filter(maturity_id=id).values()
+    
+    return JsonResponse({
+        'success':True,
+        'data':list(matlev_column)
+    })
+
+def save_column(request, id):
+    column_id = request.GET.get('column_id')
+    subcolumn_id = request.GET.get('subcolumn_id')
+    column_name = request.GET.get('column_name')
+    column_type = request.GET.get('column_type')
+    column_hint = request.GET.get('column_hint')
+    show_table = request.GET.get('show_table')
+    maturity_id = request.GET.get('maturity_id')
+    
+    value_showtbl = True if show_table == "true" else False
+    
+    matlevcol = TMatlevKriteriaColumn()
+    matlevcol.id = column_id
+    matlevcol.column_name = column_name
+    matlevcol.column_type = column_type
+    matlevcol.hints = column_hint
+    matlevcol.sub_column_id = subcolumn_id
+    matlevcol.show_table = value_showtbl
+    matlevcol.maturity_id = maturity_id
+    matlevcol.save()
+    
+    return JsonResponse({
+        'success':True,
+        # 'data':list(data)
+    })
+    
+def remove_form(request, id):
+    
+    matlevcol = TMatlevKriteriaColumn.objects.get(maturity_id=id)
+    matlevcol.delete()
+    
+    matlev = TMatlevKriteriaDetail.objects.get(id=id)
+    matlev.delete()
+    
+    return JsonResponse({
+        'success':True,
+        # 'data':id
+    })
+    
+def save_form(request, id):
+    
+    
+    matlevdet = TMatlevKriteriaDetail()
+    matlevdet.id = id
+    matlevdet.maturity = request.GET.get('maturity')
+    matlevdet.level = request.GET.get('level')
+    matlevdet.evidence = request.GET.get('evidence')
+    matlevdet.data_type = request.GET.get('datatype')
+    matlevdet.status = request.GET.get('status')
+    matlevdet.kriteria_id = request.GET.get('kriteria_id')
+    matlevdet.save()
+    
+    return JsonResponse({
+        'success':True,
+        # 'data':id
+    })

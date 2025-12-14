@@ -56,24 +56,29 @@
             <div class="row gy-4 pt-5">
               <div class="col-xxl-4 col-md-6">
                 <label for="indicator_select" class="form-label">Indicator</label>
-                <select id="indicator_select" class="form-control" name="Indicator">
-                  <option value="" disabled selected>Choose Indicator</option>
+                <select id="indicator_select" class="form-control" name="indicator_select" disabled>
+                  {% comment %} <option value="" disabled >Choose Indicator</option> {% endcomment %}
                   {% for indicator in matlevind %}
-                    <option value="{{ indicator.id }}">{{ indicator.indicator }}</option>
+                    <option value="{{ indicator.id }}" selected >{{ indicator.indicator }}</option>
                   {% endfor %}
                 </select>
               </div>
               <div class="col-xxl-4 col-md-6">
                 <label for="subindicator_select" class="form-label">Sub Indicator</label>
-                <select id="subindicator_select" class="form-control" name="subindicator_select">
-                  <option value="" disabled selected>Choose Sub Indicator</option>
+                <select id="subindicator_select" class="form-control" name="subindicator_select" disabled>
+                  {% comment %} <option value="" disabled selected>Choose Sub Indicator</option> {% endcomment %}
+                  {% for subind in matlevkrit %}
+                    <option value="{{ subind.id }}" selected >{{ subind.kriteria }}</option>
+                  {% endfor %}
                 </select>
               </div>
               <div class="col-xxl-4 col-md-6">
                 <!-- Select -->
                 <label for="level_select" class="form-label">Level</label>
-                <select id="level_select" class="form-control" name="level_select">
-                  <option value="" disabled selected>Choose Level</option>
+                <select id="level_select" class="form-control" name="level_select" disabled>
+                  {% if countlevel < 3 %}
+                      <option value="{{ countlevel}}" selected>Level {{ countlevel }}</option>
+                  {% endif %}
                 </select>
               </div>
             </div>
@@ -81,7 +86,7 @@
               <div class="col-xxl-12 col-md-12">
                 <div>
                   <label for="desc" class="form-label">Description</label>
-                  <input type="texarea" class="form-control desc" id="desc" value="" placeholder="Description" />
+                  <input type="texarea" class="form-control desc" id="maturity" value=""  placeholder="Description" />
                 </div>
               </div>
             </div>
@@ -89,7 +94,7 @@
               <div class="col-xxl-8 col-md-12">
                 <div id="typeofe">
                   <label class="form-label">Type of Evidence</label>
-                  <input type="text" class="form-control input-typeofe" value="" placeholder="Type of Evidence" />
+                  <input type="text" class="form-control input-typeofe" id="evidence" value="" placeholder="Type of Evidence" />
                 </div>
               </div>
               <div class="col-xxl-4 col-md-6">
@@ -111,7 +116,7 @@
               </div>
 
               <div class="col-md-2">
-                <a href="javascript:;" onclick="add_column()" class="btn btn-ghost-success" id="addcolumn" style="align-items: right; float: right;"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add Column</span></a>
+                <a href="javascript:;" onclick="add_column({{ matlevid }})" class="btn btn-ghost-success" id="addcolumn" style="align-items: right; float: right;"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add Column</span></a>
               </div>
             </div>
             <hr />
@@ -119,50 +124,22 @@
              <table class="table align-middle  mb-0" id="table_form">
                 <thead>
                   <tr>
-                    <th style="width: 10%;">Column Id</th>
+                    <th style="width: 7%;">Column Id</th>
                     <th style="width: 10%;">Sub Column Id</th>
                     <th style="width: 30%;">Column Name</th>
                     <th style="width: 15%;">Column Type</th>
                     <th style="width: 15%;">Column Hint</th>
                     <th style="width: 10%;"></th>
-                    <th style="width: 10%;"></th>
+                    <th style="width: 15%;"></th>
                   </tr>
                 </thead>
-                {% comment %} <tbody>
-                  <tr>
-                    <td><input type="text" class="form-control" id="columnid" placeholder="Column Id" /></td>
-                    <td><input type="text" class="form-control" id="subcolumnid" placeholder="Sub Column Id" /></td>
-                    <td><input type="text" class="form-control" id="columname" placeholder="Column Name" /></td>
-                    <td>
-                      <div class="input-group">
-                          <select class="form-select" id="inputGroupSelect01">
-                            <option selected>Column Type</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                          </select>
-                        </div>
-                    </td>
-                    <td><input type="text" class="form-control" id="basiInput" placeholder="Column Hint" /></td>
-                    <td style="vertical-align: middle;">
-                      <div class="form-check mb-2 col-3">
-                          <input class="form-check-input" type="checkbox" id="formCheck1" />
-                          <label class="form-check-label" for="formCheck1">Show table</label>
-                        </div>
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none">Delete Column</button>
-                    </td>
-                  </tr>
-
-                </tbody> {% endcomment %}
-
+                
               </table>
             </div>
             <div class="row gy-4 pt-2" style="align-items: right; float: right;">
               <div>
-                <button type="button" class="btn btn-ghost-danger waves-effzect waves-light shadow-none">Batal</button>
-                <button type="button" class="btn btn-success waves-effect waves-light"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</button>
+                <a type="button" class="btn btn-ghost-danger waves-effzect waves-light shadow-none" onclick="deleteform(matlevid)">Batal</button>
+                <a type="button" class="btn btn-success waves-effect waves-light" onclick="saveform(matlevid)"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</a>
               </div>
             </div>
           </form>
@@ -182,6 +159,7 @@
     const level_select = new Choices('#level_select', choice_option)
     const dataType_select = new Choices('#dataType_select', choice_option)
     const kriteriaid = 0
+    const matlevid = {{ matlevid }}
     var table_form = $('#table_form').DataTable({
     ordering: false,
     paging: false,
@@ -192,15 +170,13 @@
 
     $('#indicator_select').on('change', function () {
         choose = indicator_select.getValue().value
-        console.log(choose)
         $.ajax({
           url: `data/get_subind/${choose}`,
           dataType: 'json',
           async: true,
           success: (res) => {
             data = res.data
-            console.log(data)
-            kriteriaid = data,id
+            {% comment %} console.log(data) {% endcomment %}
             subindicator_select.clearChoices()
             subindicator_select.removeActiveItems()
             var grp_opt = []
@@ -223,15 +199,14 @@
       })
 
   $('#subindicator_select').on('change', function () {
-        choose = subindicator_select.getValue().value
-        console.log(choose)
-        $.ajax({
+    choose = subindicator_select.getValue().value
+    $.ajax({
           url: `data/get_subinddetail/${choose}`,
           dataType: 'json',
           async: true,
           success: (res) => {
             data = res.data
-            console.log(data)
+            {% comment %} console.log(data) {% endcomment %}
             level_select.clearChoices()
             level_select.removeActiveItems()
             var grp_opt = []
@@ -251,50 +226,81 @@
               for (var i = 0; i < res.data.length; i++) {
               const dt = res.data[i]
                 grp_opt.push({
-                  value: dt.level,
-                  label: 'Level ' + dt.level
-                })
-              }
+                value: dt.level,
+                label: 'Level ' + dt.level
+              })
             }
-            level_select.setChoices(grp_opt, 'value', 'label', false)
           }
-        });
-      })
+          level_select.setChoices(grp_opt, 'value', 'label', false)
+        }
+    });
+  })
 
-    function add_column(){
+  function add_column(matlevid){
     $.ajax({
-      url: `data/add_column/${kriteriaid}`,
+      url: `data/add_column/${matlevid}`,
       dataType: 'json',
       async: true,
       success: (res) => {
-        {% comment %} get_column() {% endcomment %}
-        data = res.data
-        console.log(data)
-        table_form.row.add([
-            `<input type="text" class="form-control" id="columnid" placeholder="Column Id" />`,
-            `<input type="text" class="form-control" id="subcolumnid" placeholder="Sub Column Id" />`,
-            `<input type="text" class="form-control" id="columname" placeholder="Column Name" />`,
-            `<div class="input-group">
-                          <select class="form-select" id="inputGroupSelect01">
-                            <option selected>Column Type</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                          </select>
-                        </div>`,
-            `<input type="text" class="form-control" id="basiInput" placeholder="Column Hint" />`,
+        get_column(matlevid)
+      }
+    }) 
+  }
+  function get_column(matlevid){
+    {% comment %} console.log(matlevid) {% endcomment %}
+    $.ajax({
+      url: `data/get_column/${matlevid}`,
+      success: (res) => {
+        let data = res.data
+
+        table_form.clear()
+
+        for (let item of data) {
+
+          table_form.row.add([
+
+            `<input type="text" class="form-control column-input column-id"  id="columnid" value="${item.id}" disabled />`,
+
+            `<input type="text" class="form-control column-input subcolumn-id"  data-id="${item.id}" id="subcolumnid" value="${item.subcolumnid ?? ''}" />`,
+
+            `<input type="text" class="form-control column-input column-name"  data-id="${item.id}" id="columname" value="${item.column_name ?? ''}" />`,
+
+            `<select class="form-select column-input column-type" id="columntype"  data-id="${item.id}" >
+              <option value="" disabled selected>Column Type</option>
+              <option value="text" ${item.column_type === 'text' ? 'selected' : ''}>Text</option>
+              <option value="decimal" ${item.column_type === 'decimal' ? 'selected' : ''}>Decimal</option>
+              <option value="month" ${item.column_type === 'month' ? 'selected' : ''}>Month Choice</option>
+              <option value="year" ${item.column_type === 'year' ? 'selected' : ''}>Year Choice</option>
+              <option value="file" ${item.column_type === 'file' ? 'selected' : ''}>File</option>
+              <option value="equation" ${item.column_type === 'equation' ? 'selected' : ''}>Equation</option>
+              <option value="sub" ${item.column_type === 'sub' ? 'selected' : ''}>Sub Form</option>
+            </select>`,
+
+            `<input type="text" class="form-control column-input" id="columnhint"  data-id="${item.id}"
+              value="${item.hints ?? ''}" />`,
+
             `<div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="formCheck1" />
-                          <label class="form-check-label" for="formCheck1">Show table</label>
-                        </div>`,
-            ` <a href="javascript:;" onclick="delete_column()" class="btn btn-ghost-danger waves-effect waves-light shadow-none">Delete Column</a>`,
-            
-          ]).draw()
+              <input class="form-check-input column-input show-table " data-id="${item.id}" type="checkbox" id="showtable" ${item.show_table ? 'checked' : ''} />
+              <label class="form-check-label">Show table</label>
+            </div>`,
+
+            `<div class="d-flex align-items-center gap-2">
+              <a href="javascript:;"  id="btnSaveColumn${item.id}" onclick="save_column(this)" class="btn btn-sm btn-ghost-success waves-effect waves-light shadow-none d-none"> Save Column </a>
+              <a href="javascript:;" id="btnDeleteColumn${item.id}" onclick="delete_column(this)" class="btn btn-sm btn-ghost-danger waves-effect waves-light shadow-none"> Delete Column </a>
+              <a href="javascript:;"  id="iconDeleteColumn${item.id}" onclick="delete_column(this)" class="btn btn-sm btn-ghost-danger waves-effect waves-light shadow-none d-none"> <i class="ri-delete-bin-line"></i> </a>
+             </div>`
+          ])
+        }
+        table_form.draw()
       }
     })
   }
 
-  function delete_column(id) {
+  get_column(matlevid)
+
+  function delete_column(el) {
+    let row = $(el).closest('tr')
+    let columnId = row.find('#columnid').val()
     Swal.fire({
       title: 'Apakah Anda yakin?',
       text: 'Kolom yang dihapus tidak dapat dikembalikan!',
@@ -306,12 +312,12 @@
       cancelButtonText: 'Batal'
     }).then((result) => {
       if (result.isConfirmed) {
-        {% comment %} $.ajax({
-          url: `data/remove_column/${id}`,
+        $.ajax({
+          url: `data/remove_column/${columnId}`,
           success: (res) => {
             if (res.success) {
               Swal.fire('Terhapus!', 'Kolom berhasil dihapus.', 'success').then(function () {
-                get_column()
+                get_column(matlevid)
               })
             } else {
               Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus kolom.', 'error')
@@ -320,12 +326,113 @@
           error: (err) => {
             Swal.fire('Error!', 'Tidak dapat menghapus kolom. Silakan coba lagi.', 'error')
           }
-        }) {% endcomment %}
+        })
       }
     })
   }
 
+function save_column(el){
+      let row = $(el).closest('tr')
+      let columnId = row.find('#columnid').val()
+      let columnData = {
+          column_id: row.find('#columnid').val(),
+          subcolumn_id: row.find('#subcolumnid').val(),
+          column_name: row.find('#columname').val(),
+          column_type: row.find('#columntype').val(),
+          column_hint: row.find('#columnhint').val(),
+          show_table: row.find('#showtable').is(':checked') ? true : false,
+          maturity_id: matlevid
+      }
 
+      {% comment %} console.log(columnData) {% endcomment %}
 
+      $.ajax({
+        url: `data/save_column/${columnId}`,
+        data : columnData,
+        success: (res) => {
+          {% comment %} console.log(res) {% endcomment %}
+          if (res.success) {
+            Swal.fire('Disimpan!', 'Kolom berhasil disimpan.', 'success').then(function () {
+                get_column(matlevid)
+              })
+          } else {
+            Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menyimpan kolom.', 'error')
+          }
+
+        }
+      })
+    }
+
+console.log(typeof save_column)
+
+$(document).on('keyup change', '.column-input', function () {
+    id = $(this).data("id")
+    $(`#btnSaveColumn${id}`).removeClass('d-none')
+    $(`#btnDeleteColumn${id}`).addClass('d-none')
+    $(`#iconDeleteColumn${id}`).removeClass('d-none')
+})
+
+function deleteform(id) {
+    let maturity_id = id
+    {% comment %} console.log(maturity_id) {% endcomment %}
+
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Kolom yang dihapus tidak dapat dikembalikan!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: `data/remove_form/${maturity_id}`,
+          success: (res) => {
+            if (res.success) {
+              Swal.fire('Terhapus!', 'Kolom berhasil dihapus.', 'success').then(function () {
+                window.location.href = `data/category/{{ category }}/`
+              })
+            } else {
+              Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus kolom.', 'error')
+            }
+          },
+          error: (err) => {
+            Swal.fire('Error!', 'Tidak dapat menghapus kolom. Silakan coba lagi.', 'error')
+          }
+        })
+      }
+    })
+}
+
+function saveform(id){
+  let dataForm = {
+    id: id,
+    maturity: $('#maturity').val(),
+    level: $('#level_select').val(),
+    evidence: $('#evidence').val(),
+    datatype: $('#dataType_select').val(),
+    status: 'belum',
+    kriteria_id: $('#subindicator_select').val()
+  }
+  {% comment %} console.log(dataForm) {% endcomment %}
+  $.ajax({
+        url: `data/save_form/${id}`,
+        data : dataForm,
+        success: (res) => {
+          {% comment %} console.log(res) {% endcomment %}
+          if (res.success) {
+            Swal.fire('Disimpan!', 'Data berhasil disimpan.', 'success').then(function () {
+                window.location.href = `data/category/{{ category }}/`
+                {% comment %} console.log(`data/category/{{ category }}/`) {% endcomment %}
+            })
+          } else {
+            Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menyimpan data.', 'error')
+          }
+
+        }
+      })
+}
 </script>
 {% endblock%}
