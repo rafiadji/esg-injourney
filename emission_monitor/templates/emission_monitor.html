@@ -114,7 +114,7 @@
 
       .emission-unit {
           font-size: 12px;
-          color: #6b7280;
+          color: #e8e8e8;
           margin: 0;
       }
 
@@ -256,6 +256,11 @@
     footer{
       display:none;
     }
+
+    .header-default button .user-name-text,
+    .header-default button .user-name-sub-text {
+        color: black !important;
+    }
     
     /* Hapus card styling */
     .card, .card-footer, .card-body {
@@ -273,15 +278,15 @@
     .leaflet-left {
         left: 15px !important;
     }
-    
+     
     /* Remove any margin/padding that might interfere */
     body, html {
         margin: 0;
         padding: 0;
         overflow: hidden; /* Prevent scroll bars */
     }
-    
-    .container-fluid {
+
+    .container-fluid .map-container {
         padding-left: 0 !important;
         padding-right: 0 !important;
         margin-left: 0 !important;
@@ -295,7 +300,7 @@
         height: 100%;
     }
     
-    .col-12 {
+    .map-container .col-12 {
         padding-left: 0 !important;
         padding-right: 0 !important;
         height: 100%;
@@ -359,7 +364,7 @@
         color: #1a1a1a;
         margin: 0;
         letter-spacing: -0.2px;
-    }
+    } 
     
     /* Styling untuk dropdown yang sejalar di kanan */
     .year-dropdown-container {
@@ -376,7 +381,60 @@
         margin: 0;
     }
     
-    .year-dropdown-container select {
+    {% comment %} .year-dropdown-container select {
+        padding: 8px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        color: #374151;
+        background-color: white;
+        transition: all 0.2s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 14px;
+        padding-right: 35px;
+        min-width: 100px;
+        cursor: pointer;
+    } {% endcomment %}
+    
+    {% comment %} .year-dropdown-container select:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        outline: none;
+    }
+    
+    .year-dropdown-container select:hover {
+        border-color: #9ca3af;
+    } {% endcomment %}
+
+    .entity-dropdown-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .entity-dropdown-container label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #555;
+        white-space: nowrap;
+        margin: 0;
+    }
+
+    .entity-dropdown-container .choices {
+        flex: 1;
+        width: 100%;
+        display: block;
+    }
+
+    .entity-dropdown-container .choices__inner {
+        width: 100%;
+        white-space: nowrap;
+    }
+    
+    {% comment %} .entity-dropdown-container select {
         padding: 8px 12px;
         border: 1px solid #d1d5db;
         border-radius: 6px;
@@ -394,15 +452,15 @@
         cursor: pointer;
     }
     
-    .year-dropdown-container select:focus {
+    .entity-dropdown-container select:focus {
         border-color: #3b82f6;
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         outline: none;
     }
     
-    .year-dropdown-container select:hover {
+    .entity-dropdown-container select:hover {
         border-color: #9ca3af;
-    }
+    } {% endcomment %}
     
     /* Card untuk total gas emission */
     .emission-card {
@@ -739,12 +797,12 @@
             font-size: 18px;
         }
         
-        .year-dropdown-container select {
+        {% comment %} .year-dropdown-container select {
             padding: 7px 10px;
             font-size: 13px;
             min-width: 90px;
             padding-right: 30px;
-        }
+        } {% endcomment %}
         
         .emission-card, .scope-card, .reduction-card {
             padding: 16px;
@@ -820,7 +878,7 @@
             font-size: 16px;
         }
         
-        .year-dropdown-container {
+        {% comment %} .year-dropdown-container {
             width: 100%;
             justify-content: space-between;
         }
@@ -829,7 +887,7 @@
             padding: 6px 8px;
             font-size: 12px;
             min-width: 80px;
-        }
+        } {% endcomment %}
         
         .emission-card, .scope-card, .reduction-card {
             padding: 14px;
@@ -933,18 +991,34 @@
           <!-- Control Panel HTML langsung -->
           <div class="map-control-panel">
             <div class="panel-header">
-              <h2>Summary</h2>
-              <div class="year-dropdown-container">
-                <label for="year-select">Year:</label>
-                <select id="year-select">
-                  <!-- Options akan di-generate oleh JavaScript -->
-                  <option value="2024">2024</option>
-                  <option value="2023">2023</option>
-                  <option value="2022">2022</option>
-                  <option value="2021">2021</option>
-                  <option value="2020">2020</option>
-                </select>
-              </div>
+                <h2>Summary</h2>
+                <div class="year-dropdown-container">
+                    <label for="year-select">Year:</label>
+                    <select id="year-select">
+                    <!-- Options akan di-generate oleh JavaScript -->
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="entity-dropdown-container">
+                    <label for="entity-select">Entity:</label>
+                    <select id="entity-select" class="form-control">
+                    <!-- Options akan di-generate oleh JavaScript -->
+                        <option value="airport">Airport</option>
+                        <option value="retail">Retail</option>
+                        <option value="hospitality">Hospitality</option>
+                        <option value="destmanage">Destination Management</option>
+                        <option value="tourism">Tourism Development Corporation</option>
+                        <option value="holding">Holding</option>
+                        <option value="aviation">Aviation Services</option>
+                    </select>
+                </div>
+                
             </div>
             <!-- Container untuk card detail (hidden by default) -->
             <div class="detail-card-container" id="detailCardContainer" style="display: none;">
@@ -1088,917 +1162,2499 @@
 {% endblock %}
 
 {% block script %}
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-          crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    {% comment %} <script src="https://unpkg.com/geotiff@2.0.7/dist-browser/geotiff.js"></script>
+    <script src="https://unpkg.com/georaster"></script>
+    <script src="https://unpkg.com/georaster-layer-for-leaflet"></script>
+    <script src="https://unpkg.com/shpjs@latest/dist/shp.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script> {% endcomment %}
   
-  <script>
-    const center_point = [-3.0014, 117.1985];
-    const locationDetails = {
-    "Jakarta": {
-        type: "airport",
-        fullName: "Soekarno-Hatta International Airport",
-        address: "Tangerang, Banten, Indonesia",
-        emissions: "15,000",
-        area: "1,800 hectares",
-        passengers: "70 million/year",
-        flights: "1,200/day",
-        status: "Operational"
-    },
-    "Bandung": {
-        type: "airport",
-        fullName: "Husein Sastranegara International Airport",
-        address: "Bandung, Jawa Barat, Indonesia",
-        emissions: "12,000",
-        area: "450 hectares",
-        passengers: "4.5 million/year",
-        flights: "80/day",
-        status: "Operational"
-    },
-    "Surabaya": {
-        type: "airport",
-        fullName: "Juanda International Airport",
-        address: "Sidoarjo, Jawa Timur, Indonesia",
-        emissions: "18,000",
-        area: "1,200 hectares",
-        passengers: "25 million/year",
-        flights: "400/day",
-        status: "Operational"
-    },
-    "Semarang": {
-        type: "hotel",
-        fullName: "Hotel Santika Premiere Semarang",
-        address: "Jl. Brigjen Sudiarto No.42, Semarang",
-        emissions: "9,000",
-        rooms: "250 rooms",
-        rating: "4.5 stars",
-        amenities: "Pool, Spa, Restaurant",
-        status: "Operational"
-    },
-    "Yogyakarta": {
-        type: "hotel",
-        fullName: "Hotel Phoenix Yogyakarta",
-        address: "Jl. Jend. Sudirman No.9, Yogyakarta",
-        emissions: "7,500",
-        rooms: "180 rooms",
-        rating: "4 stars",
-        amenities: "Restaurant, Conference Room",
-        status: "Operational"
-    },
-    "Pontianak": {
-        type: "airport",
-        fullName: "Supadio International Airport",
-        address: "Kubu Raya, Kalimantan Barat",
-        emissions: "8,500",
-        area: "550 hectares",
-        passengers: "3.2 million/year",
-        flights: "60/day",
-        status: "Operational"
-    },
-    "Balikpapan": {
-        type: "airport",
-        fullName: "Sultan Aji Muhammad Sulaiman Airport",
-        address: "Balikpapan, Kalimantan Timur",
-        emissions: "11,000",
-        area: "620 hectares",
-        passengers: "5.8 million/year",
-        flights: "90/day",
-        status: "Operational"
-    },
-    "Banjarmasin": {
-        type: "airport",
-        fullName: "Syamsudin Noor Airport",
-        address: "Banjarbaru, Kalimantan Selatan",
-        emissions: "9,500",
-        area: "480 hectares",
-        passengers: "4.1 million/year",
-        flights: "75/day",
-        status: "Operatal"
-    },
-    "Pekanbaru": {
-        type: "hotel",
-        fullName: "Hotel Pangeran Pekanbaru",
-        address: "Jl. Nangka No.71, Pekanbaru",
-        emissions: "7,000",
-        rooms: "200 rooms",
-        rating: "4 stars",
-        amenities: "Restaurant, Gym",
-        status: "Operational"
-    },
-    "Palangka Raya": {
-        type: "hotel",
-        fullName: "Hotel Aquarius Boutique",
-        address: "Jl. Tjilik Riwut KM.1, Palangka Raya",
-        emissions: "6,000",
-        rooms: "150 rooms",
-        rating: "3.5 stars",
-        amenities: "Restaurant, Free WiFi",
-        status: "Operational"
-    }
-};
-    document.addEventListener('DOMContentLoaded', function () {
-      // Fungsi untuk generate dropdown tahun
-      function generateYearOptions() {
-        const yearSelect = document.getElementById('year-select');
-        if (!yearSelect) return;
-        
-        const currentYear = new Date().getFullYear();
-        yearSelect.innerHTML = '';
-        
-        // Generate tahun dari 2020 hingga tahun sekarang
-        for (let year = currentYear; year >= 2020; year--) {
-          const option = document.createElement('option');
-          option.value = year;
-          option.textContent = year;
-          yearSelect.appendChild(option);
+    <script>
+        const choice_option = {
+            searchResultLimit: 20,
+            shouldSort: false
         }
-      }
-      
-      // Konfigurasi untuk zoom desimal
-      const mapOptions = {
-        center: center_point,
-        zoom: 6, // Default zoom awal
-        zoomSnap: 0.1, // Untuk zoom desimal
-        zoomDelta: 0.1, // Step zoom yang lebih halus
-        wheelPxPerZoomLevel: 60, // Untuk kontrol scroll lebih smooth
-        zoomControl: false // Hapus zoom control default
-      };
-      
-      // Inisialisasi peta
-      let map = L.map('map', mapOptions);
-      
-      // Set zoom ke 5.8 segera setelah peta siap
-      setTimeout(() => {
-        map.setZoom(5.8);
-      }, 100);
-      
-      // Tambahkan tile layer OpenStreetMap
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-      
-      // Tambahkan kontrol skala
-      L.control.scale().addTo(map);
-      
-      // Data untuk grup 1 (Pulau Jawa) - 5 titik
-      const jawaGroup = [
-          { lat: -6.2088, lng: 106.8456, name: "Jakarta", value: 15000, type: "airport" },
-          { lat: -6.9175, lng: 107.6191, name: "Bandung", value: 12000, type: "airport" },
-          { lat: -7.2575, lng: 112.7521, name: "Surabaya", value: 18000, type: "airport" },
-          { lat: -6.9667, lng: 110.4167, name: "Semarang", value: 9000, type: "hotel" },
-          { lat: -7.8014, lng: 110.3644, name: "Yogyakarta", value: 7500, type: "hotel" }
-      ];
+        const year_select = new Choices('#year-select', choice_option)
+        const entity_select = new Choices('#entity-select', choice_option)
 
-      // Data untuk grup 2 (Kalimantan) - 5 titik
-      const kalimantanGroup = [
-          { lat: -0.0263, lng: 109.3425, name: "Pontianak", value: 8500, type: "airport" },
-          { lat: -1.2680, lng: 116.8289, name: "Balikpapan", value: 11000, type: "airport" },
-          { lat: -3.3186, lng: 114.5944, name: "Banjarmasin", value: 9500, type: "airport" },
-          { lat: 0.5071, lng: 101.4478, name: "Pekanbaru", value: 7000, type: "hotel" },
-          { lat: -2.2136, lng: 113.9108, name: "Palangka Raya", value: 6000, type: "hotel" }
-      ];
-      
-      // Layer groups untuk manajemen marker
-      const jawaGroupLayer = L.layerGroup(); // Layer untuk marker grup Jawa (1 marker)
-      const kalimantanGroupLayer = L.layerGroup(); // Layer untuk marker grup Kalimantan (1 marker)
-      const jawaDetailLayer = L.layerGroup(); // Layer untuk 5 marker detail Jawa
-      const kalimantanDetailLayer = L.layerGroup(); // Layer untuk 5 marker detail Kalimantan
-      
-      // State untuk melacak zoom status
-      let currentZoomState = 'overview'; // 'overview', 'jawa', 'kalimantan'
-      
-      // Fungsi untuk membuat marker grup (tampilan overview)
-      function createGroupMarker(groupData, groupName, color) {
-        // Hitung rata-rata koordinat
-        const avgLat = groupData.reduce((sum, point) => sum + point.lat, 0) / groupData.length;
-        const avgLng = groupData.reduce((sum, point) => sum + point.lng, 0) / groupData.length;
-        
-        const icon = L.divIcon({
-            html: `
-                <div style="
-                    background-color: white;
-                    color: #82AB40;
-                    border-radius: 8px;
-                    padding: 8px 12px;
-                    font-weight: bold;
-                    border: 2px solid #82AB40;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-                    cursor: pointer;
-                    font-size: 14px;
-                    white-space: nowrap;
-                ">
-                    ${groupName}
-                </div>
-            `,
-            className: 'group-marker',
-            iconSize: [100, 40],
-            iconAnchor: [50, 20]
-        });
-        
-        const marker = L.marker([avgLat, avgLng], { 
-            icon: icon,
-            interactive: true,
-            bubblingMouseEvents: true
-        });
-        
-        // Event klik - panggil zoomToGroup dengan data grup ini
-        marker.on('click', function() {
-            zoomToGroup(groupName, groupData);
-        });
-        
-        return marker;
-    }
-
-      // Fungsi untuk membuat detail marker (5 titik dalam grup)
-      function createDetailMarker(point) {
-          // Tentukan icon berdasarkan type (bandara atau hotel)
-          const iconName = point.type === "airport" ? 'fa-plane' : 'fa-bed';
-          
-          // Data alamat contoh (sesuaikan dengan lokasi sebenarnya)
-          const addressData = {
-              "Jakarta": "Soekarno-Hatta International Airport, Tangerang, Banten",
-              "Bandung": "Husein Sastranegara International Airport, Bandung, Jawa Barat",
-              "Surabaya": "Juanda International Airport, Sidoarjo, Jawa Timur",
-              "Semarang": "Hotel Santika Premiere Semarang, Jl. Brigjen Sudiarto No.42",
-              "Yogyakarta": "Hotel Phoenix Yogyakarta, Jl. Jend. Sudirman No.9",
-              "Pontianak": "Supadio International Airport, Kubu Raya, Kalimantan Barat",
-              "Balikpapan": "Sultan Aji Muhammad Sulaiman Airport, Balikpapan, Kalimantan Timur",
-              "Banjarmasin": "Syamsudin Noor Airport, Banjarbaru, Kalimantan Selatan",
-              "Pekanbaru": "Hotel Pangeran Pekanbaru, Jl. Nangka No.71",
-              "Palangka Raya": "Hotel Aquarius Boutique, Jl. Tjilik Riwut KM.1"
-          };
-          
-          const address = addressData[point.name] || `${point.name} Location`;
-          const typeText = point.type === 'airport' ? 'Airport' : 'Hotel';
-          
-          const icon = L.divIcon({
-              html: `
-                  <div style="position: relative; width: 140px; margin-bottom: 10px;">
-                      <!-- Box dengan konten -->
-                      <div style="
-                          background-color: white;
-                          border-radius: 8px;
-                          padding: 8px;
-                          box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-                          border: 1px solid #e0e0e0;
-                          display: flex;
-                          align-items: center;
-                          gap: 8px;
-                      ">
-                          <!-- Icon square dengan background hijau -->
-                          <div style="
-                              background-color: #82AB40;
-                              width: 24px;
-                              height: 24px;
-                              border-radius: 4px;
-                              display: flex;
-                              align-items: center;
-                              justify-content: center;
-                              color: white;
-                              font-size: 12px;
-                              flex-shrink: 0;
-                          ">
-                              <i class="fas ${iconName}"></i>
-                          </div>
-                          
-                          <!-- Nama dengan warna hijau -->
-                          <div style="
-                              font-weight: 600;
-                              font-size: 12px;
-                              color: #82AB40;
-                              white-space: nowrap;
-                              overflow: hidden;
-                              text-overflow: ellipsis;
-                          ">
-                              ${point.name}
-                          </div>
-                      </div>
-                      
-                      <!-- Caret/arrow yang mengarah ke titik -->
-                      <div style="
-                          position: absolute;
-                          bottom: -6px;
-                          left: 50%;
-                          transform: translateX(-50%);
-                          width: 0;
-                          height: 0;
-                          border-left: 6px solid transparent;
-                          border-right: 6px solid transparent;
-                          border-top: 6px solid white;
-                      "></div>
-                  </div>
-              `,
-              className: 'detail-marker',
-              iconSize: [140, 50],
-              iconAnchor: [70, 45],
-              popupAnchor: [0, -45]
-          });
-          
-          const marker = L.marker([point.lat, point.lng], { 
-              icon: icon,
-              interactive: true,
-              bubblingMouseEvents: true
-          });
-          
-          // Popup detail dengan gambar dan informasi lengkap
-          marker.bindPopup(`
-              <div style="
-                  width: 300px;
-                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              ">
-                  <!-- Gambar -->
-                  <div style="
-                      width: 100%;
-                      height: 150px;
-                      border-radius: 8px 8px 0 0;
-                      overflow: hidden;
-                      margin-bottom: 12px;
-                  ">
-                      <img src="https://asset.kompas.com/crops/jsI9iT7XGf8pu-DRFOLwHE1FAEY=/3x1:591x393/1200x800/data/photo/2025/07/01/6863d2bad5d3a.jpg" 
-                          alt="${point.name}"
-                          style="width: 100%; height: 100%; object-fit: cover;">
-                  </div>
-                  
-                  <!-- Konten -->
-                  <div style="padding: 0 12px 12px 12px;">
-                      <!-- Nama (hitam tebal) -->
-                      <h3 style="
-                          margin: 0 0 6px 0;
-                          font-size: 18px;
-                          font-weight: 700;
-                          color: #1f2937;
-                      ">
-                          ${point.name} ${typeText}
-                      </h3>
-                      
-                      <!-- Alamat (abu-abu normal) -->
-                      <p style="
-                          margin: 0 0 12px 0;
-                          font-size: 13px;
-                          color: #6b7280;
-                          line-height: 1.4;
-                      ">
-                          ${address}
-                      </p>
-                      
-                      <!-- Emisi karbon -->
-                      <div style="
-                          margin: 0 0 15px 0;
-                          padding: 10px;
-                          background-color: #f9fafb;
-                          border-radius: 6px;
-                          border-left: 3px solid #82AB40;
-                      ">
-                          <div style="
-                              font-size: 22px;
-                              font-weight: 700;
-                              color: #1f2937;
-                              margin-bottom: 2px;
-                          ">
-                              ${point.value.toLocaleString()}
-                          </div>
-                          <div style="
-                              font-size: 12px;
-                              color: #6b7280;
-                          ">
-                              ton CO2eq
-                          </div>
-                      </div>
-                      
-                      <!-- Tombol More Detail -->
-                      <button style="
-                          width: 100%;
-                          padding: 10px;
-                          background-color: #82AB40;
-                          color: white;
-                          border: none;
-                          border-radius: 6px;
-                          font-size: 14px;
-                          font-weight: 600;
-                          cursor: pointer;
-                          transition: background-color 0.2s ease;
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                          gap: 8px;
-                      " 
-                      onmouseover="this.style.backgroundColor='#739a38'"
-                      onmouseout="this.style.backgroundColor='#82AB40'"
-                      onclick="showLocationDetail('${point.name}', '${point.type}')">
-                          <i class="fas fa-info-circle"></i>
-                          More Detail
-                      </button>
-                  </div>
-              </div>
-          `);
-          
-          return marker;
-      }
-
-      // Fungsi untuk menampilkan detail lokasi di panel
-      window.showLocationDetail = function(name, type) {
-          const detail = locationDetails[name];
-          if (!detail) return;
-          
-          // Tampilkan detail card container
-          const detailContainer = document.getElementById('detailCardContainer');
-          
-          // Buat HTML untuk detail card yang sederhana
-          const detailCardHTML = `
-              <div class="detail-card">
-                  <div class="detail-card-header">
-                      <h3 class="detail-card-title">
-                          <i class="fas ${detail.type === 'airport' ? 'fa-plane' : 'fa-bed'}"></i>
-                          ${name} ${detail.type === 'airport' ? 'Airport' : 'Hotel'}
-                      </h3>
-                      <button class="detail-card-close" onclick="window.document.body.click()">
-                          <i class="fas fa-times"></i>
-                      </button>
-                  </div>
-                  
-                  <!-- Gambar -->
-                  <div class="detail-card-image">
-                      <img src="https://asset.kompas.com/crops/jsI9iT7XGf8pu-DRFOLwHE1FAEY=/3x1:591x393/1200x800/data/photo/2025/07/01/6863d2bad5d3a.jpg" 
-                          alt="${name}">
-                  </div>
-                  
-                  <!-- Konten -->
-                  <div style="padding: 15px;">
-                      <!-- Alamat -->
-                      <div style="margin-bottom: 15px;">
-                          <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">
-                              Address
-                          </div>
-                          <div style="font-size: 13px; color: #1f2937; line-height: 1.4;">
-                              ${detail.address}
-                          </div>
-                      </div>
-                      
-                      <!-- Emisi -->
-                      <div style="
-                          margin-bottom: 15px;
-                          padding: 12px;
-                          background-color: #f9fafb;
-                          border-radius: 6px;
-                          border-left: 3px solid #82AB40;
-                      ">
-                          <div style="
-                              font-size: 24px;
-                              font-weight: 700;
-                              color: #1f2937;
-                              margin-bottom: 2px;
-                          ">
-                              ${detail.emissions}
-                          </div>
-                          <div style="
-                              font-size: 12px;
-                              color: #6b7280;
-                          ">
-                              ton CO2eq
-                          </div>
-                      </div>
-                      
-                      <!-- Info tambahan -->
-                      
-                  </div>
-              </div>
-          `;
-          
-          detailContainer.innerHTML = detailCardHTML;
-          detailContainer.style.display = 'block';
-          
-          // Update data di card summary berdasarkan lokasi yang dipilih
-          updateSummaryData(name, detail);
-          
-          // Scroll ke atas panel
-          document.querySelector('.map-control-panel').scrollTop = 0;
-      };
-
-      // Fungsi untuk update data di card summary
-      function updateSummaryData(locationName, locationDetail) {
-          // Update total gas emission
-          document.querySelector('.emission-value').textContent = locationDetail.emissions;
-          
-          // Update scope 1 (misalnya: 30% dari total untuk bandara, 40% untuk hotel)
-          const scope1Value = locationDetail.type === 'airport' 
-              ? (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.3).toLocaleString(undefined, {maximumFractionDigits: 2})
-              : (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.4).toLocaleString(undefined, {maximumFractionDigits: 2});
-          
-          document.querySelectorAll('.scope-value')[0].textContent = scope1Value;
-          
-          // Update scope 2 (misalnya: 50% dari total untuk bandara, 40% untuk hotel)
-          const scope2Value = locationDetail.type === 'airport'
-              ? (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.5).toLocaleString(undefined, {maximumFractionDigits: 2})
-              : (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.4).toLocaleString(undefined, {maximumFractionDigits: 2});
-          
-          document.querySelectorAll('.scope-value')[1].textContent = scope2Value;
-          
-          // Update scope 3 (misalnya: 20% dari total untuk bandara, 20% untuk hotel)
-          const scope3Value = locationDetail.type === 'airport'
-              ? (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.2).toLocaleString(undefined, {maximumFractionDigits: 2})
-              : (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.2).toLocaleString(undefined, {maximumFractionDigits: 2});
-          
-          document.querySelectorAll('.scope-value')[2].textContent = scope3Value;
-          
-          // Update consumption cards (misalnya: proportional berdasarkan emisi)
-          const totalEmissions = parseInt(locationDetail.emissions.replace(/,/g, ''));
-          
-          // Electricity (misalnya: 60% dari emisi)
-          const electricityValue = Math.round(totalEmissions * 0.6).toLocaleString();
-          document.querySelectorAll('.consumption-value')[0].textContent = electricityValue;
-          
-          // Water (misalnya: 25% dari emisi)
-          const waterValue = Math.round(totalEmissions * 0.25).toLocaleString();
-          document.querySelectorAll('.consumption-value')[1].textContent = waterValue;
-          
-          // Fuel (misalnya: 15% dari emisi)
-          const fuelValue = Math.round(totalEmissions * 0.15).toLocaleString();
-          document.querySelectorAll('.consumption-value')[2].textContent = fuelValue;
-      }
-
-      // Fungsi untuk menutup detail card dan reset data
-      function closeDetailCard() {
-          const detailContainer = document.getElementById('detailCardContainer');
-          detailContainer.style.display = 'none';
-          detailContainer.innerHTML = '';
-          
-          // Reset data summary ke default
-          resetSummaryData();
-      }
-
-      // Fungsi untuk reset data summary ke default
-      function resetSummaryData() {
-          // Reset total gas emission
-          document.querySelector('.emission-value').textContent = '42,112.78';
-          
-          // Reset scope cards
-          const scopeValues = ['11,781.74', '37,490.05', '865.29'];
-          document.querySelectorAll('.scope-value').forEach((element, index) => {
-              element.textContent = scopeValues[index];
-          });
-          
-          // Reset consumption cards
-          const consumptionValues = ['2,782,199', '2,045,211', '256,115'];
-          document.querySelectorAll('.consumption-value').forEach((element, index) => {
-              element.textContent = consumptionValues[index];
-          });
-      }
-      // Fungsi untuk zoom ke grup
-      function zoomToGroup(groupName, groupData) {
-          // Hide semua detail terlebih dahulu
-          const allDetailLayers = [jawaDetailLayer, kalimantanDetailLayer];
-          allDetailLayers.forEach(layer => {
-              map.removeLayer(layer);
-              layer.clearLayers();
-          });
-          
-          // Show marker grup untuk semua grup kecuali yang di-zoom
-          const allGroups = [
-              { name: 'Regional 1', data: jawaGroup, layer: jawaGroupLayer },
-              { name: 'Regional 2', data: kalimantanGroup, layer: kalimantanGroupLayer }
-          ];
-          
-          allGroups.forEach(group => {
-              map.removeLayer(group.layer);
-              group.layer.clearLayers();
-              
-              if (group.name === groupName) {
-                  // Buat detail markers untuk grup yang di-zoom
-                  group.data.forEach(point => {
-                      const marker = createDetailMarker(point, '#82AB40');
-                      group.layer.addLayer(marker); // Gunakan layer yang sama tapi isinya detail
-                  });
-              } else {
-                  // Buat group marker untuk grup lain
-                  const groupMarker = createGroupMarker(group.data, group.name, '#82AB40');
-                  group.layer.addLayer(groupMarker);
-              }
-              
-              map.addLayer(group.layer);
-          });
-          
-          // Fit bounds untuk grup yang di-zoom
-          const bounds = L.latLngBounds(groupData.map(point => [point.lat, point.lng]));
-          map.fitBounds(bounds, { padding: [50, 50], maxZoom: 10 });
-          
-          // Show zoom control
-          document.getElementById('zoomControl').classList.add('show');
-          currentZoomState = groupName;
-      }
-
-      // Fungsi untuk kembali ke overview
-      function backToOverview() {
-        const allGroups = [
-            { name: 'Regional 1', data: jawaGroup, layer: jawaGroupLayer },
-            { name: 'Regional 2', data: kalimantanGroup, layer: kalimantanGroupLayer }
-        ];
-        
-        allGroups.forEach(group => {
-            map.removeLayer(group.layer);
-            group.layer.clearLayers();
-            
-            // Buat group marker untuk semua grup
-            const groupMarker = createGroupMarker(group.data, group.name, '#82AB40');
-            group.layer.addLayer(groupMarker);
-            map.addLayer(group.layer);
-        });
-        
-        document.getElementById('zoomControl').classList.remove('show');
-        map.setView(center_point, 5.8);
-        currentZoomState = 'overview';
-    }
-      // Event listener untuk tombol back
-      document.getElementById('zoomBackBtn').addEventListener('click', backToOverview);
-      
-      // Inisialisasi dengan overview view
-      backToOverview();
-      
-      // Generate dropdown tahun
-      generateYearOptions();
-      
-      // Event listener untuk dropdown tahun
-      const yearSelect = document.getElementById('year-select');
-      if (yearSelect) {
-        yearSelect.addEventListener('change', function(e) {
-          const selectedYear = e.target.value;
-          console.log('Tahun dipilih:', selectedYear);
-          // Di sini Anda bisa tambahkan logika untuk update peta berdasarkan tahun
-        });
-      }
-      
-      // Event listener untuk filter buttons
-      const filterButtons = document.querySelectorAll('.filter-btn');
-      filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          // Hapus class active dari semua buttons
-          filterButtons.forEach(btn => btn.classList.remove('active'));
-          // Tambah class active ke button yang diklik
-          this.classList.add('active');
-          
-          const filter = this.getAttribute('data-filter');
-          console.log('Filter dipilih:', filter);
-          // Update chart berdasarkan filter
-          updateChart(filter);
-        });
-      });
-      
-      // Inisialisasi chart
-      let reductionChart = null;
-      
-      // Fungsi untuk membuat chart
-      function initChart() {
-          const chartDom = document.getElementById('reduction-chart');
-          if (!chartDom) return;
-          
-          reductionChart = echarts.init(chartDom);
-          
-          // Data untuk menunjukkan penurunan (nilai negatif)
-          const years = ['2020', '2021', '2022', '2023', '2024', '2025'];
-          const reductionData = [0, -43973.123, -48222.333, -55252.112, -119145.845, -266006.410];
-          
-          // Konfigurasi gradient untuk area
-          const gradientColor = new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: 'rgba(130, 171, 64, 0.4)' },
-              { offset: 0.7, color: 'rgba(130, 171, 64, 0.1)' },
-              { offset: 1, color: 'rgba(130, 171, 64, 0)' }
-          ]);
-          
-          const option = {
-              tooltip: {
-                trigger: 'item',
-                backgroundColor: 'rgba(50, 50, 50, 0.9)',
-                borderColor: '#333',
-                textStyle: {
-                    color: '#fff',
-                    fontSize: 12
-                },
-                position: function(point, params, dom, rect, size) {
-                    // Estimate tooltip size
-                    const tooltipWidth = 150;
-                    const tooltipHeight = 60;
-                    
-                    // Boundary check dalam chart container
-                    const chartWidth = size.viewSize[0];
-                    const chartHeight = size.viewSize[1];
-                    
-                    let x = point[0];
-                    let y = point[1];
-                    
-                    // Default: kanan atas
-                    let posX = x + 10;
-                    let posY = y - tooltipHeight - 10;
-                    
-                    // Jika keluar kanan, pindah ke kiri
-                    if (posX + tooltipWidth > chartWidth) {
-                        posX = x - tooltipWidth - 10;
-                    }
-                    
-                    // Jika keluar kiri, pindah ke kanan
-                    if (posX < 0) {
-                        posX = x + 20;
-                    }
-                    
-                    // Jika keluar atas, pindah ke bawah
-                    if (posY < 0) {
-                        posY = y + 20;
-                    }
-                    
-                    // Jika keluar bawah, pindah ke atas
-                    if (posY + tooltipHeight > chartHeight) {
-                        posY = y - tooltipHeight - 20;
-                    }
-                    
-                    return [posX, posY];
-                },
-                extraCssText: 'z-index: 9999 !important;',
-                formatter: function(params) {
-                    const value = Math.abs(params.value).toLocaleString();
-                    const year = years[params.dataIndex];
-                    return `
-                        <div style="font-weight: bold; margin-bottom: 3px;">${year}</div>
-                        <div style="display: flex; align-items: center;">
-                            <span style="display: inline-block; width: 8px; height: 8px; background-color: #82AB40; border-radius: 50%; margin-right: 6px;"></span>
-                            <span>Reduction: <strong>${value}</strong> ton CO2eq</span>
-                        </div>
-                    `;
-                }
+        const center_point = [-3.0014, 117.1985];
+        const locationDetails = {
+            "Bandara Internasional Soekarno-Hatta Tangerang": {
+                type: "airport",
+                fullName: "Bandara Internasional Soekarno-Hatta Tangerang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
             },
-              grid: {
-                  left: '3%',
-                  right: '4%',
-                  bottom: '3%',
-                  top: '15%',
-                  containLabel: true,
-                  show: true,
-                  borderColor: '#f0f0f0'
-              },
-              xAxis: {
-                  type: 'category',
-                  data: years,
-                  axisLine: {
-                      lineStyle: {
-                          color: '#e0e0e0'
-                      }
-                  },
-                  axisTick: {
-                      show: true,
-                      alignWithLabel: true,
-                      lineStyle: {
-                          color: '#e0e0e0'
-                      }
-                  },
-                  axisLabel: {
-                      color: '#666',
-                      fontSize: 11,
-                  },
-                  splitLine: {
-                      show: true,
-                      lineStyle: {
-                          color: '#f0f0f0',
-                          type: 'dashed'
-                      }
-                  }
-              },
-              yAxis: {
-                  type: 'value',
-                  name: 'ton CO2eq',
-                  nameTextStyle: {
-                      color: 'white',
-                      fontSize: 11,
-                      padding: [0, 0, 10, 40]
-                  },
-                  axisLine: {
-                      show: true,
-                      lineStyle: {
-                          color: '#e0e0e0'
-                      }
-                  },
-                  axisTick: {
-                      show: true,
-                      lineStyle: {
-                          color: '#e0e0e0'
-                      }
-                  },
-                  axisLabel: {
-                      show: false, // Label angka di hide
-                      color: '#666'
-                  },
-                  splitLine: {
-                      show: true,
-                      lineStyle: {
-                          color: '#f0f0f0',
-                          type: 'dashed'
-                      }
-                  }
-              },
-              series: [
-                  {
-                      name: 'Reduction',
-                      type: 'line',
-                      data: reductionData,
-                      smooth: true,
-                      symbol: 'circle',
-                      symbolSize: 8,
-                      lineStyle: {
-                          width: 3,
-                          color: '#82AB40'
-                      },
-                      itemStyle: {
-                          color: '#82AB40',
-                          borderWidth: 2,
-                          borderColor: '#fff'
-                      },
-                      areaStyle: {
-                          color: gradientColor,
-                          origin: 'end' // Untuk data negatif, area di atas
-                      },
-                      label: {
-                          show: true,
-                          position: 'top',
-                          formatter: function(params) {
-                              return Math.abs(params.value).toLocaleString();
-                          },
-                          color: '#82AB40',
-                          fontSize: 10,
-                          fontWeight: 'bold'
-                      }
-                  }
-              ]
-          };
-          
-          reductionChart.setOption(option);
-          
-          // Responsive chart
-          window.addEventListener('resize', function() {
-              reductionChart.resize();
-          });
-      }
-      
-      // Fungsi untuk update chart berdasarkan filter
-      function updateChart(filter) {
-          if (!reductionChart) return;
-          
-          let data;
-          
-          switch(filter) {
-              case 'scope1':
-                  data = [0, -10000, -20000, -30000, -40000, -50000];
-                  break;
-              case 'scope2':
-                  data = [0, -20000, -40000, -60000, -80000, -100000];
-                  break;
-              case 'scope3':
-                  data = [0, -5000, -10000, -15000, -20000, -25000];
-                  break;
-              default: // all
-                  data = [0, -43973.123, -48222.333, -55252.112, -119145.845, -266006.410];
-          }
-          
-          const option = {
-              series: [{
-                  data: data
-              }]
-          };
-          
-          reductionChart.setOption(option);
-      }
-      
-      // Inisialisasi chart setelah sedikit delay
-      setTimeout(() => {
-        initChart();
-      }, 300);
-      
-      // Pastikan peta mengisi seluruh area saat window di-resize
-      window.addEventListener('resize', function() {
-        map.invalidateSize();
-        if (reductionChart) {
-          reductionChart.resize();
-        }
-      });
-      
-      // Inisialisasi ulang size peta
-      setTimeout(function() {
-        map.invalidateSize();
-      }, 200);
-      // Close detail card saat klik di luar panel atau saat back to overview
-      document.addEventListener('click', function(event) {
-          const detailContainer = document.getElementById('detailCardContainer');
-          const mapPanel = document.querySelector('.map-control-panel');
-          
-          // Jika detail card terbuka dan klik di luar panel
-          if (detailContainer.style.display === 'block' && 
-              !mapPanel.contains(event.target) &&
-              !event.target.closest('.leaflet-popup')) {
-              closeDetailCard();
-          }
-      });
+            "Bandara Internasional Halim Perdanakusuma Jakarta": {
+                type: "airport",
+                fullName: "Bandara Internasional Halim Perdanakusuma Jakarta",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Kertajati Majalengka": {
+                type: "airport",
+                fullName: "Bandara Internasional Kertajati Majalengka",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Husein Sastranegara Bandung": {
+                type: "airport",
+                fullName: "Bandara Husein Sastranegara Bandung",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional I Gusti Ngurah Rai Bali": {
+                type: "airport",
+                fullName: "Bandara Internasional I Gusti Ngurah Rai Bali",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Zainuddin Abdul Madjid Lombok": {
+                type: "airport",
+                fullName: "Bandara Internasional Zainuddin Abdul Madjid Lombok",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Banyuwangi": {
+                type: "airport",
+                fullName: "Bandara Banyuwangi",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara El Tari Kupang": {
+                type: "airport",
+                fullName: "Bandara El Tari Kupang",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Hang Nadim Batam": {
+                type: "airport",
+                fullName: "Bandara Hang Nadim Batam",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Sultan Iskandar Muda Banda Aceh": {
+                type: "airport",
+                fullName: "Bandara Sultan Iskandar Muda Banda Aceh",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Sultan Syafruddin Kasim II Pekanbaru": {
+                type: "airport",
+                fullName: "Bandara Sultan Syafruddin Kasim II Pekanbaru",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Minangkabau Padang": {
+                type: "airport",
+                fullName: "Bandara Minangkabau Padang",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Kuala Namu Deli Serdang": {
+                type: "airport",
+                fullName: "Bandara Kuala Namu Deli Serdang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Depati Amir Pangkal Pinang": {
+                type: "airport",
+                fullName: "Bandara Depati Amir Pangkal Pinang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara H.A.S. Hanandjoeddin Tanjung Pandan": {
+                type: "airport",
+                fullName: "Bandara H.A.S. Hanandjoeddin Tanjung Pandan",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Fatmawati Soekarno Bengkulu": {
+                type: "airport",
+                fullName: "Bandara Fatmawati Soekarno Bengkulu",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Sultan Thaha Jambi": {
+                type: "airport",
+                fullName: "Bandara Sultan Thaha Jambi",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Raja Haji Fisabilillah Tanjung Pinang": {
+                type: "airport",
+                fullName: "Bandara Raja Haji Fisabilillah Tanjung Pinang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Radin Inten II Bandar Lampung": {
+                type: "airport",
+                fullName: "Bandara Radin Inten II Bandar Lampung",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Sultan Mahmud Badaruddin II Palembang": {
+                type: "airport",
+                fullName: "Bandara Sultan Mahmud Badaruddin II Palembang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Raja Sisingamangaraja XII Tapanuli Utara": {
+                type: "airport",
+                fullName: "Bandara Raja Sisingamangaraja XII Tapanuli Utara",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "rendah",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Internasional Juanda Surabaya": {
+                type: "airport",
+                fullName: "Bandara Internasional Juanda Surabaya",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "rendah",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Yogyakarta Kulon Progo": {
+                type: "airport",
+                fullName: "Bandara Internasional Yogyakarta Kulon Progo",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Jenderal Besar Soedirman Purbalingga": {
+                type: "airport",
+                fullName: "Bandara Jenderal Besar Soedirman Purbalingga",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Adi Soemarmo Solo": {
+                type: "airport",
+                fullName: "Bandara Adi Soemarmo Solo",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Jenderal Ahmad Yani Semarang": {
+                type: "airport",
+                fullName: "Bandara Jenderal Ahmad Yani Semarang",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Dhoho Kediri": {
+                type: "airport",
+                fullName: "Bandara Dhoho Kediri",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Adisutjipto Yogyakarta": {
+                type: "airport",
+                fullName: "Bandara Adisutjipto Yogyakarta",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Sam Ratulangi Manado": {
+                type: "airport",
+                fullName: "Bandara Internasional Sam Ratulangi Manado",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Sultan Hasanuddin Makassar": {
+                type: "airport",
+                fullName: "Bandara Internasional Sultan Hasanuddin Makassar",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Sentani Jayapura": {
+                type: "airport",
+                fullName: "Bandara Internasional Sentani Jayapura",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "aman",
+                longsor: "aman"
+            },
+            "Bandara Pattimura Ambon": {
+                type: "airport",
+                fullName: "Bandara Pattimura Ambon",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "rendah"
+            },
+            "Bandara Frans Kaisiepo Biak": {
+                type: "airport",
+                fullName: "Bandara Frans Kaisiepo Biak",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional SAMS Sepinggan Balikpapan": {
+                type: "airport",
+                fullName: "Bandara Internasional SAMS Sepinggan Balikpapan",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Syamsudin Noor Banjarmasin": {
+                type: "airport",
+                fullName: "Bandara Syamsudin Noor Banjarmasin",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Tjilik Riwut Palangka Raya": {
+                type: "airport",
+                fullName: "Bandara Tjilik Riwut Palangka Raya",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "rendah",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Supadio Pontianak": {
+                type: "airport",
+                fullName: "Bandara Supadio Pontianak",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet TMII": {
+                type: "retail",
+                fullName: "Sarinah Outlet TMII",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet Sarinah Thamrin": {
+                type: "retail",
+                fullName: "Sarinah Outlet Sarinah Thamrin",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet Sarinah Airport CGK": {
+                type: "retail",
+                fullName: "Sarinah Outlet Sarinah Airport CGK",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet De Braga Bandung": {
+                type: "retail",
+                fullName: "Sarinah Outlet De Braga Bandung",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet Malang Basuki Rachmad": {
+                type: "retail",
+                fullName: "Sarinah Outlet Malang Basuki Rachmad",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "rendah",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet Keberangkatan Domestik Bandara Ngurah Rai": {
+                type: "retail",
+                fullName: "Sarinah Outlet Keberangkatan Domestik Bandara Ngurah Rai",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet Bandara Internasional Syamsudin Noor": {
+                type: "retail",
+                fullName: "Sarinah Outlet Bandara Internasional Syamsudin Noor",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet The Meru Sanur": {
+                type: "retail",
+                fullName: "Sarinah Outlet The Meru Sanur",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet Sarinah Prambanan": {
+                type: "retail",
+                fullName: "Sarinah Outlet Sarinah Prambanan",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet Riverwalk Island PIK": {
+                type: "retail",
+                fullName: "Sarinah Outlet Riverwalk Island PIK",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Outlet Jakarta Premium Outlet, Alam Sutera Tangerang": {
+                type: "retail",
+                fullName: "Sarinah Outlet Jakarta Premium Outlet, Alam Sutera Tangerang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Kantor Hotel Indonesia Group": {
+                type: "hospitality",
+                fullName: "Kantor Hotel Indonesia Group",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Kantor Hotel Internasional Sanur Indonesia": {
+                type: "hospitality",
+                fullName: "Kantor Hotel Internasional Sanur Indonesia",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Kantor Hotel Indonesia Properti": {
+                type: "hospitality",
+                fullName: "Kantor Hotel Indonesia Properti",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "The Meru Sanur": {
+                type: "hospitality",
+                fullName: "The Meru Sanur",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bali Beach Hotel": {
+                type: "hospitality",
+                fullName: "Bali Beach Hotel",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Merusaka Nusa Dua": {
+                type: "hospitality",
+                fullName: "Merusaka Nusa Dua",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Truntum Padang": {
+                type: "hospitality",
+                fullName: "Truntum Padang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Truntum Mandalika": {
+                type: "hospitality",
+                fullName: "Truntum Mandalika",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "sedang",
+                longsor: "rendah"
+            },
+            "Khas Parapat": {
+                type: "hospitality",
+                fullName: "Khas Parapat",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "rendah",
+                cuacaEkstrim: "rendah",
+                longsor: "rendah"
+            },
+            "Grand Inna Medan": {
+                type: "hospitality",
+                fullName: "Grand Inna Medan",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Grand Inna Samudera Beach": {
+                type: "hospitality",
+                fullName: "Grand Inna Samudera Beach",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "rendah",
+                longsor: "rendah"
+            },
+            "Grand Inna Tunjungan": {
+                type: "hospitality",
+                fullName: "Grand Inna Tunjungan",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Inna Tretes Hotel & Resort": {
+                type: "hospitality",
+                fullName: "Inna Tretes Hotel & Resort",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "rendah",
+                cuacaEkstrim: "sedang",
+                longsor: "rendah"
+            },
+            "Truntum Kuta": {
+                type: "hospitality",
+                fullName: "Truntum Kuta",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Inna Bali Heritage": {
+                type: "hospitality",
+                fullName: "Inna Bali Heritage",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Inna Sindhu Beach": {
+                type: "hospitality",
+                fullName: "Inna Sindhu Beach",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Taman Wisata Candi Prambanan": {
+                type: "destmanage",
+                fullName: "Taman Wisata Candi Prambanan",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Taman Wisata Candi Borobudur": {
+                type: "destmanage",
+                fullName: "Taman Wisata Candi Borobudur",
+                emissions: "",
+                banjir: "rendah",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Taman Wisata Candi Ratu Boko": {
+                type: "destmanage",
+                fullName: "Taman Wisata Candi Ratu Boko",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Taman Mini Indonesia Indah": {
+                type: "destmanage",
+                fullName: "Taman Mini Indonesia Indah",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "rendah",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "The Manohara Hotel": {
+                type: "destmanage",
+                fullName: "The Manohara Hotel",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Borobudur Spiritual Sanctuary": {
+                type: "destmanage",
+                fullName: "Borobudur Spiritual Sanctuary",
+                emissions: "",
+                banjir: "rendah",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Kampung Seni Borobudur": {
+                type: "destmanage",
+                fullName: "Kampung Seni Borobudur",
+                emissions: "",
+                banjir: "rendah",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Kawasan Nusa Dua": {
+                type: "tourism",
+                fullName: "Kawasan Nusa Dua",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Kawasan Mandalika": {
+                type: "tourism",
+                fullName: "Kawasan Mandalika",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "rendah"
+            },
+            "Kawasan Golo Mori": {
+                type: "tourism",
+                fullName: "Kawasan Golo Mori",
+                emissions: "",
+                banjir: "rendah",
+                kekeringan: "sedang",
+                cuacaEkstrim: "rendah",
+                longsor: "rendah"
+            },
+            "Kantor Pusat": {
+                type: "tourism",
+                fullName: "Kantor Pusat",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Sarinah Thamrin": {
+                type: "holding",
+                fullName: "Sarinah Thamrin",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Soekarno-Hatta Tangerang": {
+                type: "aviation",
+                fullName: "Bandara Internasional Soekarno-Hatta Tangerang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Halim Perdanakusuma Jakarta": {
+                type: "aviation",
+                fullName: "Bandara Internasional Halim Perdanakusuma Jakarta",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Kertajati Majalengka": {
+                type: "aviation",
+                fullName: "Bandara Internasional Kertajati Majalengka",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Husein Sastranegara Bandung": {
+                type: "aviation",
+                fullName: "Bandara Husein Sastranegara Bandung",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional I Gusti Ngurah Rai Bali": {
+                type: "aviation",
+                fullName: "Bandara Internasional I Gusti Ngurah Rai Bali",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Zainuddin Abdul Madjid Lombok": {
+                type: "aviation",
+                fullName: "Bandara Internasional Zainuddin Abdul Madjid Lombok",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Banyuwangi": {
+                type: "aviation",
+                fullName: "Bandara Banyuwangi",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara El Tari Kupang": {
+                type: "aviation",
+                fullName: "Bandara El Tari Kupang",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Hang Nadim Batam": {
+                type: "aviation",
+                fullName: "Bandara Hang Nadim Batam",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Sultan Iskandar Muda Banda Aceh": {
+                type: "aviation",
+                fullName: "Bandara Sultan Iskandar Muda Banda Aceh",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Sultan Syafruddin Kasim II Pekanbaru": {
+                type: "aviation",
+                fullName: "Bandara Sultan Syafruddin Kasim II Pekanbaru",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Minangkabau Padang": {
+                type: "aviation",
+                fullName: "Bandara Minangkabau Padang",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Kuala Namu Deli Serdang": {
+                type: "aviation",
+                fullName: "Bandara Kuala Namu Deli Serdang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Depati Amir Pangkal Pinang": {
+                type: "aviation",
+                fullName: "Bandara Depati Amir Pangkal Pinang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara H.A.S. Hanandjoeddin Tanjung Pandan": {
+                type: "aviation",
+                fullName: "Bandara H.A.S. Hanandjoeddin Tanjung Pandan",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Fatmawati Soekarno Bengkulu": {
+                type: "aviation",
+                fullName: "Bandara Fatmawati Soekarno Bengkulu",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Sultan Thaha Jambi": {
+                type: "aviation",
+                fullName: "Bandara Sultan Thaha Jambi",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Raja Haji Fisabilillah Tanjung Pinang": {
+                type: "aviation",
+                fullName: "Bandara Raja Haji Fisabilillah Tanjung Pinang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Radin Inten II Bandar Lampung": {
+                type: "aviation",
+                fullName: "Bandara Radin Inten II Bandar Lampung",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Sultan Mahmud Badaruddin II Palembang": {
+                type: "aviation",
+                fullName: "Bandara Sultan Mahmud Badaruddin II Palembang",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Raja Sisingamangaraja XII Tapanuli Utara": {
+                type: "aviation",
+                fullName: "Bandara Raja Sisingamangaraja XII Tapanuli Utara",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "rendah",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Internasional Juanda Surabaya": {
+                type: "aviation",
+                fullName: "Bandara Internasional Juanda Surabaya",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "rendah",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Yogyakarta Kulon Progo": {
+                type: "aviation",
+                fullName: "Bandara Internasional Yogyakarta Kulon Progo",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Jenderal Besar Soedirman Purbalingga": {
+                type: "aviation",
+                fullName: "Bandara Jenderal Besar Soedirman Purbalingga",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Adi Soemarmo Solo": {
+                type: "aviation",
+                fullName: "Bandara Adi Soemarmo Solo",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Jenderal Ahmad Yani Semarang": {
+                type: "aviation",
+                fullName: "Bandara Jenderal Ahmad Yani Semarang",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Dhoho Kediri": {
+                type: "aviation",
+                fullName: "Bandara Dhoho Kediri",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Adisutjipto Yogyakarta": {
+                type: "aviation",
+                fullName: "Bandara Adisutjipto Yogyakarta",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Sam Ratulangi Manado": {
+                type: "aviation",
+                fullName: "Bandara Internasional Sam Ratulangi Manado",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Sultan Hasanuddin Makassar": {
+                type: "aviation",
+                fullName: "Bandara Internasional Sultan Hasanuddin Makassar",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional Sentani Jayapura": {
+                type: "aviation",
+                fullName: "Bandara Internasional Sentani Jayapura",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "aman",
+                longsor: "aman"
+            },
+            "Bandara Pattimura Ambon": {
+                type: "aviation",
+                fullName: "Bandara Pattimura Ambon",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "rendah"
+            },
+            "Bandara Frans Kaisiepo Biak": {
+                type: "aviation",
+                fullName: "Bandara Frans Kaisiepo Biak",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Internasional SAMS Sepinggan Balikpapan": {
+                type: "aviation",
+                fullName: "Bandara Internasional SAMS Sepinggan Balikpapan",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Syamsudin Noor Banjarmasin": {
+                type: "aviation",
+                fullName: "Bandara Syamsudin Noor Banjarmasin",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Tjilik Riwut Palangka Raya": {
+                type: "aviation",
+                fullName: "Bandara Tjilik Riwut Palangka Raya",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "rendah",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Supadio Pontianak": {
+                type: "aviation",
+                fullName: "Bandara Supadio Pontianak",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "tinggi",
+                longsor: "aman"
+            },
+            "Bandara Djalaludin Gorontalo": {
+                type: "aviation",
+                fullName: "Bandara Djalaludin Gorontalo",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "rendah"
+            },
+            "Bandara Haluoleo Kendari": {
+                type: "aviation",
+                fullName: "Bandara Haluoleo Kendari",
+                emissions: "",
+                banjir: "rendah",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "sedang",
+                longsor: "rendah"
+            },
+            "Bandar Udara dr. Ferdinand Lumban Tobing": {
+                type: "aviation",
+                fullName: "Bandar Udara dr. Ferdinand Lumban Tobing",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "rendah",
+                cuacaEkstrim: "sedang",
+                longsor: "rendah"
+            },
+            "Bandara Binaka Gunung Sitoli": {
+                type: "aviation",
+                fullName: "Bandara Binaka Gunung Sitoli",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "rendah",
+                cuacaEkstrim: "rendah",
+                longsor: "rendah"
+            },
+            "Bandara Komodo Labuan Bajo": {
+                type: "aviation",
+                fullName: "Bandara Komodo Labuan Bajo",
+                emissions: "",
+                banjir: "aman",
+                kekeringan: "sedang",
+                cuacaEkstrim: "rendah",
+                longsor: "rendah"
+            },
+            "Bandara Mopah Merauke": {
+                type: "aviation",
+                fullName: "Bandara Mopah Merauke",
+                emissions: "",
+                banjir: "tinggi",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandara Rendani Manokwari": {
+                type: "aviation",
+                fullName: "Bandara Rendani Manokwari",
+                emissions: "",
+                banjir: "rendah",
+                kekeringan: "tinggi",
+                cuacaEkstrim: "sedang",
+                longsor: "rendah"
+            },
+            "Bandara Douw Aturure Nabire": {
+                type: "aviation",
+                fullName: "Bandara Douw Aturure Nabire",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "sedang",
+                cuacaEkstrim: "sedang",
+                longsor: "aman"
+            },
+            "Bandar Udara Aji Pangeran Tumenggung Pranoto": {
+                type: "aviation",
+                fullName: "Bandar Udara Aji Pangeran Tumenggung Pranoto",
+                emissions: "",
+                banjir: "sedang",
+                kekeringan: "rendah",
+                cuacaEkstrim: "rendah",
+                longsor: "rendah"
+            },
+        };
+        document.addEventListener('DOMContentLoaded', function () {
+        // Fungsi untuk generate dropdown tahun
+            function generateYearOptions() {                
+                const currentYear = new Date().getFullYear();
+                year_select.clearChoices()
+                year_select.removeActiveItems()
+                var yr_opt = []
+                for (var i = currentYear; i >= 2020; i--) {
+                    if (i == currentYear) {
+                        yr_opt.push({
+                            value: i,
+                            label: i,   
+                            selected: true,
+                        })
+                    } else {
+                        yr_opt.push({
+                            value: i,
+                            label: i
+                        })
+                    }
+                }
+                year_select.setChoices(yr_opt, 'value', 'label', false)
+            }
+            
+            // Konfigurasi untuk zoom desimal
+            const mapOptions = {
+                center: center_point,
+                zoom: 6, // Default zoom awal
+                zoomSnap: 0.1, // Untuk zoom desimal
+                zoomDelta: 0.1, // Step zoom yang lebih halus
+                wheelPxPerZoomLevel: 60, // Untuk kontrol scroll lebih smooth
+                zoomControl: false // Hapus zoom control default
+            };
+            
+            // Inisialisasi peta
+            let map = L.map('map', mapOptions);
+            
+            // Set zoom ke 5.8 segera setelah peta siap
+            setTimeout(() => {
+                map.setZoom(5.8);
+            }, 100);
+            
+            // Tambahkan tile layer OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Tambahkan kontrol skala
+            L.control.scale().addTo(map);
+            
+            // Data untuk grup 1 (Pulau Jawa) - 5 titik
 
-      // Juga close saat klik back to overview
-      document.getElementById('zoomBackBtn').addEventListener('click', function() {
-          closeDetailCard();
-      });
-    });
-  </script>
+            var entity_choose = 'airport'
+            var activeMarkers = []
+
+            $('#entity-select').change(function(){
+                choose = entity_select.getValue().value
+                entity_choose = choose
+                backToOverview();
+            })
+
+            const airportList = [
+                { lat: -6.12655, lng: 106.65506, name: "Bandara Internasional Soekarno-Hatta Tangerang", value: 16342, type: "airport" },
+                { lat: -6.26534, lng: 106.88555, name: "Bandara Internasional Halim Perdanakusuma Jakarta", value: 18311, type: "airport" },
+                { lat: -6.65195, lng: 108.15769, name: "Bandara Internasional Kertajati Majalengka", value: 14788, type: "airport" },
+                { lat: -6.90399, lng: 107.57996, name: "Bandara Husein Sastranegara Bandung", value: 15440, type: "airport" },
+                { lat: -8.74699, lng: 115.16817, name: "Bandara Internasional I Gusti Ngurah Rai Bali", value: 17694, type: "airport" },
+                { lat: -8.76071, lng: 116.27548, name: "Bandara Internasional Zainuddin Abdul Madjid Lombok", value: 16702, type: "airport" },
+                { lat: -8.31048, lng: 114.34133, name: "Bandara Banyuwangi", value: 15776, type: "airport" },
+                { lat: -10.16865, lng: 123.6679, name: "Bandara El Tari Kupang", value: 14333, type: "airport" },
+                { lat: 1.12212, lng: 104.11827, name: "Bandara Hang Nadim Batam", value: 16222, type: "airport" },
+                { lat: 5.51808, lng: 95.41731, name: "Bandara Sultan Iskandar Muda Banda Aceh", value: 17451, type: "airport" },
+                { lat: 0.46449, lng: 101.4482, name: "Bandara Sultan Syafruddin Kasim II Pekanbaru", value: 13566, type: "airport" },
+                { lat: -0.78907, lng: 100.28322, name: "Bandara Minangkabau Padang", value: 19027, type: "airport" },
+                { lat: 3.6312, lng: 98.87507, name: "Bandara Kuala Namu Deli Serdang", value: 15899, type: "airport" },
+                { lat: -2.15718, lng: 106.14165, name: "Bandara Depati Amir Pangkal Pinang", value: 12033, type: "airport" },
+                { lat: -2.75396, lng: 107.75331, name: "Bandara H.A.S. Hanandjoeddin Tanjung Pandan", value: 18177, type: "airport" },
+                { lat: -3.86066, lng: 102.33939, name: "Bandara Fatmawati Soekarno Bengkulu", value: 17488, type: "airport" },
+                { lat: -1.63706, lng: 103.64426, name: "Bandara Sultan Thaha Jambi", value: 13711, type: "airport" },
+                { lat: 0.92115, lng: 104.52619, name: "Bandara Raja Haji Fisabilillah Tanjung Pinang", value: 18690, type: "airport" },
+                { lat: -5.24526, lng: 105.18086, name: "Bandara Radin Inten II Bandar Lampung", value: 17924, type: "airport" },
+                { lat: -2.8948, lng: 104.70465, name: "Bandara Sultan Mahmud Badaruddin II Palembang", value: 19613, type: "airport" },
+                { lat: -7.76129, lng: 111.95055, name: "Bandara Dhoho Kediri", value: 13389, type: "airport" },
+                { lat: 2.26065, lng: 98.98751, name: "Bandara Raja Sisingamangaraja XII Tapanuli Utara", value: 19922, type: "airport" },
+                { lat: -7.37887, lng: 112.78729, name: "Bandara Internasional Juanda Surabaya", value: 14288, type: "airport" },
+                { lat: -7.90387, lng: 110.05732, name: "Bandara Internasional Yogyakarta Kulon Progo", value: 12844, type: "airport" },
+                { lat: -7.45818, lng: 109.41268, name: "Bandara Jenderal Besar Soedirman Purbalingga", value: 16555, type: "airport" },
+                { lat: -7.51626, lng: 110.75602, name: "Bandara Adi Soemarmo Solo", value: 15944, type: "airport" },
+                { lat: -6.96613, lng: 110.37501, name: "Bandara Jenderal Ahmad Yani Semarang", value: 14920, type: "airport" },
+                { lat: -7.78894, lng: 110.43068, name: "Bandara Adisutjipto Yogyakarta", value: 19891, type: "airport" },
+                { lat: 1.55005, lng: 124.92549, name: "Bandara Internasional Sam Ratulangi Manado", value: 17651, type: "airport" },
+                { lat: -5.07771, lng: 119.54931, name: "Bandara Internasional Sultan Hasanuddin Makassar", value: 17109, type: "airport" },
+                { lat: -2.57726, lng: 140.51812, name: "Bandara Internasional Sentani Jayapura", value: 13145, type: "airport" },
+                { lat: -3.7049, lng: 128.08883, name: "Bandara Pattimura Ambon", value: 18511, type: "airport" },
+                { lat: -1.19182, lng: 136.10609, name: "Bandara Frans Kaisiepo Biak", value: 16888, type: "airport" },
+                { lat: -1.2678, lng: 116.89422, name: "Bandara Internasional SAMS Sepinggan Balikpapan", value: 17233, type: "airport" },
+                { lat: -3.43602, lng: 114.76082, name: "Bandara Syamsudin Noor Banjarmasin", value: 14478, type: "airport" },
+                { lat: -2.23148, lng: 113.94861, name: "Bandara Tjilik Riwut Palangka Raya", value: 18555, type: "airport" },
+                { lat: -0.1476, lng: 109.40529, name: "Bandara Supadio Pontianak", value: 13011, type: "airport" }
+            ];
+
+            const aviationList = [
+                { lat: -6.12655, lng: 106.65506, name: "Bandara Internasional Soekarno-Hatta Tangerang", value: 16342, type: "aviation" },
+                { lat: -6.26534, lng: 106.88555, name: "Bandara Internasional Halim Perdanakusuma Jakarta", value: 18311, type: "aviation" },
+                { lat: -6.65195, lng: 108.15769, name: "Bandara Internasional Kertajati Majalengka", value: 14788, type: "aviation" },
+                { lat: -6.90399, lng: 107.57996, name: "Bandara Husein Sastranegara Bandung", value: 15440, type: "aviation" },
+                { lat: -8.74699, lng: 115.16817, name: "Bandara Internasional I Gusti Ngurah Rai Bali", value: 17694, type: "aviation" },
+                { lat: -8.76071, lng: 116.27548, name: "Bandara Internasional Zainuddin Abdul Madjid Lombok", value: 16702, type: "aviation" },
+                { lat: -8.31048, lng: 114.34133, name: "Bandara Banyuwangi", value: 15776, type: "aviation" },
+                { lat: -10.16865, lng: 123.6679, name: "Bandara El Tari Kupang", value: 14333, type: "aviation" },
+                { lat: 1.12212, lng: 104.11827, name: "Bandara Hang Nadim Batam", value: 16222, type: "aviation" },
+                { lat: 5.51808, lng: 95.41731, name: "Bandara Sultan Iskandar Muda Banda Aceh", value: 17451, type: "aviation" },
+                { lat: 0.46449, lng: 101.4482, name: "Bandara Sultan Syafruddin Kasim II Pekanbaru", value: 13566, type: "aviation" },
+                { lat: -0.78907, lng: 100.28322, name: "Bandara Minangkabau Padang", value: 19027, type: "aviation" },
+                { lat: 3.6312, lng: 98.87507, name: "Bandara Kuala Namu Deli Serdang", value: 15899, type: "aviation" },
+                { lat: -2.15718, lng: 106.14165, name: "Bandara Depati Amir Pangkal Pinang", value: 12033, type: "aviation" },
+                { lat: -2.75396, lng: 107.75331, name: "Bandara H.A.S. Hanandjoeddin Tanjung Pandan", value: 18177, type: "aviation" },
+                { lat: -3.86066, lng: 102.33939, name: "Bandara Fatmawati Soekarno Bengkulu", value: 17488, type: "aviation" },
+                { lat: -1.63706, lng: 103.64426, name: "Bandara Sultan Thaha Jambi", value: 13711, type: "aviation" },
+                { lat: 0.92115, lng: 104.52619, name: "Bandara Raja Haji Fisabilillah Tanjung Pinang", value: 18690, type: "aviation" },
+                { lat: -5.24526, lng: 105.18086, name: "Bandara Radin Inten II Bandar Lampung", value: 17924, type: "aviation" },
+                { lat: -2.8948, lng: 104.70465, name: "Bandara Sultan Mahmud Badaruddin II Palembang", value: 19613, type: "aviation" },
+                { lat: -7.76129, lng: 111.95055, name: "Bandara Dhoho Kediri", value: 13389, type: "aviation" },
+                { lat: 2.26065, lng: 98.98751, name: "Bandara Raja Sisingamangaraja XII Tapanuli Utara", value: 19922, type: "aviation" },
+                { lat: -7.37887, lng: 112.78729, name: "Bandara Internasional Juanda Surabaya", value: 14288, type: "aviation" },
+                { lat: -7.90387, lng: 110.05732, name: "Bandara Internasional Yogyakarta Kulon Progo", value: 12844, type: "aviation" },
+                { lat: -7.45818, lng: 109.41268, name: "Bandara Jenderal Besar Soedirman Purbalingga", value: 16555, type: "aviation" },
+                { lat: -7.51626, lng: 110.75602, name: "Bandara Adi Soemarmo Solo", value: 15944, type: "aviation" },
+                { lat: -6.96613, lng: 110.37501, name: "Bandara Jenderal Ahmad Yani Semarang", value: 14920, type: "aviation" },
+                { lat: -7.78894, lng: 110.43068, name: "Bandara Adisutjipto Yogyakarta", value: 19891, type: "aviation" },
+                { lat: 1.55005, lng: 124.92549, name: "Bandara Internasional Sam Ratulangi Manado", value: 17651, type: "aviation" },
+                { lat: -5.07771, lng: 119.54931, name: "Bandara Internasional Sultan Hasanuddin Makassar", value: 17109, type: "aviation" },
+                { lat: -2.57726, lng: 140.51812, name: "Bandara Internasional Sentani Jayapura", value: 13145, type: "aviation" },
+                { lat: -3.7049, lng: 128.08883, name: "Bandara Pattimura Ambon", value: 18511, type: "aviation" },
+                { lat: -1.19182, lng: 136.10609, name: "Bandara Frans Kaisiepo Biak", value: 16888, type: "aviation" },
+                { lat: -1.2678, lng: 116.89422, name: "Bandara Internasional SAMS Sepinggan Balikpapan", value: 17233, type: "aviation" },
+                { lat: -3.43602, lng: 114.76082, name: "Bandara Syamsudin Noor Banjarmasin", value: 14478, type: "aviation" },
+                { lat: -2.23148, lng: 113.94861, name: "Bandara Tjilik Riwut Palangka Raya", value: 18555, type: "aviation" },
+                { lat: -0.1476, lng: 109.40529, name: "Bandara Supadio Pontianak", value: 13011, type: "aviation" },
+                { lat: 0.63734, lng: 122.84811, name: "Bandara Djalaludin Gorontalo", value: 13799, type: "aviation" },
+                { lat: -4.07679, lng: 122.41719, name: "Bandara Haluoleo Kendari", value: 16500, type: "aviation" },
+                { lat: 1.55479, lng: 98.89653, name: "Bandar Udara dr. Ferdinand Lumban Tobing", value: 14822, type: "aviation" },
+                { lat: 1.16626, lng: 97.7043, name: "Bandara Binaka Gunung Sitoli", value: 19577, type: "aviation" },
+                { lat: -8.48885, lng: 119.88713, name: "Bandara Komodo Labuan Bajo", value: 15701, type: "aviation" },
+                { lat: -8.51858, lng: 140.41492, name: "Bandara Mopah Merauke", value: 13077, type: "aviation" },
+                { lat: -0.89361, lng: 134.05046, name: "Bandara Rendani Manokwari", value: 16688, type: "aviation" },
+                { lat: -3.40069, lng: 135.39686, name: "Bandara Douw Aturure Nabire", value: 19055, type: "aviation" },
+                { lat: -0.37099, lng: 117.25706, name: "Bandar Udara Aji Pangeran Tumenggung Pranoto", value: 18366, type: "aviation" }
+            ];
+
+            const retailList = [
+                { lat: -6.30204, lng: 106.88989, name: "Sarinah Outlet TMII", value: 17233, type: "retail" },
+                { lat: -6.18775, lng: 106.82359, name: "Sarinah Outlet Sarinah Thamrin", value: 15888, type: "retail" },
+                { lat: -6.12655, lng: 106.65506, name: "Sarinah Outlet Sarinah Airport CGK", value: 19422, type: "retail" },
+                { lat: -6.92034, lng: 107.61008, name: "Sarinah Outlet De Braga Bandung", value: 14299, type: "retail" },
+                { lat: -7.9814, lng: 112.63064, name: "Sarinah Outlet Malang Basuki Rachmad", value: 18944, type: "retail" },
+                { lat: -8.74439, lng: 115.16265, name: "Sarinah Outlet Keberangkatan Domestik Bandara Ngurah Rai", value: 17677, type: "retail" },
+                { lat: -3.43602, lng: 114.76082, name: "Sarinah Outlet Bandara Internasional Syamsudin Noor", value: 13566, type: "retail" },
+                { lat: -8.67906, lng: 115.26353, name: "Sarinah Outlet The Meru Sanur", value: 19811, type: "retail" },
+                { lat: -7.79336, lng: 110.48276, name: "Sarinah Outlet Sarinah Prambanan", value: 16755, type: "retail" },
+                { lat: -6.08811, lng: 106.73416, name: "Sarinah Outlet Riverwalk Island PIK", value: 15322, type: "retail" },
+                { lat: -6.22023, lng: 106.65971, name: "Sarinah Outlet Jakarta Premium Outlet, Alam Sutera Tangerang", value: 18401, type: "retail" }
+            ];
+
+            const hospitalityList = [
+                { lat: -0.78928, lng: 113.92133, name: "Kantor Hotel Indonesia Group", value: 17844, type: "hospitality" },
+                { lat: -8.69547, lng: 115.26368, name: "Kantor Hotel Internasional Sanur Indonesia", value: 14233, type: "hospitality" },
+                { lat: -6.24527, lng: 106.8752, name: "Kantor Hotel Indonesia Properti", value: 19711, type: "hospitality" },
+                { lat: -8.67906, lng: 115.26353, name: "The Meru Sanur", value: 16299, type: "hospitality" },
+                { lat: -8.6774, lng: 115.26371, name: "Bali Beach Hotel", value: 13822, type: "hospitality" },
+                { lat: -8.80497, lng: 115.22942, name: "Merusaka Nusa Dua", value: 18355, type: "hospitality" },
+                { lat: -0.9568, lng: 100.35669, name: "Truntum Padang", value: 14988, type: "hospitality" },
+                { lat: -8.89239, lng: 116.31721, name: "Truntum Mandalika", value: 17211, type: "hospitality" },
+                { lat: 2.66535, lng: 98.93091, name: "Khas Parapat", value: 13399, type: "hospitality" },
+                { lat: 3.59136, lng: 98.677, name: "Grand Inna Medan", value: 19622, type: "hospitality" },
+                { lat: -6.96306, lng: 106.50688, name: "Grand Inna Samudera Beach", value: 18755, type: "hospitality" },
+                { lat: -7.26254, lng: 112.74162, name: "Grand Inna Tunjungan", value: 12544, type: "hospitality" },
+                { lat: -7.6931, lng: 112.62787, name: "Inna Tretes Hotel & Resort", value: 15210, type: "hospitality" },
+                { lat: -8.72279, lng: 115.17024, name: "Truntum Kuta", value: 17366, type: "hospitality" },
+                { lat: -8.65474, lng: 115.21661, name: "Inna Bali Heritage", value: 16488, type: "hospitality" },
+                { lat: -8.68476, lng: 115.26394, name: "Inna Sindhu Beach", value: 18890, type: "hospitality" }
+            ];
+
+            const destmanageList = [
+                { lat: -7.79336, lng: 110.48276, name: "Taman Wisata Candi Prambanan", value: 17122, type: "destmanage" },
+                { lat: -7.6012, lng: 110.19786, name: "Taman Wisata Candi Borobudur", value: 13844, type: "destmanage" },
+                { lat: -7.77074, lng: 110.48564, name: "Taman Wisata Candi Ratu Boko", value: 19533, type: "destmanage" },
+                { lat: -6.30204, lng: 106.88989, name: "Taman Mini Indonesia Indah", value: 16421, type: "destmanage" },
+                { lat: -7.7745, lng: 110.38917, name: "The Manohara Hotel", value: 14990, type: "destmanage" },
+                { lat: -7.60787, lng: 110.20376, name: "Teather Borobudur Spiritual Sanctuary", value: 18311, type: "destmanage" },
+                { lat: -7.60075, lng: 110.19706, name: "Kampung Seni Borobudur", value: 12855, type: "destmanage" }
+            ];
+
+            const tourismList = [
+                { lat: -8.80344, lng: 115.22828, name: "Kawasan Nusa Dua", value: 17699, type: "tourism" },
+                { lat: -8.89509, lng: 116.30428, name: "Kawasan Mandalika", value: 14822, type: "tourism" },
+                { lat: -8.73658, lng: 119.8468, name: "Kawasan Golo Mori", value: 19311, type: "tourism" },
+                { lat: -6.19661, lng: 106.82254, name: "Kantor Pusat", value: 16488, type: "tourism" }
+            ];
+
+            const holdingList = [
+                { lat: -6.18766, lng: 106.82381, name: "Sarinah Thamrin", value: 17344, type: "holding" }
+            ];
+
+            const jawaGroup = [
+                { lat: -6.2088, lng: 106.8456, name: "Jakarta", value: 15000, type: "airport" },
+                { lat: -6.9175, lng: 107.6191, name: "Bandung", value: 12000, type: "airport" },
+                { lat: -7.2575, lng: 112.7521, name: "Surabaya", value: 18000, type: "airport" },
+                { lat: -6.9667, lng: 110.4167, name: "Semarang", value: 9000, type: "hotel" },
+                { lat: -7.8014, lng: 110.3644, name: "Yogyakarta", value: 7500, type: "hotel" }
+            ];
+
+            // Data untuk grup 2 (Kalimantan) - 5 titik
+            const kalimantanGroup = [
+                { lat: -0.0263, lng: 109.3425, name: "Pontianak", value: 8500, type: "airport" },
+                { lat: -1.2680, lng: 116.8289, name: "Balikpapan", value: 11000, type: "airport" },
+                { lat: -3.3186, lng: 114.5944, name: "Banjarmasin", value: 9500, type: "airport" },
+                { lat: 0.5071, lng: 101.4478, name: "Pekanbaru", value: 7000, type: "hotel" },
+                { lat: -2.2136, lng: 113.9108, name: "Palangka Raya", value: 6000, type: "hotel" }
+            ];
+            
+            // Layer groups untuk manajemen marker
+            const jawaGroupLayer = L.layerGroup(); // Layer untuk marker grup Jawa (1 marker)
+            const kalimantanGroupLayer = L.layerGroup(); // Layer untuk marker grup Kalimantan (1 marker)
+            const jawaDetailLayer = L.layerGroup(); // Layer untuk 5 marker detail Jawa
+            const kalimantanDetailLayer = L.layerGroup(); // Layer untuk 5 marker detail Kalimantan
+            
+            // State untuk melacak zoom status
+            let currentZoomState = 'overview'; // 'overview', 'jawa', 'kalimantan'
+            
+            // Fungsi untuk membuat marker grup (tampilan overview)
+            function createGroupMarker(groupData, groupName, color) {
+                // Hitung rata-rata koordinat
+                const avgLat = groupData.reduce((sum, point) => sum + point.lat, 0) / groupData.length;
+                const avgLng = groupData.reduce((sum, point) => sum + point.lng, 0) / groupData.length;
+                
+                const icon = L.divIcon({
+                    html: `
+                        <div style="
+                            background-color: white;
+                            color: #82AB40;
+                            border-radius: 8px;
+                            padding: 8px 12px;
+                            font-weight: bold;
+                            border: 2px solid #82AB40;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+                            cursor: pointer;
+                            font-size: 14px;
+                            white-space: nowrap;
+                        ">
+                            ${groupName}
+                        </div>
+                    `,
+                    className: 'group-marker',
+                    iconSize: [100, 40],
+                    iconAnchor: [50, 20]
+                });
+                
+                const marker = L.marker([avgLat, avgLng], { 
+                    icon: icon,
+                    interactive: true,
+                    bubblingMouseEvents: true
+                });
+                
+                // Event klik - panggil zoomToGroup dengan data grup ini
+                marker.on('click', function() {
+                    zoomToGroup(groupName, groupData);
+                });
+                
+                return marker;
+            }
+
+            // Fungsi untuk membuat detail marker (5 titik dalam grup)
+            function createDetailMarker(point) {
+                // Tentukan icon berdasarkan type (bandara atau hotel)
+                var iconName
+                switch(point.type) {
+                    case "airport":
+                        iconName = 'fa-plane';
+                        break;
+                    case "retail":
+                        iconName = 'fa-shop';
+                        break;
+                    case "hospitality":
+                        iconName = 'fa-bed';
+                        break;
+                    case "destmanage":
+                        iconName = 'fa-bus';
+                        break;
+                    case "tourism":
+                        iconName = 'fa-suitcase';
+                        break;
+                    case "holding":
+                        iconName = 'fa-house';
+                        break;
+                    case "aviation":
+                        iconName = 'fa-cart-flatbed-suitcase';
+                        break;
+                }
+                
+                const icon = L.divIcon({
+                    html: `
+                        <div style="position: relative; width: 140px; margin-bottom: 10px;">
+                            <!-- Box dengan konten -->
+                            <div style="
+                                background-color: white;
+                                border-radius: 8px;
+                                padding: 8px;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+                                border: 1px solid #e0e0e0;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                            ">
+                                <!-- Icon square dengan background hijau -->
+                                <div style="
+                                    background-color: #82AB40;
+                                    width: 24px;
+                                    height: 24px;
+                                    border-radius: 4px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    color: white;
+                                    font-size: 12px;
+                                    flex-shrink: 0;
+                                ">
+                                    <i class="fas ${iconName}"></i>
+                                </div>
+                                
+                                <!-- Nama dengan warna hijau -->
+                                <div style="
+                                    font-weight: 600;
+                                    font-size: 12px;
+                                    color: #82AB40;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                ">
+                                    ${point.name}
+                                </div>
+                            </div>
+                            
+                            <!-- Caret/arrow yang mengarah ke titik -->
+                            <div style="
+                                position: absolute;
+                                bottom: -6px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                width: 0;
+                                height: 0;
+                                border-left: 6px solid transparent;
+                                border-right: 6px solid transparent;
+                                border-top: 6px solid white;
+                            "></div>
+                        </div>
+                    `,
+                    className: 'detail-marker',
+                    iconSize: [140, 50],
+                    iconAnchor: [70, 45],
+                    popupAnchor: [0, -45]
+                });
+                
+                const marker = L.marker([point.lat, point.lng], { 
+                    icon: icon,
+                    interactive: true,
+                    bubblingMouseEvents: true
+                });
+                
+                // Popup detail dengan gambar dan informasi lengkap
+                marker.bindPopup(`
+                    <div style="
+                        width: 300px;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    ">
+                        <!-- Gambar -->
+                        <div style="
+                            width: 100%;
+                            height: 150px;
+                            border-radius: 8px 8px 0 0;
+                            overflow: hidden;
+                            margin-bottom: 12px;
+                        ">
+                            <img src="https://asset.kompas.com/crops/jsI9iT7XGf8pu-DRFOLwHE1FAEY=/3x1:591x393/1200x800/data/photo/2025/07/01/6863d2bad5d3a.jpg" 
+                                alt="${point.name}"
+                                style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        
+                        <!-- Konten -->
+                        <div style="padding: 0 12px 12px 12px;">
+                            <!-- Nama (hitam tebal) -->
+                            <h3 style="
+                                margin: 0 0 6px 0;
+                                font-size: 18px;
+                                font-weight: 700;
+                                color: #1f2937;
+                            ">
+                                ${point.name}
+                            </h3>
+                            
+                            <!-- Emisi karbon -->
+                            <div style="
+                                margin: 0 0 15px 0;
+                                padding: 10px;
+                                background-color: #f9fafb;
+                                border-radius: 6px;
+                                border-left: 3px solid #82AB40;
+                            ">
+                                <div style="
+                                    font-size: 22px;
+                                    font-weight: 700;
+                                    color: #1f2937;
+                                    margin-bottom: 2px;
+                                ">
+                                    ${point.value.toLocaleString()}
+                                </div>
+                                <div style="
+                                    font-size: 12px;
+                                    color: #6b7280;
+                                ">
+                                    ton CO2eq
+                                </div>
+                            </div>
+                            
+                            <!-- Tombol More Detail -->
+                            <button style="
+                                width: 100%;
+                                padding: 10px;
+                                background-color: #82AB40;
+                                color: white;
+                                border: none;
+                                border-radius: 6px;
+                                font-size: 14px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                transition: background-color 0.2s ease;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 8px;
+                            " 
+                            onmouseover="this.style.backgroundColor='#739a38'"
+                            onmouseout="this.style.backgroundColor='#82AB40'"
+                            onclick="showLocationDetail('${point.name}', '${point.type}', ${point.value})">
+                                <i class="fas fa-info-circle"></i>
+                                More Detail
+                            </button>
+                        </div>
+                    </div>
+                `);
+                
+                return marker;
+            }
+
+            function getRisikoCard(risk, type){
+                tinggiHtml = `
+                    <div style="
+                        background-color: #FFCFC9;
+                        border-radius: 12px;
+                        padding: 10px;
+                        color: white;
+                        margin-bottom: 12px;
+                        position: relative;
+                    ">
+                        <div class="d-flex" style="
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #1f2937;
+                            margin-bottom: 2px;
+                        ">
+                            <span class="flex-grow-1">${type}</span> <span class="flex-shrink-0">Tinggi</span>
+                        </div>
+                    </div>
+                `;
+
+                sedangHtml = `
+                    <div style="
+                        background-color: #FFC8AA;
+                        border-radius: 12px;
+                        padding: 10px;
+                        color: white;
+                        margin-bottom: 12px;
+                        position: relative;
+                    ">
+                        <div class="d-flex" style="
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #1f2937;
+                            margin-bottom: 2px;
+                        ">
+                            <span class="flex-grow-1">${type}</span> <span class="flex-shrink-0">Sedang</span>
+                        </div>
+                    </div>
+                `;
+
+                rendahHtml = `
+                    <div style="
+                        background-color: #D4EDBC;
+                        border-radius: 12px;
+                        padding: 10px;
+                        color: white;
+                        margin-bottom: 12px;
+                        position: relative;
+                    ">
+                        <div class="d-flex" style="
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #1f2937;
+                            margin-bottom: 2px;
+                        ">
+                            <span class="flex-grow-1">${type}</span> <span class="flex-shrink-0">Rendah</span>
+                        </div>
+                    </div>
+                `;
+
+                amanHtml = `
+                    <div style="
+                        background-color: #E8EAED;
+                        border-radius: 12px;
+                        padding: 10px;
+                        color: #1f2937;
+                        margin-bottom: 12px;
+                        position: relative;
+                    ">
+                        <div class="d-flex" style="
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #1f2937;
+                            margin-bottom: 2px;
+                        ">
+                            <span class="flex-grow-1">${type}</span> <span class="flex-shrink-0">Tidak Ada Risiko</span>
+                        </div>
+                    </div>
+                `;
+
+                switch(risk) {
+                    case "tinggi":
+                        riskhtml = tinggiHtml;
+                        break;
+                    case "sedang":
+                        riskhtml = sedangHtml;
+                        break;
+                    case "rendah":
+                        riskhtml = rendahHtml;
+                        break;
+                    case "aman":
+                        riskhtml = amanHtml;
+                        break;
+                }
+
+                return riskhtml;
+            }
+
+            // Fungsi untuk menampilkan detail lokasi di panel
+            window.showLocationDetail = function(name, type, emissions) {
+                const detail = locationDetails[name];
+                detail.emissions = emissions
+                if (!detail) return;
+                
+                // Tampilkan detail card container
+                const detailContainer = document.getElementById('detailCardContainer');
+                var iconName
+                switch(detail.type) {
+                    case "airport":
+                        iconName = 'fa-plane';
+                        break;
+                    case "retail":
+                        iconName = 'fa-shop';
+                        break;
+                    case "hospitality":
+                        iconName = 'fa-bed';
+                        break;
+                    case "destmanage":
+                        iconName = 'fa-bus';
+                        break;
+                    case "tourism":
+                        iconName = 'fa-suitcase';
+                        break;
+                    case "holding":
+                        iconName = 'fa-house';
+                        break;
+                    case "aviation":
+                        iconName = 'fa-cart-flatbed-suitcase';
+                        break;
+                }
+                
+                // Buat HTML untuk detail card yang sederhana
+                const detailCardHTML = `
+                    <div class="detail-card">
+                        <div class="detail-card-header">
+                            <h3 class="detail-card-title">
+                                <i class="fas ${iconName}"></i>
+                                ${name}
+                            </h3>
+                            <button class="detail-card-close" onclick="window.document.body.click()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Gambar -->
+                        <div class="detail-card-image">
+                            <img src="https://asset.kompas.com/crops/jsI9iT7XGf8pu-DRFOLwHE1FAEY=/3x1:591x393/1200x800/data/photo/2025/07/01/6863d2bad5d3a.jpg" 
+                                alt="${name}">
+                        </div>
+                        
+                        <!-- Konten -->
+                        <div style="padding: 15px;">                            
+                            <!-- Emisi -->
+                            <div style="
+                                margin-bottom: 15px;
+                                padding: 12px;
+                                background-color: #f9fafb;
+                                border-radius: 6px;
+                                border-left: 3px solid #82AB40;
+                            ">
+                                <div style="
+                                    font-size: 24px;
+                                    font-weight: 700;
+                                    color: #1f2937;
+                                    margin-bottom: 2px;
+                                ">
+                                    ${emissions.toLocaleString()}
+                                </div>
+                                <div style="
+                                    font-size: 12px;
+                                    color: #6b7280;
+                                ">
+                                    ton CO2eq
+                                </div>
+                            </div>
+                            
+                            <!-- Info tambahan -->
+
+                            ${getRisikoCard(detail.banjir, 'Banjir')}
+                            ${getRisikoCard(detail.kekeringan, 'Kekeringan')}
+                            ${getRisikoCard(detail.cuacaEkstrim, 'Cuaca Ekstrim')}
+                            ${getRisikoCard(detail.longsor, 'Tanah Longsor')}
+                            
+                        </div>
+                    </div>
+                `;
+                
+                detailContainer.innerHTML = detailCardHTML;
+                detailContainer.style.display = 'block';
+                
+                // Update data di card summary berdasarkan lokasi yang dipilih
+                updateSummaryData(name, detail);
+                
+                // Scroll ke atas panel
+                document.querySelector('.map-control-panel').scrollTop = 0;
+            };
+
+            // Fungsi untuk update data di card summary
+            function updateSummaryData(locationName, locationDetail) {
+                // Update total gas emission
+                document.querySelector('.emission-value').textContent = locationDetail.emissions.toLocaleString();
+                
+                // Update scope 1 (misalnya: 30% dari total untuk bandara, 40% untuk hotel)
+                const scope1Value = locationDetail.type === 'airport' 
+                    ? (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.3).toLocaleString(undefined, {maximumFractionDigits: 2})
+                    : (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.4).toLocaleString(undefined, {maximumFractionDigits: 2});
+                
+                document.querySelectorAll('.scope-value')[0].textContent = scope1Value;
+                
+                // Update scope 2 (misalnya: 50% dari total untuk bandara, 40% untuk hotel)
+                const scope2Value = locationDetail.type === 'airport'
+                    ? (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.5).toLocaleString(undefined, {maximumFractionDigits: 2})
+                    : (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.4).toLocaleString(undefined, {maximumFractionDigits: 2});
+                
+                document.querySelectorAll('.scope-value')[1].textContent = scope2Value;
+                
+                // Update scope 3 (misalnya: 20% dari total untuk bandara, 20% untuk hotel)
+                const scope3Value = locationDetail.type === 'airport'
+                    ? (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.2).toLocaleString(undefined, {maximumFractionDigits: 2})
+                    : (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.2).toLocaleString(undefined, {maximumFractionDigits: 2});
+                
+                document.querySelectorAll('.scope-value')[2].textContent = scope3Value;
+                
+                // Update consumption cards (misalnya: proportional berdasarkan emisi)
+                const totalEmissions = parseInt(locationDetail.emissions.replace(/,/g, ''));
+                
+                // Electricity (misalnya: 60% dari emisi)
+                const electricityValue = Math.round(totalEmissions * 0.6).toLocaleString();
+                document.querySelectorAll('.consumption-value')[0].textContent = electricityValue;
+                
+                // Water (misalnya: 25% dari emisi)
+                const waterValue = Math.round(totalEmissions * 0.25).toLocaleString();
+                document.querySelectorAll('.consumption-value')[1].textContent = waterValue;
+                
+                // Fuel (misalnya: 15% dari emisi)
+                const fuelValue = Math.round(totalEmissions * 0.15).toLocaleString();
+                document.querySelectorAll('.consumption-value')[2].textContent = fuelValue;
+            }
+
+            // Fungsi untuk menutup detail card dan reset data
+            function closeDetailCard() {
+                const detailContainer = document.getElementById('detailCardContainer');
+                detailContainer.style.display = 'none';
+                detailContainer.innerHTML = '';
+                
+                // Reset data summary ke default
+                resetSummaryData();
+            }
+
+            // Fungsi untuk reset data summary ke default
+            function resetSummaryData() {
+                // Reset total gas emission
+                document.querySelector('.emission-value').textContent = '42,112.78';
+                
+                // Reset scope cards
+                const scopeValues = ['11,781.74', '37,490.05', '865.29'];
+                document.querySelectorAll('.scope-value').forEach((element, index) => {
+                    element.textContent = scopeValues[index];
+                });
+                
+                // Reset consumption cards
+                const consumptionValues = ['2,782,199', '2,045,211', '256,115'];
+                document.querySelectorAll('.consumption-value').forEach((element, index) => {
+                    element.textContent = consumptionValues[index];
+                });
+            }
+            // Fungsi untuk zoom ke grup
+            function zoomToGroup(groupName, groupData) {
+                // Hide semua detail terlebih dahulu
+                const allDetailLayers = [jawaDetailLayer, kalimantanDetailLayer];
+                allDetailLayers.forEach(layer => {
+                    map.removeLayer(layer);
+                    layer.clearLayers();
+                });
+                
+                // Show marker grup untuk semua grup kecuali yang di-zoom
+                const allGroups = [
+                    { name: 'Regional 1', data: jawaGroup, layer: jawaGroupLayer },
+                    { name: 'Regional 2', data: kalimantanGroup, layer: kalimantanGroupLayer }
+                ];
+                
+                allGroups.forEach(group => {
+                    map.removeLayer(group.layer);
+                    group.layer.clearLayers();
+                    
+                    if (group.name === groupName) {
+                        // Buat detail markers untuk grup yang di-zoom
+                        group.data.forEach(point => {
+                            const marker = createDetailMarker(point, '#82AB40');
+                            group.layer.addLayer(marker); // Gunakan layer yang sama tapi isinya detail
+                        });
+                    } else {
+                        // Buat group marker untuk grup lain
+                        const groupMarker = createGroupMarker(group.data, group.name, '#82AB40');
+                        group.layer.addLayer(groupMarker);
+                    }
+                    
+                    map.addLayer(group.layer);
+                });
+                
+                // Fit bounds untuk grup yang di-zoom
+                const bounds = L.latLngBounds(groupData.map(point => [point.lat, point.lng]));
+                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 10 });
+                
+                // Show zoom control
+                document.getElementById('zoomControl').classList.add('show');
+                currentZoomState = groupName;
+            }
+
+            // Fungsi untuk kembali ke overview
+            function backToOverview() {
+                {% comment %} const allGroups = [
+                    { name: 'Regional 1', data: jawaGroup, layer: jawaGroupLayer },
+                    { name: 'Regional 2', data: kalimantanGroup, layer: kalimantanGroupLayer }
+                ];
+                
+                allGroups.forEach(group => {
+                    map.removeLayer(group.layer);
+                    group.layer.clearLayers();
+                    
+                    // Buat group marker untuk semua grup
+                    const groupMarker = createGroupMarker(group.data, group.name, '#82AB40');
+                    group.layer.addLayer(groupMarker);
+                    map.addLayer(group.layer);
+                }); {% endcomment %}
+
+                var markerlist
+                switch(entity_choose) {
+                    case "airport":
+                        markerlist = airportList
+                        break;
+                    case "retail":
+                        markerlist = retailList
+                        break;
+                    case "hospitality":
+                        markerlist = hospitalityList
+                        break;
+                    case "destmanage":
+                        markerlist = destmanageList
+                        break;
+                    case "tourism":
+                        markerlist = tourismList
+                        break;
+                    case "holding":
+                        markerlist = holdingList
+                        break;
+                    case "aviation":
+                        markerlist = aviationList
+                        break;
+                }
+
+                activeMarkers.forEach(m => {
+                    map.removeLayer(m);
+                });
+                activeMarkers = [];
+
+                markerlist.forEach(point => {
+                    const marker = createDetailMarker(point, '#82AB40');
+                    activeMarkers.push(marker);
+                    map.addLayer(marker); // Gunakan layer yang sama tapi isinya detail
+                });
+                
+                document.getElementById('zoomControl').classList.remove('show');
+                map.setView(center_point, 5.8);
+                currentZoomState = 'overview';
+            }
+            // Event listener untuk tombol back
+            document.getElementById('zoomBackBtn').addEventListener('click', backToOverview);
+            
+            // Inisialisasi dengan overview view
+            backToOverview();
+            
+            // Generate dropdown tahun
+            generateYearOptions();
+            
+            // Event listener untuk dropdown tahun
+            const yearSelect = document.getElementById('year-select');
+            if (yearSelect) {
+                yearSelect.addEventListener('change', function(e) {
+                const selectedYear = e.target.value;
+                console.log('Tahun dipilih:', selectedYear);
+                // Di sini Anda bisa tambahkan logika untuk update peta berdasarkan tahun
+                });
+            }
+            
+            // Event listener untuk filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                // Hapus class active dari semua buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Tambah class active ke button yang diklik
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                console.log('Filter dipilih:', filter);
+                // Update chart berdasarkan filter
+                updateChart(filter);
+                });
+            });
+            
+            // Inisialisasi chart
+            let reductionChart = null;
+            
+            // Fungsi untuk membuat chart
+            function initChart() {
+                const chartDom = document.getElementById('reduction-chart');
+                if (!chartDom) return;
+                
+                reductionChart = echarts.init(chartDom);
+                
+                // Data untuk menunjukkan penurunan (nilai negatif)
+                const years = ['2020', '2021', '2022', '2023', '2024', '2025'];
+                const reductionData = [0, -43973.123, -48222.333, -55252.112, -119145.845, -266006.410];
+                
+                // Konfigurasi gradient untuk area
+                const gradientColor = new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    { offset: 0, color: 'rgba(130, 171, 64, 0.4)' },
+                    { offset: 0.7, color: 'rgba(130, 171, 64, 0.1)' },
+                    { offset: 1, color: 'rgba(130, 171, 64, 0)' }
+                ]);
+                
+                const option = {
+                    tooltip: {
+                        trigger: 'item',
+                        backgroundColor: 'rgba(50, 50, 50, 0.9)',
+                        borderColor: '#333',
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 12
+                        },
+                        position: function(point, params, dom, rect, size) {
+                            // Estimate tooltip size
+                            const tooltipWidth = 150;
+                            const tooltipHeight = 60;
+                            
+                            // Boundary check dalam chart container
+                            const chartWidth = size.viewSize[0];
+                            const chartHeight = size.viewSize[1];
+                            
+                            let x = point[0];
+                            let y = point[1];
+                            
+                            // Default: kanan atas
+                            let posX = x + 10;
+                            let posY = y - tooltipHeight - 10;
+                            
+                            // Jika keluar kanan, pindah ke kiri
+                            if (posX + tooltipWidth > chartWidth) {
+                                posX = x - tooltipWidth - 10;
+                            }
+                            
+                            // Jika keluar kiri, pindah ke kanan
+                            if (posX < 0) {
+                                posX = x + 20;
+                            }
+                            
+                            // Jika keluar atas, pindah ke bawah
+                            if (posY < 0) {
+                                posY = y + 20;
+                            }
+                            
+                            // Jika keluar bawah, pindah ke atas
+                            if (posY + tooltipHeight > chartHeight) {
+                                posY = y - tooltipHeight - 20;
+                            }
+                            
+                            return [posX, posY];
+                        },
+                        extraCssText: 'z-index: 9999 !important;',
+                        formatter: function(params) {
+                            const value = Math.abs(params.value).toLocaleString();
+                            const year = years[params.dataIndex];
+                            return `
+                                <div style="font-weight: bold; margin-bottom: 3px;">${year}</div>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="display: inline-block; width: 8px; height: 8px; background-color: #82AB40; border-radius: 50%; margin-right: 6px;"></span>
+                                    <span>Reduction: <strong>${value}</strong> ton CO2eq</span>
+                                </div>
+                            `;
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        top: '15%',
+                        containLabel: true,
+                        show: true,
+                        borderColor: '#f0f0f0'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: years,
+                        axisLine: {
+                            lineStyle: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        axisTick: {
+                            show: true,
+                            alignWithLabel: true,
+                            lineStyle: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        axisLabel: {
+                            color: '#666',
+                            fontSize: 11,
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#f0f0f0',
+                                type: 'dashed'
+                            }
+                        }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: 'ton CO2eq',
+                        nameTextStyle: {
+                            color: 'white',
+                            fontSize: 11,
+                            padding: [0, 0, 10, 40]
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        axisTick: {
+                            show: true,
+                            lineStyle: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        axisLabel: {
+                            show: false, // Label angka di hide
+                            color: '#666'
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#f0f0f0',
+                                type: 'dashed'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Reduction',
+                            type: 'line',
+                            data: reductionData,
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 8,
+                            lineStyle: {
+                                width: 3,
+                                color: '#82AB40'
+                            },
+                            itemStyle: {
+                                color: '#82AB40',
+                                borderWidth: 2,
+                                borderColor: '#fff'
+                            },
+                            areaStyle: {
+                                color: gradientColor,
+                                origin: 'end' // Untuk data negatif, area di atas
+                            },
+                            label: {
+                                show: true,
+                                position: 'top',
+                                formatter: function(params) {
+                                    return Math.abs(params.value).toLocaleString();
+                                },
+                                color: '#82AB40',
+                                fontSize: 10,
+                                fontWeight: 'bold'
+                            }
+                        }
+                    ]
+                };
+                
+                reductionChart.setOption(option);
+                
+                // Responsive chart
+                window.addEventListener('resize', function() {
+                    reductionChart.resize();
+                });
+            }
+            
+            // Fungsi untuk update chart berdasarkan filter
+            function updateChart(filter) {
+                if (!reductionChart) return;
+                
+                let data;
+                
+                switch(filter) {
+                    case 'scope1':
+                        data = [0, -10000, -20000, -30000, -40000, -50000];
+                        break;
+                    case 'scope2':
+                        data = [0, -20000, -40000, -60000, -80000, -100000];
+                        break;
+                    case 'scope3':
+                        data = [0, -5000, -10000, -15000, -20000, -25000];
+                        break;
+                    default: // all
+                        data = [0, -43973.123, -48222.333, -55252.112, -119145.845, -266006.410];
+                }
+                
+                const option = {
+                    series: [{
+                        data: data
+                    }]
+                };
+                
+                reductionChart.setOption(option);
+            }
+            
+            // Inisialisasi chart setelah sedikit delay
+            setTimeout(() => {
+                initChart();
+            }, 300);
+            
+            // Pastikan peta mengisi seluruh area saat window di-resize
+            window.addEventListener('resize', function() {
+                map.invalidateSize();
+                if (reductionChart) {
+                    reductionChart.resize();
+                }
+            });
+            
+            // Inisialisasi ulang size peta
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 200);
+            // Close detail card saat klik di luar panel atau saat back to overview
+            document.addEventListener('click', function(event) {
+                const detailContainer = document.getElementById('detailCardContainer');
+                const mapPanel = document.querySelector('.map-control-panel');
+                
+                // Jika detail card terbuka dan klik di luar panel
+                if (detailContainer.style.display === 'block' && 
+                    !mapPanel.contains(event.target) &&
+                    !event.target.closest('.leaflet-popup')) {
+                    closeDetailCard();
+                }
+            });
+
+            // Juga close saat klik back to overview
+            document.getElementById('zoomBackBtn').addEventListener('click', function() {
+                closeDetailCard();
+            });
+
+            loadZipToLeaflet(map)
+
+            // Fungsi utama untuk memuat file ZIP
+            async function loadZipToLeaflet(map) {
+                try {
+                    // Baca file ZIP
+                    const response = await fetch(`assets/Airport.zip`);
+                    if (!response.ok) {
+                        throw new Error(`Gagal mengambil file: ${response.status} ${response.statusText}`);
+                    }
+
+                    const arrayBuffer = await response.arrayBuffer();
+
+                    const zip = new JSZip();
+                    const zipData = await zip.loadAsync(arrayBuffer);
+                    
+                    // Identifikasi semua file dalam ZIP
+                    const files = Object.keys(zipData.files);
+                    
+                    // Kelompokkan file berdasarkan layer
+                    const layers = groupFilesByLayer(files);
+                    
+                    console.log('Layers ditemukan:', layers);
+                    
+                    // Proses setiap layer
+                    for (const layerName in layers) {
+                        await processLayer(layerName, layers[layerName], zipData, map);
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading ZIP:', error);
+                }
+            }
+
+            // Kelompokkan file berdasarkan nama layer
+            function groupFilesByLayer(files) {
+                const layers = {};
+                
+                files.forEach(file => {
+                    // Ambil nama base file (tanpa ekstensi)
+                    const baseName = file.replace(/\.[^/.]+$/, "");
+                    const extension = file.split('.').pop().toLowerCase();
+                    
+                    if (!layers[baseName]) {
+                        layers[baseName] = {};
+                    }
+                    
+                    layers[baseName][extension] = file;
+                });
+                
+                return layers;
+            }
+
+            // Proses setiap layer
+            async function processLayer(layerName, layerFiles, zipData, map) {
+                try {
+                    // Cek jika ini shapefile
+                    if (layerFiles.shp && layerFiles.dbf) {
+                        await loadShapefile(layerName, layerFiles, zipData, map);
+                    }
+                    
+                    // Cek jika ini GeoTIFF
+                    if (layerFiles.tif || layerFiles.tiff) {
+                        await loadGeoTIFF(layerName, layerFiles, zipData, map);
+                    }
+                    
+                } catch (error) {
+                    console.error(`Error processing layer ${layerName}:`, error);
+                }
+            }
+
+            // Fungsi untuk memuat shapefile
+            async function loadShapefile(layerName, layerFiles, zipData, map) {
+                console.log(`Loading shapefile: ${layerName}`);
+                
+                // Kumpulkan semua file shapefile yang diperlukan
+                const shapefileFiles = {};
+                const requiredExtensions = ['shp', 'dbf', 'prj', 'shx'];
+                
+                for (const ext of requiredExtensions) {
+                    if (layerFiles[ext]) {
+                        const file = await zipData.file(layerFiles[ext]).async('arraybuffer');
+                        shapefileFiles[ext] = file;
+                    }
+                }
+                
+                // Konversi ke GeoJSON menggunakan shpjs
+                const geoJson = await shp.combine([
+                    shapefileFiles.shp,
+                    shapefileFiles.dbf,
+                    shapefileFiles.prj,
+                    shapefileFiles.shx
+                ]);
+                
+                // Tambahkan ke peta
+                const layer = L.geoJSON(geoJson, {
+                    style: function(feature) {
+                        return {
+                            color: getColorForLayer(layerName),
+                            weight: 2,
+                            opacity: 0.8,
+                            fillOpacity: 0.3
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        if (feature.properties) {
+                            let popupContent = `<h4>${layerName}</h4>`;
+                            for (const key in feature.properties) {
+                                popupContent += `<b>${key}:</b> ${feature.properties[key]}<br>`;
+                            }
+                            layer.bindPopup(popupContent);
+                        }
+                    }
+                }).addTo(map);
+                
+                // Simpan referensi layer
+                layer._layerName = layerName;
+                
+                return layer;
+            }
+
+            // Fungsi untuk memuat GeoTIFF
+            async function loadGeoTIFF(layerName, layerFiles, zipData, map) {
+                console.log(`🚀 Loading GeoTIFF: ${layerName}`);
+
+                // Debug: lihat file apa yang ada
+                console.log('Available files for this layer:', layerFiles);
+                
+                const tifFile = layerFiles.tif || layerFiles.tiff;
+                if (!tifFile) {
+                    console.log(`⚠️ No TIFF file found for ${layerName}`);
+                    return;
+                }
+                
+                try {
+                    // 1. Get file size info
+                    const file = zipData.file(tifFile);
+                    console.log(`📁 File size: ${file._data.uncompressedSize} bytes`);
+                    
+                    // 2. Read as blob first
+                    const blob = await file.async('blob');
+                    console.log(`✅ Blob created, size: ${blob.size} bytes`);
+                    
+                    // 3. Create object URL
+                    const url = URL.createObjectURL(blob);
+                    console.log(`🔗 Object URL created: ${url.substring(0, 50)}...`);
+                    
+                    // 4. Fetch as arraybuffer
+                    const response = await fetch(url);
+                    const arrayBuffer = await response.arrayBuffer();
+                    console.log(`✅ ArrayBuffer obtained, size: ${arrayBuffer.byteLength} bytes`);
+                    
+                    // 5. DEBUG: Check what's available
+                    console.log('🔍 Checking available georaster functions:');
+                    console.log('- window.georaster:', window.georaster);
+                    console.log('- window.parseGeoraster:', window.parseGeoraster);
+                    console.log('- typeof georaster:', typeof georaster);
+                    
+                    // 6. Parse - try different approaches
+                    let raster;
+                    
+                    // Approach A: window.georaster.parse
+                    if (window.georaster && typeof window.georaster.parse === 'function') {
+                        console.log('🔄 Parsing with window.georaster.parse');
+                        raster = await window.georaster.parse(arrayBuffer);
+                    }
+                    // Approach B: parseGeoraster global function
+                    else if (window.parseGeoraster && typeof window.parseGeoraster === 'function') {
+                        console.log('🔄 Parsing with window.parseGeoraster');
+                        raster = await window.parseGeoraster(arrayBuffer);
+                    }
+                    // Approach C: Direct georaster function
+                    else if (typeof georaster === 'function') {
+                        console.log('🔄 Parsing with georaster() directly');
+                        raster = await georaster(arrayBuffer);
+                    }
+                    else {
+                        throw new Error('❌ No georaster parsing function found');
+                    }
+                    
+                    console.log(`✅ Georaster parsed successfully for ${layerName}`);
+                    
+                    // 7. Create layer
+                    const layer = new GeoRasterLayer({
+                        georaster: raster,
+                        opacity: 0.6,
+                        pixelValuesToColorFn: (pixelValues) => {
+                            const value = pixelValues[0] || 0;
+                            
+                            // Color based on layer name
+                            if (layerName.toLowerCase().includes('banjir')) {
+                                const intensity = Math.min(value / 100, 1) * 0.7;
+                                return `rgba(0, 100, 255, ${intensity})`;
+                            } 
+                            else if (layerName.toLowerCase().includes('kekeringan')) {
+                                const intensity = Math.min(value / 100, 1) * 0.7;
+                                return `rgba(255, 150, 0, ${intensity})`;
+                            }
+                            else if (layerName.toLowerCase().includes('longsor')) {
+                                const intensity = Math.min(value / 100, 1) * 0.7;
+                                return `rgba(255, 0, 0, ${intensity})`;
+                            }
+                            
+                            return `rgba(128, 128, 128, 0.5)`;
+                        },
+                        resolution: 128 // Lower resolution for testing
+                    });
+                    
+                    layer.addTo(map);
+                    layer._layerName = layerName;
+                    
+                    // 8. Cleanup
+                    setTimeout(() => {
+                        URL.revokeObjectURL(url);
+                        console.log(`🧹 Cleaned up object URL for ${layerName}`);
+                    }, 1000);
+                    
+                    console.log(`🎉 GeoTIFF ${layerName} successfully loaded and added to map`);
+                    return layer;
+                    
+                } catch (error) {
+                    console.error(`💥 Error loading GeoTIFF ${layerName}:`, error);
+                    
+                    // Try to provide more helpful error info
+                    if (error.message.includes('not a constructor')) {
+                        console.error('Tip: GeoRasterLayer might not be loaded. Check your script tags.');
+                    }
+                    
+                    return null;
+                }
+            }
+
+            // Helper function untuk warna
+            function getColorForLayer(layerName) {
+                const colors = {
+                    'banjir': '#0066FF',
+                    'kekeringan': '#FF9900',
+                    'tanahlongsor': '#FF3300',
+                    'default': '#3388ff'
+                };
+                
+                const name = layerName.toLowerCase();
+                for (const key in colors) {
+                    if (name.includes(key)) {
+                        return colors[key];
+                    }
+                }
+                
+                return colors.default;
+            }
+
+            function getColorForRaster(value, layerName) {
+                // Sesuaikan dengan jenis data raster Anda
+                if (layerName.toLowerCase().includes('banjir')) {
+                    const opacity = Math.min(value / 100, 0.7);
+                    return `rgba(0, 102, 255, ${opacity})`;
+                } else if (layerName.toLowerCase().includes('kekeringan')) {
+                    const opacity = Math.min(value / 100, 0.7);
+                    return `rgba(255, 153, 0, ${opacity})`;
+                }
+                
+                return `rgba(100, 100, 100, 0.5)`;
+            }
+        });
+    </script>
 {% endblock %}
