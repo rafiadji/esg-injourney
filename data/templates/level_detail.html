@@ -1,21 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Environment
+  Detail Working Paper
 {% endblock %}
 
 {% block head %}
   <style type="text/css">
-    .esg-hero-idx {
-      background-size: cover;
-      background-position: bottom;
-      padding: 0px 0 0px 0;
-      height: 434px;
-    }
-    .esg-hero-idx .bg-overlay {
-      background: linear-gradient(to bottom, rgba(166, 166, 166, 1), rgba(184, 184, 184, 0.75), rgba(155, 155, 155, 0.5));
-      opacity: 0.85;
-    }
     .boxs {
       height: 400px;
       position: relative;
@@ -43,7 +33,7 @@
               <div class="row">
                 <div class="col-lg-7 col-sm-10">
                   <div class="p-5" style="margin: 0;  position: absolute; top: 50%;  left: 0%; transform: translateY(40%);">
-                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/esgindex/{{ category }}" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Detail</h1>
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="data/category/{{ category }}" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i>Detail</a></h1>
                   </div>
                 </div>
                 <!-- end col -->
@@ -71,98 +61,24 @@
             <dd>{{ matlev.evidence }}</dd>
           </dl>
           <div class="mb-0 pt-4">
-            <dl>
-              <dt>
-                List of document <button type="button" class="btn btn-success active float-end" data-bs-toggle="modal" data-bs-target=".bs-example-modal-center"><span class="icon-on"><i class="bx bx-upload large"></i> Upload Documents</span></button>
-                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                      <div class="modal-header">Uploads Documents</div>
-                      <div class="modal-body text-center p-5">
-                        {% comment %} <div class="dropzone">
-                          <div class="fallback">
-                            <input name="file" type="file" multiple="multiple" />
-                          </div>
-                          <div class="dz-message needsclick">
-                            <div class="mb-3">
-                              <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                            </div>
-
-                            <h4>Drop files here or click to upload.</h4>
-                          </div>
-                        </div>
-                        <ul class="list-unstyled mb-0" id="dropzone-preview">
-                          <li class="mt-2" id="dropzone-preview-list">
-                            <!-- This is used as the file preview template -->
-                            <div class="border rounded">
-                              <div class="d-flex p-2">
-                                <div class="flex-shrink-0 me-3">
-                                  <div class="avatar-sm bg-light rounded">
-                                    <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" alt="Dropzone-Image" />
-                                  </div>
-                                </div>
-                                <div class="flex-grow-1">
-                                  <div class="pt-1">
-                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                    <strong class="error text-danger" data-dz-errormessage></strong>
-                                  </div>
-                                </div>
-                                <div class="flex-shrink-0 ms-3">
-                                  <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        </ul> {% endcomment %}
-                        <form action="data/upload/" class="dropzone" id="my-dropzone">
-                          <div class="fallback">
-                            <input name="file" type="file" multiple="multiple" />
-                          </div>
-
-                          <div class="dz-message needsclick">
-                            <div class="mb-3">
-                              <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                            </div>
-                            <h4>Drop files here or click to upload.</h4>
-                          </div>
-                        </form>
-
-                        <ul class="list-unstyled mb-0" id="dropzone-preview">
-                          <li class="mt-2" id="dropzone-preview-list">
-                            <!-- TEMPLATE PREVIEW -->
-                            <div class="border rounded">
-                              <div class="d-flex p-2">
-                                <div class="flex-shrink-0 me-3">
-                                  <div class="avatar-sm bg-light rounded">
-                                    <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" alt="Dropzone-Image" />
-                                  </div>
-                                </div>
-
-                                <div class="flex-grow-1">
-                                  <div class="pt-1">
-                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                    <strong class="error text-danger" data-dz-errormessage></strong>
-                                  </div>
-                                </div>
-
-                                <div class="flex-shrink-0 ms-3">
-                                  <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
+            <div class="d-flex align-items-center">
+              <h5 class="heading-txt fw-semibold flex-grow-1">
+                {% if matlev.data_type == 'upload' %}
+                List of Document
+                {% else %}
+                List of Data
+                {% endif %}
+              </h5>
+              <div class="flex-shrink-0">
+                <div class="d-flex flex-wrap gap-2">
+                  {% if matlev.data_type == 'upload' %}
+                  <button type="button" class="btn btn-success active" onclick="upload_data()"><span class="icon-on"><i class="bx bx-upload large"></i> Upload Documents</span></button>
+                  {% else %}
+                  <button type="button" class="btn btn-success active" onclick="add_data()"><span class="icon-on"><i class="bx bx-plus large"></i> Add Data</span></button>
+                  {% endif %}
                 </div>
-                <!-- /.modal -->
-              </dt>
-            </dl>
+              </div>
+            </div>
             <div class="row justify-content-center">
               <div class="col-lg-8 col-sm-10">
                 <div class="text-center">
@@ -176,28 +92,194 @@
         </div>
       </div>
     </div>
+
+  <div class="modal fade" id="uploadData" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">Uploads Documents</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+        </div>
+        <div class="modal-body text-center p-5">
+          <form action="data/upload/" class="dropzone" id="dropzoneUpload">
+            {% csrf_token %}
+            <div class="fallback">
+              <input name="file" type="file" multiple="multiple" />
+            </div>
+
+            <div class="dz-message needsclick">
+              <div class="mb-3">
+                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+              </div>
+              <h4>Drop files here or click to upload.</h4>
+            </div>
+          </form>
+
+          <ul class="list-unstyled mb-0" id="dropzone-preview">
+            <li class="mt-2" id="dropzone-preview-list">
+              <!-- TEMPLATE PREVIEW -->
+              <div class="border rounded">
+                <div class="d-flex p-2">
+                  <div class="flex-shrink-0 me-3">
+                    <div class="avatar-sm bg-light rounded">
+                      <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" alt="Dropzone-Image" />
+                    </div>
+                  </div>
+
+                  <div class="flex-grow-1">
+                    <div class="pt-1">
+                      <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                      <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                      <strong class="error text-danger" data-dz-errormessage></strong>
+                    </div>
+                  </div>
+
+                  <div class="flex-shrink-0 ms-3">
+                    <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="modal fade" id="addData" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">Add Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xxl-6 col-md-6 mt-3">
+              <label for="2" class="form-label">Type Of Risk</label>
+              <input type="text" class="form-control" id="2" placeholder="Type Of Risk" name="2" />
+            </div>
+            <div class="col-xxl-6 col-md-6 mt-3">
+              <label for="3" class="form-label">Sub Type Of Risk</label>
+              <input type="text" class="form-control" id="3" placeholder="Sub Type Of Risk" name="3" />
+            </div>
+            <div class="col-xxl-6 col-md-6 mt-3">
+              <label for="3" class="form-label">Specific impact that the climate-related risk will have</label>
+              <input type="text" class="form-control" id="3" placeholder="Specific impact that the climate-related risk will have" name="3" />
+            </div>
+            <div class="col-xxl-6 col-md-6 mt-3">
+              <label for="3" class="form-label">Time Frame</label>
+              <input type="text" class="form-control" id="3" placeholder="Time Frame" name="3" />
+            </div>
+            <div class="col-xxl-6 col-md-6 mt-3">
+              <label for="3" class="form-label">Estimated financial implications of the risk before taking action</label>
+              <input type="text" class="form-control" id="3" placeholder="Estimated financial implications of the risk before taking action" name="3" />
+            </div>
+            <div class="col-xxl-6 col-md-6 mt-3">
+              <label for="3" class="form-label">Estimated costs of these actions</label>
+              <input type="text" class="form-control" id="3" placeholder="Estimated costs of these actions" name="3" />
+            </div>
+          </div>
+          <div class="mt-3">
+            <form action="data/upload/" class="dropzone" id="dropzoneData">
+              {% csrf_token %}
+              <div class="fallback">
+                <input name="file" type="file" multiple="multiple" />
+              </div>
+
+              <div class="dz-message needsclick">
+                <div class="mb-3">
+                  <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                </div>
+                <h4>Drop files here or click to upload.</h4>
+              </div>
+            </form>
+
+            <ul class="list-unstyled mb-0" id="dropzone-preview-data">
+              <li class="mt-2" id="dropzone-preview-list-data">
+                <!-- TEMPLATE PREVIEW -->
+                <div class="border rounded">
+                  <div class="d-flex p-2">
+                    <div class="flex-shrink-0 me-3">
+                      <div class="avatar-sm bg-light rounded">
+                        <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" alt="Dropzone-Image" />
+                      </div>
+                    </div>
+
+                    <div class="flex-grow-1">
+                      <div class="pt-1">
+                        <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                        <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                        <strong class="error text-danger" data-dz-errormessage></strong>
+                      </div>
+                    </div>
+
+                    <div class="flex-shrink-0 ms-3">
+                      <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success active"><span class="icon-on"><i class="bx bx-save large"></i> Simpan</span></button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
   </section>
 {% endblock %}
 
 
 {% block script %}
-    <script>
-Dropzone.autoDiscover = false;
+<script>
+  function upload_data(){
+    $('#uploadData').modal('show')
+  }
 
-var previewNode = document.querySelector("#dropzone-preview-list");
-previewNode.id = ""; 
-var previewTemplate = previewNode.parentNode.innerHTML;
-previewNode.parentNode.removeChild(previewNode);
+  function add_data(){
+    $('#addData').modal('show')
+  }
 
-var myDropzone = new Dropzone("#my-dropzone", {
-    url: "data/upload/",
-    maxFilesize: 5, // MB
-    acceptedFiles: ".png,.jpg,.jpeg,.pdf",
-    previewsContainer: "#dropzone-preview",
-    previewTemplate: previewTemplate,
-    parallelUploads: 2,
-    addRemoveLinks: false
-});
+  Dropzone.autoDiscover = false;
+
+  var previewNode = document.querySelector("#dropzone-preview-list");
+  previewNode.id = ""; 
+  var previewTemplate = previewNode.parentNode.innerHTML;
+  previewNode.parentNode.removeChild(previewNode);
+
+  var myDropzone = new Dropzone("#dropzoneUpload", {
+      url: "data/upload/",
+      maxFilesize: 5, // MB
+      acceptedFiles: ".png,.jpg,.jpeg,.pdf",
+      previewsContainer: "#dropzone-preview",
+      previewTemplate: previewTemplate,
+      parallelUploads: 2,
+      addRemoveLinks: false,
+  });
+
+  var previewNodeData = document.querySelector("#dropzone-preview-list-data");
+  previewNodeData.id = ""; 
+  var previewTemplateData = previewNodeData.parentNode.innerHTML;
+  previewNodeData.parentNode.removeChild(previewNodeData);
+
+  var myDropzone = new Dropzone("#dropzoneData", {
+      url: "data/upload/",
+      maxFilesize: 5, // MB
+      acceptedFiles: ".png,.jpg,.jpeg,.pdf",
+      previewsContainer: "#dropzone-preview-data",
+      previewTemplate: previewTemplate,
+      parallelUploads: 2,
+      addRemoveLinks: false,
+  });
 </script>
 
 {% endblock %}
