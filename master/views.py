@@ -37,12 +37,14 @@ def user_form(request, mode, id=None):
         context['data_user'] = User.objects.filter(id=id).first()
         context['detail_user'] = UserDetail.objects.filter(user_id=id).first()
         context['pic_user'] = UserPIC.objects.filter(user_id=id).first()
-        context['group_edit'] = MGroup.objects.order_by('id').filter(pic_id=context['pic_user'].id)
+        context['group_edit'] = MGroup.objects.order_by('id').filter(pic_id=context['pic_user'].pic.id)
+        context['location_edit'] = MLocation.objects.order_by('id').filter(pic_id=context['pic_user'].pic.id)
     else:
         context['data_user'] = []
         context['detail_user'] = []
         context['pic_user'] = []
         context['group_edit'] = []
+        context['location_edit'] = []
     if request.method=="POST":
         r = request.POST
         if mode == 'add':
@@ -54,11 +56,9 @@ def user_form(request, mode, id=None):
             usr.save()
             
             det = UserDetail()
-            if r.get('group') != '':
-                det.group = MGroup.objects.get(id=r.get('group'))
+            if r.get('location') != '':
+                det.location = MLocation.objects.get(id=r.get('location'))
             det.user = usr
-            det.lat = r.get('lat')
-            det.long = r.get('long')
             det.role = r.get('role')
             det.save()
             
@@ -77,11 +77,9 @@ def user_form(request, mode, id=None):
             usr.save()
             
             det = UserDetail.objects.get(user_id=id)
-            if r.get('group') != '':
-                det.group = MGroup.objects.get(id=r.get('group'))
+            if r.get('location') != '':
+                det.location = MLocation.objects.get(id=r.get('location'))
             det.user = usr
-            det.lat = r.get('lat')
-            det.long = r.get('long')
             det.role = r.get('role')
             det.save()
             
@@ -107,6 +105,50 @@ def get_group_pic(request, id):
         'success':True,
         'data':list(group)
     })
+
+def get_location(request, pic_id, grp_id=None):
+    location = MLocation.objects.order_by('id').filter(pic_id=pic_id).values()
+    if grp_id != None :
+        location = MLocation.objects.order_by('id').filter(pic_id=pic_id,group_id=grp_id).values()
+    return JsonResponse({
+        'success':True,
+        'data':list(location)
+    })
+    
+def location(request):
+    context['submenu'] = 'location'
+    context['data'] = MLocation.objects.order_by('id').all()
+    return render(request, "master_location.html", context)
+
+def location_form(request, mode, id=None):
+    context['entity'] = MPic.objects.order_by('id').all()
+    if mode == 'edit':
+        context['location_edit'] = MLocation.objects.filter(id=id).first()
+    else:
+        context['location_edit'] = []
+    if request.method=="POST":
+        r = request.POST
+        if mode == 'add':
+            loc = MLocation()
+            loc.pic = MPic.objects.get(id=r.get('pic'))
+            if r.get('group') != '':
+                loc.group = MGroup.objects.get(id=r.get('group'))
+            loc.location = r.get('location')
+            loc.lat = r.get('lat')
+            loc.long = r.get('long')
+            loc.save()
+            return HttpResponseRedirect('/master/location')
+        elif mode == 'edit':
+            loc = MLocation.objects.get(id=id)
+            loc.pic = MPic.objects.get(id=r.get('pic'))
+            if r.get('group') != '':
+                loc.group = MGroup.objects.get(id=r.get('group'))
+            loc.location = r.get('location')
+            loc.lat = r.get('lat')
+            loc.long = r.get('long')
+            loc.save()
+            return HttpResponseRedirect('/master/location')
+    return render(request, "master_formlocation.html", context)
     
 def entity(request):
     context['submenu'] = 'entity'
@@ -216,21 +258,32 @@ def indicator_form(request, category, mode, id=None):
             ind.indicator = r.get('indicator')
             ind.year = '2025'
             ind.save()
-            TMatlevKriteria.objects.filter(indicator_id=id).delete()
-            for kriteria, max_level in zip(r.getlist('kriteria'), r.getlist('max_level')):
-                last_number_sub = TMatlevKriteria.objects.filter(
-                    indicator_id=ind.id
-                ).order_by('-number').values_list('number', flat=True).first()
-                krit = TMatlevKriteria()
-                krit.number = (int(last_number_sub) if last_number_sub is not None else 0) + 1
-                krit.kriteria = kriteria
-                krit.max_level = max_level
-                krit.level_get = 0
-                krit.level_weight = 0
-                krit.level_sum = 0
-                krit.year = '2025'
-                krit.indicator = ind
-                krit.save()
+            for kriteria, max_level, subind_id in zip(r.getlist('kriteria'), r.getlist('max_level'), r.getlist('subind_id')):
+                print(subind_id)
+                if subind_id == '':
+                    last_number_sub = TMatlevKriteria.objects.filter(
+                        indicator_id=ind.id
+                    ).order_by('-number').values_list('number', flat=True).first()
+                    krit = TMatlevKriteria()
+                    krit.number = (int(last_number_sub) if last_number_sub is not None else 0) + 1
+                    krit.kriteria = kriteria
+                    krit.max_level = max_level
+                    krit.level_get = 0
+                    krit.level_weight = 0
+                    krit.level_sum = 0
+                    krit.year = '2025'
+                    krit.indicator = ind
+                    krit.save()
+                else:
+                    krit = TMatlevKriteria.objects.get(id=subind_id)
+                    krit.kriteria = kriteria
+                    krit.max_level = max_level
+                    krit.level_get = 0
+                    krit.level_weight = 0
+                    krit.level_sum = 0
+                    krit.year = '2025'
+                    krit.indicator = ind
+                    krit.save()
             return HttpResponseRedirect('/master/indicator')
             
     return render(request, "master_formindicator.html", context)

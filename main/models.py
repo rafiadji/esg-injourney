@@ -18,6 +18,18 @@ class MGroup(models.Model):
     class Meta:
         managed = True
         db_table = 'm_group'
+        
+class MLocation(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    location = models.CharField(max_length=200, blank=True, null=True)
+    group = models.ForeignKey(MGroup, on_delete=models.SET_NULL, null=True, blank=True)
+    pic = models.ForeignKey(MPic, on_delete=models.SET_NULL, null=True, blank=True)
+    lat = models.CharField(max_length=100, blank=True, null=True)
+    long = models.CharField(max_length=100, blank=True, null=True)
+    
+    class Meta:
+        managed = True
+        db_table = 'm_location'
 
 class UserPIC(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -34,10 +46,8 @@ class UserPIC(models.Model):
 class UserDetail(models.Model):
     id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    group = models.ForeignKey(MGroup, on_delete=models.SET_NULL, null=True, blank=True)
+    location = models.ForeignKey(MLocation, on_delete=models.SET_NULL, null=True, blank=True)
     role = models.CharField(max_length=100, blank=True, null=True, default='contributor')
-    lat = models.CharField(max_length=100, blank=True, null=True)
-    long = models.CharField(max_length=100, blank=True, null=True)
     
     class Meta:
         managed = True

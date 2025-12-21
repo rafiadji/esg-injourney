@@ -59,7 +59,7 @@
                 <select id="entity_select" class="form-control" name="entity">
                   <option value="" disabled selected>Choose Entity</option>
                   {% for ent in entity %}
-                    <option value="{{ ent.id }}" {% if ent.id == pic_user.id %}selected{% endif %}>{{ ent.pic }}</option>
+                    <option value="{{ ent.id }}" {% if ent.id == pic_user.pic.id %}selected{% endif %}>{{ ent.pic }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -107,18 +107,18 @@
                 <select id="group_select" class="form-control" name="group">
                   <option value="" selected>Choose Group</option>
                   {% for grp in group_edit %}
-                    <option value="{{ grp.id }}" {% if grp.id == detail_user.group_id %}selected{% endif %}>{{ grp.group }}</option>
+                    <option value="{{ grp.id }}" {% if grp.id == detail_user.location.group.id %}selected{% endif %}>{{ grp.group }}</option>
                   {% endfor %}
                 </select>
               </div>
-              <h4>Location Coordinate</h4>
               <div class="col-xxl-4 col-md-6">
-                <label for="iconInput" class="form-label">Latitude</label>
-                <input type="text" class="form-control" placeholder="Latitude" name="lat" value="{{ detail_user.lat }}" />
-              </div>
-              <div class="col-xxl-4 col-md-6">
-                <label for="iconInput" class="form-label">Longitude</label>
-                <input type="text" class="form-control" placeholder="Longitude" name="long" value="{{ detail_user.long }}" />
+                <label for="location_select" class="form-label">Location</label>
+                <select id="location_select" class="form-control" name="location">
+                  <option value="" selected>Choose Location</option>
+                  {% for loc in location_edit %}
+                    <option value="{{ loc.id }}" {% if loc.id == detail_user.location_id %}selected{% endif %}>{{ loc.location }}</option>
+                  {% endfor %}
+                </select>
               </div>
             </div>
             <div class="row gy-4 pt-5">
@@ -146,6 +146,7 @@
     const entity_select = new Choices('#entity_select', choice_option)
     const role_select = new Choices('#role_select', choice_option)
     const group_select = new Choices('#group_select', choice_option)
+    const location_select = new Choices('#location_select', choice_option)
     
     $('#entity_select').change(function () {
       choose = entity_select.getValue().value
@@ -154,23 +155,100 @@
         dataType: 'json',
         async: true,
         success: (res) => {
-          group_select.clearChoices()
-          group_select.removeActiveItems()
-          var grp_opt = []
-          grp_opt.push({
+          if (res.data.length > 0){
+            group_select.clearChoices()
+            group_select.removeActiveItems()
+            var grp_opt = []
+            grp_opt.push({
+              value: '',
+              label: 'Choose Group',
+              selected: true,
+              disabled: true
+            })
+            for (var i = 0; i < res.data.length; i++) {
+              const dt = res.data[i]
+              grp_opt.push({
+                value: dt.id,
+                label: dt.group
+              })
+            }
+            group_select.setChoices(grp_opt, 'value', 'label', false)
+            location_select.clearChoices()
+            location_select.removeActiveItems()
+            var loc_opt = []
+            loc_opt.push({
+              value: '',
+              label: 'Choose Location',
+              selected: true,
+              disabled: true
+            })
+            location_select.setChoices(loc_opt, 'value', 'label', false)
+          } else {
+            group_select.clearChoices()
+            group_select.removeActiveItems()
+            var grp_opt = []
+            grp_opt.push({
+              value: '',
+              label: 'Choose Group',
+              selected: true,
+              disabled: true
+            })
+            group_select.setChoices(grp_opt, 'value', 'label', false)
+            $.ajax({
+              url: `master/get_location/${choose}`,
+              dataType: 'json',
+              async: true,
+              success: (res) => {
+                location_select.clearChoices()
+                location_select.removeActiveItems()
+                var loc_opt = []
+                loc_opt.push({
+                  value: '',
+                  label: 'Choose Location',
+                  selected: true,
+                  disabled: true
+                })
+                for (var i = 0; i < res.data.length; i++) {
+                  const dt = res.data[i]
+                  loc_opt.push({
+                    value: dt.id,
+                    label: dt.location
+                  })
+                }
+                location_select.setChoices(loc_opt, 'value', 'label', false)
+              }
+            })
+          }
+          
+        }
+      })
+    })
+
+    $('#group_select').change(function () {
+      ent = entity_select.getValue().value
+      grp = group_select.getValue().value
+      $.ajax({
+        url: `master/get_location/${ent}/${grp}`,
+        dataType: 'json',
+        async: true,
+        success: (res) => {
+          location_select.clearChoices()
+          location_select.removeActiveItems()
+          var loc_opt = []
+          loc_opt.push({
             value: '',
-            label: 'Choose Group',
+            label: 'Choose Location',
             selected: true,
             disabled: true
           })
           for (var i = 0; i < res.data.length; i++) {
             const dt = res.data[i]
-            grp_opt.push({
+            loc_opt.push({
               value: dt.id,
-              label: dt.group
+              label: dt.location
             })
           }
-          group_select.setChoices(grp_opt, 'value', 'label', false)
+          location_select.setChoices(loc_opt, 'value', 'label', false)
         }
       })
     })

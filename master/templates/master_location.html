@@ -1,0 +1,83 @@
+{% extends 'master_base.html' %}
+
+{% block title %}
+  Master Locations
+{% endblock %}
+
+{% block master_content %}
+  <div class="d-flex align-items-center">
+    <h1 class="heading-txt fw-semibold flex-grow-1">Location</h1>
+    <div class="flex-shrink-0">
+      <div class="d-flex flex-wrap gap-2">
+        <a href="master/location_form/add" class="btn btn-success active"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Location</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="pt-5">
+    <table class="table align-middle table-nowrap mb-0" id="master-user">
+      <thead>
+        <tr>
+          <th>Location</th>
+          <th>Group</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dt in data %}
+        <tr>
+          <td>{{ dt.location }}</td>
+          <td>{{ dt.group.group }}</td>
+          <td>{{ dt.lat }}</td>
+          <td>{{ dt.long }}</td>
+          <td>
+            <div class="btn-group" style="float: right;">
+              <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="master/location_form/edit/{{ dt.id }}"><i class="ri-edit-box-line"></i> Edit</a>
+                <a class="dropdown-item" href="javascript:;" onclick="delete_user({{ dt.id }})"><i class="ri-delete-bin-line"></i> Hapus</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script>
+  var table = $('#master-user').DataTable({ 
+    ordering: false,
+    searching: false,
+    lengthChange: false,
+    pageLength: 10,
+  })
+
+  function delete_user(id){
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Data yang dihapus tidak dapat dikembalikan!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: `master/delete_usr/${id}`,
+          dataType: 'json',
+          async: true,
+          success: (res) => {
+            window.location.href = '/master'
+          }
+        })
+      }
+    })
+  }
+</script>
+{% endblock %}

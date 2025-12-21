@@ -83,6 +83,7 @@
                         {% for subind in subindicator_edit %}
                           <tr>
                             <td>
+                              <input type="hidden" name="subind_id" value="{{ subind.id }}" >
                               <input type="text" class="form-control" name="kriteria" placeholder="Sub Indicator Name" value="{{ subind.kriteria }}" />
                             </td>
                             <td>
@@ -123,7 +124,7 @@
     })
     
     function add_sub() {
-      table_sub.row.add([`<input type="text" class="form-control" name="kriteria" placeholder="Sub Indicator Name" />`, `<input type="text" class="form-control" name="max_level" placeholder="Max Level" />`, `<button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none delete-sub">Delete Sub</button>`]).draw()
+      table_sub.row.add([`<input type="hidden" name="subind_id" value="" ><input type="text" class="form-control" name="kriteria" placeholder="Sub Indicator Name" />`, `<input type="text" class="form-control" name="max_level" placeholder="Max Level" />`, `<button type="button" class="btn btn-ghost-danger waves-effect waves-light shadow-none delete-sub">Delete Sub</button>`]).draw()
     }
     
     $('#master-subindicator').on('click', '.delete-sub', function () {

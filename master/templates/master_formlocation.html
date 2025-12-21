@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Master Location
+{% endblock %}
+
+{% block head %}
+  <style type="text/css">
+    .boxs {
+      height: 400px;
+      position: relative;
+      border: 3px solid green;
+    }
+    
+    .boxs p {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 p-0">
+          <section class="section esg-hero-idx" id="hero" style="background-image: url('assets/images/addindic.jpg'); background-position: center center; height: 434px;">
+            <div class="bg-overlay"></div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-7 col-sm-10">
+                  <div class="p-5" style="margin: 0;  position: absolute; top: 50%;  left: 0%; transform: translateY(40%);">
+                    <h1 class="display-8 fw-medium mb-4 lh-base text-white"><a href="master/entity" class="text-white mt-4"><i class="ri-arrow-left-line align-bottom me-1"></i></a>Add New Location</h1>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+            </div>
+            <!-- end container -->
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 p-5">
+          <h2 class="heading-txt fw-semibold text-black">Form Location</h2>
+          <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row gy-4 pt-2">
+              <div class="col-12">
+                <div class="col-xxl-4 col-md-6">
+                  <label for="entity_select" class="form-label">Entity</label>
+                  <select id="entity_select" class="form-control" name="pic">
+                    <option value="" disabled selected>Choose Entity</option>
+                    {% for ent in entity %}
+                      <option value="{{ ent.id }}" {% if ent.id == location_edit.pic.id %}selected{% endif %}>{{ ent.pic }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="col-xxl-4 col-md-6">
+                  <label for="group_select" class="form-label">Group</label>
+                  <select id="group_select" class="form-control" name="group">
+                    <option value="" selected>Choose Group</option>
+                    {% for grp in group_edit %}
+                      <option value="{{ grp.id }}">{{ grp.group }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="col-xxl-6 col-md-6">
+                  <label for="location" class="form-label">Location Name</label>
+                  <input type="text" name="location" id="location" class="form-control" value="{{location_edit.location}}">
+                </div>
+              </div>
+              <div class="row col-12 mt-4 mb-4">
+                <div class="col-xxl-6 col-md-6">
+                  <label for="lat" class="form-label">Latitude</label>
+                  <input type="text" name="lat" id="lat" class="form-control" value="{{location_edit.lat}}">
+                </div>
+                <div class="col-xxl-6 col-md-6">
+                  <label for="long" class="form-label">Longitude</label>
+                  <input type="text" name="long" id="long" class="form-control" value="{{location_edit.long}}">
+                </div>
+              </div>
+            </div>
+            <div class="row gy-4 pt-2" style="align-items: right; float: right;">
+              <div>
+                <a href="master/location" class="btn btn-ghost-danger waves-effzect waves-light shadow-none">Batal</a>
+                <button type="submit" class="btn btn-success waves-effect waves-light"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block script %}
+  <script>
+    const choice_option = {
+      searchResultLimit: 20,
+      shouldSort: false
+    }
+    const entity_select = new Choices('#entity_select', choice_option)
+    const group_select = new Choices('#group_select', choice_option)
+
+    var table_sub = $('#master-group').DataTable({
+      ordering: false,
+      searching: false,
+      lengthChange: false,
+      paging: false,
+      info: false
+    })
+    get_group(entity_select.getValue().value)
+
+    $('#entity_select').change(function () {
+      choose = entity_select.getValue().value
+      get_group(choose)
+    })
+
+    function get_group(choose) {
+      if (choose != ''){
+          $.ajax({
+          url: `master/get_group_pic/${choose}`,
+          dataType: 'json',
+          async: true,
+          success: (res) => {
+            group_select.clearChoices()
+            group_select.removeActiveItems()
+            var grp_opt = []
+            grp_opt.push({
+              value: '',
+              label: 'Choose Group',
+              selected: true,
+              disabled: true
+            })
+            for (var i = 0; i < res.data.length; i++) {
+              const dt = res.data[i]
+              if (dt.id == '{{location_edit.group.id}}'){
+                grp_opt.push({
+                  value: dt.id,
+                  label: dt.group,
+                  selected: true
+                })
+              } else {
+                grp_opt.push({
+                  value: dt.id,
+                  label: dt.group
+                })
+              }
+            }
+            group_select.setChoices(grp_opt, 'value', 'label', false)
+          }
+        })
+      }
+    }
+  </script>
+{% endblock %}
