@@ -405,6 +405,7 @@ def esgindex(request,category):
             submenu.kriteria = kriteria
         
     context['category'] = category
+    context['entity'] = MPic.objects.order_by('id').all()
     return render(request, 'esgindex.html', context)
 
 def get_data(request, indicator, subindicator):
