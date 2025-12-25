@@ -340,23 +340,36 @@ def govindex(request):
     return render(request, "govindex.html", context)
 
 def workpaper_form(request):
-    category = request.GET.get("cat")
-    indicator = request.GET.get("ind")
-    subindicator = request.GET.get("sub")
-    idmatlev = request.GET.get("id")
-    context['category'] = category
-    context['matlevid'] = request.GET.get("id")
-    # print(category)
-    context['matlevind'] = TMatlevIndicator.objects.filter(id=indicator).order_by('number').values()
-    context['matlevkrit'] = TMatlevKriteria.objects.filter(id=subindicator, indicator__id=indicator).order_by('number').values()
-    # context['matlevsub'] = TMatlevKriteria.objects.filter(id=subindicator).order_by('number').values()
-    context['matlevdet'] = TMatlevKriteriaDetail.objects.filter(kriteria_id = subindicator).order_by('-id').first()
-    context['matlevcol'] = TMatlevKriteriaColumn.objects.filter(maturity_id = idmatlev).order_by('id').values()
-    
-    count = TMatlevKriteriaDetail.objects.filter(kriteria_id=subindicator).count()
-    
-    # context['matlev_id'] = matlev.id
-    context['countlevel'] = count
+    if(request.GET.get("mode")) : 
+        id = request.GET.get("id")
+        context['matlevdet'] = TMatlevKriteriaDetail.objects.filter(id = id).values()
+        context['matlevid'] = id
+        idmatlevdet = context['matlevdet'].first()
+        context['matlevkrit'] = TMatlevKriteria.objects.filter(id=idmatlevdet['kriteria_id']).values()
+        idmatlevkrit = context['matlevkrit'].first()
+        context['matlevind'] = TMatlevIndicator.objects.filter(id=idmatlevkrit['indicator_id']).values()
+        context['mode'] = request.GET.get("mode")
+        # context['matlevcol'] = TMatlevKriteriaColumn.objects.filter(maturity_id = idmatlev).order_by('id').values()
+    else : 
+        category = request.GET.get("cat")
+        indicator = request.GET.get("ind")
+        subindicator = request.GET.get("sub")
+        idmatlev = request.GET.get("id")
+        context['category'] = category
+        context['matlevid'] = request.GET.get("id")
+        # print(category)
+        context['matlevind'] = TMatlevIndicator.objects.filter(id=indicator).order_by('number').values()
+        context['matlevkrit'] = TMatlevKriteria.objects.filter(id=subindicator, indicator__id=indicator).order_by('number').values()
+        # context['matlevsub'] = TMatlevKriteria.objects.filter(id=subindicator).order_by('number').values()
+        context['matlevdet'] = TMatlevKriteriaDetail.objects.filter(id = idmatlev).values()
+        # print(context['matlevdet'])
+        context['matlevcol'] = TMatlevKriteriaColumn.objects.filter(maturity_id = idmatlev).order_by('id').values()
+        
+        count = TMatlevKriteriaDetail.objects.filter(kriteria_id=subindicator).count()
+        # print(count)
+        # context['matlev_id'] = matlev.id
+        context['countlevel'] = count
+        
     return render(request, "workpaper_form.html", context)
 
 def leveldetail(request):

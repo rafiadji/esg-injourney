@@ -18,6 +18,7 @@ urlpatterns = [
     path("save_column/<int:id>", views.save_column),
     path("save_form/<int:id>", views.save_form),
     path("add_data/<int:indicator>/<int:subindicator>", views.add_data),
+    path("edit", views.workpaper_form),
     
     path("detail/<int:id>", views.detail),
     path("form/<str:mode>/<int:id>", views.get_form),
