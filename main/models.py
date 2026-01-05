@@ -162,7 +162,19 @@ class TRMatlevColumn(models.Model):
         managed = True
         db_table = 'tr_matlev_column'
 
-
+class TREmission(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    category = models.CharField(max_length=200, blank=True, null=True)
+    year = models.CharField(max_length=10, blank=True, null=True)
+    pic = models.ForeignKey(MPic, on_delete=models.SET_NULL, null=True, blank=True)
+    group = models.ForeignKey(MGroup, on_delete=models.SET_NULL, null=True, blank=True)
+    location = models.ForeignKey(MLocation, on_delete=models.SET_NULL, null=True, blank=True)
+    information = models.CharField(max_length=200, blank=True, null=True)
+    value = models.TextField(blank=True, null=True)
+    
+    class Meta:
+        managed = True
+        db_table = 'tr_emission'
 
 class ActivityLog(models.Model):
     # Jenis Aktivitas

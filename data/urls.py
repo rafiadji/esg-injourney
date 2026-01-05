@@ -34,6 +34,7 @@ urlpatterns = [
     path('detail/', views.leveldetail),
     # path('esgindex/<str:category>/', views.esgindex, name='esgindex'),
     path("upload/", views.upload_file),
+    path("uploadenviro/", views.upload_enviro),
 
 ]
 

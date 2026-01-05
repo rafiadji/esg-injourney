@@ -160,9 +160,11 @@
     <div class="modal-dialog modal-xl ">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Upload data Environment</h5>
+          <h5 class="modal-title" id="myModalLabel">Upload Data Environment</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
         </div>
+        <form action="" method="post" enctype="multipart/form-data">  
+        {% csrf_token %}
         <div class="modal-body">
           <div class="row">
             <div class="col-xxl-6 col-md-6 mt-3">
@@ -174,10 +176,21 @@
                 {% endfor %}
               </select>
             </div>
+            <div class="col-xxl-6 col-md-6 mt-3">
+              <label for="3" class="form-label">Group</label>
+              <select id="group_select" class="form-control" name="group">
+                <option value="" disabled selected>Choose Group</option>
+              </select>
+            </div>
+            <div class="col-xxl-6 col-md-6 mt-3">
+              <label for="3" class="form-label">Location</label>
+              <select id="location_select" class="form-control" name="location">
+                <option value="" disabled selected>Choose Location</option>
+              </select>
+            </div>
           </div>
           <div class="mt-3">
-            <form action="data/upload/" class="dropzone" id="dropzoneData">
-              {% csrf_token %}
+            <div class="dropzone" id="dropzoneData">
               <div class="fallback">
                 <input name="file" type="file" multiple="multiple" />
               </div>
@@ -188,7 +201,7 @@
                 </div>
                 <h4>Drop files here or click to upload.</h4>
               </div>
-            </form>
+            </div>
 
             <ul class="list-unstyled mb-0" id="dropzone-preview-data">
               <li class="mt-2" id="dropzone-preview-list-data">
@@ -221,8 +234,9 @@
           
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success active"><span class="icon-on"><i class="bx bx-save large"></i> Simpan</span></button>
+          <button type="submit" class="btn btn-success active" id="submit-all"><span class="icon-on"><i class="bx bx-save large"></i> Simpan</span></button>
         </div>
+        </form>
       </div>
       <!-- /.modal-content -->
     </div>
@@ -248,10 +262,117 @@
       shouldSort: false
     }
     const entity_select = new Choices('#entity_select', choice_option)
+    const group_select = new Choices('#group_select', choice_option)
+    const location_select = new Choices('#location_select', choice_option)
     
     function upload_enviro(){
       $('#uploadEnviro').modal('show')
     }
+
+    $('#entity_select').change(function () {
+      choose = entity_select.getValue().value
+      $.ajax({
+        url: `master/get_group_pic/${choose}`,
+        dataType: 'json',
+        async: true,
+        success: (res) => {
+          if (res.data.length > 0){
+            group_select.clearChoices()
+            group_select.removeActiveItems()
+            var grp_opt = []
+            grp_opt.push({
+              value: '',
+              label: 'Choose Group',
+              selected: true,
+              disabled: true
+            })
+            for (var i = 0; i < res.data.length; i++) {
+              const dt = res.data[i]
+              grp_opt.push({
+                value: dt.id,
+                label: dt.group
+              })
+            }
+            group_select.setChoices(grp_opt, 'value', 'label', false)
+            location_select.clearChoices()
+            location_select.removeActiveItems()
+            var loc_opt = []
+            loc_opt.push({
+              value: '',
+              label: 'Choose Location',
+              selected: true,
+              disabled: true
+            })
+            location_select.setChoices(loc_opt, 'value', 'label', false)
+          } else {
+            group_select.clearChoices()
+            group_select.removeActiveItems()
+            var grp_opt = []
+            grp_opt.push({
+              value: '',
+              label: 'Choose Group',
+              selected: true,
+              disabled: true
+            })
+            group_select.setChoices(grp_opt, 'value', 'label', false)
+            $.ajax({
+              url: `master/get_location/${choose}`,
+              dataType: 'json',
+              async: true,
+              success: (res) => {
+                location_select.clearChoices()
+                location_select.removeActiveItems()
+                var loc_opt = []
+                loc_opt.push({
+                  value: '',
+                  label: 'Choose Location',
+                  selected: true,
+                  disabled: true
+                })
+                for (var i = 0; i < res.data.length; i++) {
+                  const dt = res.data[i]
+                  loc_opt.push({
+                    value: dt.id,
+                    label: dt.location
+                  })
+                }
+                location_select.setChoices(loc_opt, 'value', 'label', false)
+              }
+            })
+          }
+          
+        }
+      })
+    })
+
+    $('#group_select').change(function () {
+      ent = entity_select.getValue().value
+      grp = group_select.getValue().value
+      $.ajax({
+        url: `master/get_location/${ent}/${grp}`,
+        dataType: 'json',
+        async: true,
+        success: (res) => {
+          location_select.clearChoices()
+          location_select.removeActiveItems()
+          var loc_opt = []
+          loc_opt.push({
+            value: '',
+            label: 'Choose Location',
+            selected: true,
+            disabled: true
+          })
+          for (var i = 0; i < res.data.length; i++) {
+            const dt = res.data[i]
+            loc_opt.push({
+              value: dt.id,
+              label: dt.location
+            })
+          }
+          location_select.setChoices(loc_opt, 'value', 'label', false)
+        }
+      })
+    })
 
     Dropzone.autoDiscover = false;
 
@@ -261,13 +382,95 @@
     previewNodeData.parentNode.removeChild(previewNodeData);
 
     var myDropzone = new Dropzone("#dropzoneData", {
-        url: "data/upload/",
+        url: "data/uploadenviro/",
+        paramName: "file",
         maxFilesize: 5, // MB
-        acceptedFiles: ".png,.jpg,.jpeg,.pdf",
+        acceptedFiles: ".xlsx,.xls",
         previewsContainer: "#dropzone-preview-data",
         previewTemplate: previewTemplateData,
         parallelUploads: 2,
         addRemoveLinks: false,
+        autoProcessQueue: false,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        init: function() {
+            const submitButton = document.querySelector("#submit-all");
+            const dz = this;
+            
+            const form = document.querySelector("#uploadEnviro form");
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Validasi form
+                const entity = entity_select.getValue().value;
+                const group = group_select.getValue().value;
+                const location = location_select.getValue().value;
+                
+                // Tampilkan loading
+                submitButton.innerHTML = '<i class="bx bx-loader bx-spin"></i> Uploading...';
+                submitButton.disabled = true;
+                
+                // Process semua file di queue
+                dz.processQueue();
+            });
+            
+            // Saat semua file berhasil diupload
+            this.on("queuecomplete", function() {
+                if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                    // Reset button
+                    submitButton.innerHTML = '<i class="bx bx-save large"></i> Simpan';
+                    submitButton.disabled = false;
+                    
+                    // Tutup modal
+                    $('#uploadEnviro').modal('hide');
+                    
+                    // Reset form
+                    entity_select.clearChoices();
+                    group_select.clearChoices();
+                    location_select.clearChoices();
+                    dz.removeAllFiles(true);
+                    
+                    // Refresh halaman atau data
+                    window.location.reload();
+                }
+            });
+            
+            // Saat terjadi error
+            this.on("error", function(file, errorMessage) {
+                alert('Error uploading file: ' + errorMessage);
+                this.removeFile(file);
+                
+                // Reset button
+                submitButton.innerHTML = '<i class="bx bx-save large"></i> Simpan';
+                submitButton.disabled = false;
+            });
+            
+            // Saat mengirim file
+            this.on("sending", function(file, xhr, formData) {
+                // Tambahkan data form ke setiap file yang diupload
+                const entity = entity_select.getValue().value;
+                const group = group_select.getValue().value;
+                const location = location_select.getValue().value;
+                
+                formData.append('entity', entity);
+                formData.append('group', group);
+                formData.append('location', location);
+                
+                // Tambahkan CSRF token
+                formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+            });
+        },
+        error: function(file, message) {
+          alert('Error: ' + message);
+          this.removeFile(file);
+        }
+    });
+
+    document.querySelector("#uploadEnviro form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      return false;
     });
     
     document.addEventListener('DOMContentLoaded', function () {

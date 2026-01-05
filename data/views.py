@@ -10,6 +10,7 @@ import json
 import traceback  # Tambahkan ini di bagian import
 import sys
 import pandas as pd
+import openpyxl
 
 from datetime import datetime, timedelta
 context = {'menu' : 'data'}
@@ -472,6 +473,233 @@ def get_leveldetail(request, val):
 def upload_file(request):
     if request.method == "POST":
         print("File diterima:", request.FILES)
+        return JsonResponse({"status": "ok"})
+
+def upload_enviro(request):
+    if request.method == "POST":
+        excel_file= request.FILES['file']
+        r = request.POST
+        wb = openpyxl.load_workbook(excel_file, data_only=True)
+        category = ['scope1', 'scope2', 'scope3', 'reduction', 'non_b3', 'b3', 'waste_water', 'water_consumption', 'energy_consumption', 'energy_reduction']
+        # Scope 1
+        scope1 = ['Vehicle Fuels', 'Refrigerant', 'Solid Waste Management', 'Liquid Waste Management', 'Other Fuels']
+        scope1Value = [wb['Output']['D20'].value, wb['Output']['D21'].value, wb['Output']['D22'].value, wb['Output']['D23'].value, wb['Output']['D24'].value]
+        
+        for info, val in zip(scope1, scope1Value):
+            em = TREmission()
+            em.category = category[0]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+
+        # Scope 2
+        scope2 = ['Electricity Purchase']
+        scope2Value = [wb['Output']['D25'].value]
+        
+        for info, val in zip(scope2, scope2Value):
+            em = TREmission()
+            em.category = category[1]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+
+        # Scope 3
+        scope3 = ['Purchased goods and services', 'Capital goods', 'Upstream transportation and distribution', 'Waste from operations', 'Business travel']
+        scope3Value = [wb['Output']['D26'].value, wb['Output']['D27'].value, wb['Output']['D28'].value, wb['Output']['D29'].value, wb['Output']['D30'].value]
+        
+        for info, val in zip(scope3, scope3Value):
+            em = TREmission()
+            em.category = category[2]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+
+        # Reduction
+        reduce = ['Reporting Year Emission', 'Initiatives Emission Reduction (Tech Base)', 'Initiatives Emission Reduction (Nature Base)']
+        reduceValue = [wb['Output']['D32'].value, wb['Output']['D16'].value, wb['Output']['D85'].value]
+        
+        for info, val in zip(reduce, reduceValue):
+            em = TREmission()
+            em.category = category[3]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        
+        # Non B3
+        # Waste Disposed of in Landfill (TPS) or Management With Third Parties
+        totalB3Third = 0
+        for x in range(182, 188):
+            if wb['Input']['C'+str(x)].value in ['Municipal (Insinerasi)', 'Kayu atau Tumbuhan (Organik)', 'Kompos (Organik)']:
+                for col in range(6, 17):
+                    val = wb['Input'].cell(row=x, column=col).value
+                    if isinstance(val, (int, float)):
+                        totalB3Third += val
+        # Waste recycled/reused by the company
+        totalB3Comp = 0
+        for x in range(58, 64):
+            if wb['Input']['C'+str(x)].value in ['Municipal (Insinerasi)', 'Kayu atau Tumbuhan (Organik)', 'Kompos (Organik)']:
+                for col in range(6, 17):
+                    val = wb['Input'].cell(row=x, column=col).value
+                    if isinstance(val, (int, float)):
+                        totalB3Comp += val
+        # Waste that is processed by the company (composting)
+        totalB3Compos = 0
+        for x in range(58, 64):
+            if wb['Input']['C'+str(x)].value in ['Kompos (Organik)']:
+                for col in range(6, 17):
+                    val = wb['Input'].cell(row=x, column=col).value
+                    if isinstance(val, (int, float)):
+                        totalB3Compos += val
+
+        nonb3 = ['Total Waste Disposed', 'Waste Disposed of in Landfill (TPS) or Management With Third Parties', 'Waste recycled/reused by the company', 'Waste that is processed by the company (composting)', 'Waste with unknown disposal method or unmanaged']
+        nonb3Value = [wb['Output']['D76'].value, totalB3Third, totalB3Comp, totalB3Compos, (wb['Output']['D76'].value - (totalB3Third + totalB3Comp))]
+        
+        for info, val in zip(nonb3, nonb3Value):
+            em = TREmission()
+            em.category = category[4]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        
+        # B3
+        # Total hazardous waste recycled/reused/incinerated without energy recovery
+        totalB3Third = 0
+        for x in range(182, 188):
+            if wb['Input']['C'+str(x)].value in ['Industrial (Insinerasi)']:
+                for col in range(6, 17):
+                    val = wb['Input'].cell(row=x, column=col).value
+                    if isinstance(val, (int, float)):
+                        totalB3Third += val
+        # Hazardous waste landfilled or third party
+        totalB3Comp = 0
+        for x in range(58, 64):
+            if wb['Input']['C'+str(x)].value in ['Industrial (Insinerasi)']:
+                for col in range(6, 17):
+                    val = wb['Input'].cell(row=x, column=col).value
+                    if isinstance(val, (int, float)):
+                        totalB3Comp += val
+
+        b3 = ['Total hazardous waste disposed', 'Total hazardous waste recycled/reused/incinerated without energy recovery', 'Hazardous waste landfilled or third party']
+        b3Value = [wb['Output']['D75'].value, totalB3Comp, totalB3Third]
+        
+        for info, val in zip(b3, b3Value):
+            em = TREmission()
+            em.category = category[5]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        
+        # Waste Water
+        # Total liquid waste processed
+        totalLiquid = 0
+        for col in range(6, 17):
+            val = wb['Input'].cell(row=74, column=col).value
+            if isinstance(val, (int, float)):
+                totalLiquid += val
+
+        wasteWater = ['Total liquid waste disposed', 'Total liquid waste processed']
+        wasteWaterValue = [(wb['Output']['D65'].value - wb['Output']['D69'].value), totalLiquid]
+        
+        for info, val in zip(wasteWater, wasteWaterValue):
+            em = TREmission()
+            em.category = category[6]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+
+        # Water Consumption
+        waterconsum = ['Water withdrawal (excluding saltwater)', 'Water discharge (excluding saltwater)', 'Total net fresh water consumption']
+        waterconsumValue = [wb['Output']['D65'].value, (wb['Output']['D65'].value - wb['Output']['D69'].value), (wb['Output']['D65'].value - (wb['Output']['D65'].value - wb['Output']['D69'].value))]
+        
+        for info, val in zip(waterconsum, waterconsumValue):
+            em = TREmission()
+            em.category = category[7]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+
+        # Energy Consumption
+        energyconsum = ['Total Non-Renewable Energy Consumption', 'Total Renewable Energy Consumption']
+        energyconsumValue = [wb['Output']['D41'].value, wb['Output']['D44'].value]
+        
+        for info, val in zip(energyconsum, energyconsumValue):
+            em = TREmission()
+            em.category = category[8]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+
+        # Energy Reduction
+        energyreduce = ['Total Emission Reduction from Renewable Energy Use']
+        energyreduceValue = [wb['Output']['D17'].value]
+        
+        for info, val in zip(energyreduce, energyreduceValue):
+            em = TREmission()
+            em.category = category[9]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        # emission = TREmission()
         return JsonResponse({"status": "ok"})
 
 
