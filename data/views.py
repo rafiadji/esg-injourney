@@ -739,8 +739,9 @@ def add_data(request, indicator, subindicator):
 def remove_column(request, id):
     # print(id)
     
-    matlevcol = TMatlevKriteriaColumn.objects.get(id=id)
-    matlevcol.delete()
+    matlevcol = TMatlevKriteriaColumn.objects.filter(id=id)
+    if(matlevcol):
+        matlevcol.delete()
     
     return JsonResponse({
         'success':True,
@@ -783,11 +784,13 @@ def save_column(request, id):
     
 def remove_form(request, id):
     
-    matlevcol = TMatlevKriteriaColumn.objects.get(maturity_id=id)
-    matlevcol.delete()
+    matlevcol = TMatlevKriteriaColumn.objects.filter(maturity_id=id)
+    if(matlevcol):
+        matlevcol.delete()
     
-    matlev = TMatlevKriteriaDetail.objects.get(id=id)
-    matlev.delete()
+    matlev = TMatlevKriteriaDetail.objects.filter(id=id)
+    if(matlev):
+        matlev.delete()
     
     return JsonResponse({
         'success':True,
@@ -806,6 +809,20 @@ def save_form(request, id):
     matlevdet.status = request.GET.get('status')
     matlevdet.kriteria_id = request.GET.get('kriteria_id')
     matlevdet.save()
+    
+    return JsonResponse({
+        'success':True,
+        # 'data':id
+    })
+
+def delete_data(request, id):
+    matlevcol = TMatlevKriteriaColumn.objects.filter(maturity_id=id)
+    if(matlevcol) : 
+        matlevcol.delete()
+    
+    matlev = TMatlevKriteriaDetail.objects.filter(id=id)
+    if(matlev) :
+        matlev.delete()
     
     return JsonResponse({
         'success':True,

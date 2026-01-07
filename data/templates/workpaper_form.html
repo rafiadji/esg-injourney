@@ -130,11 +130,11 @@
                       <tr>
                         <th style="width: 7%;">Column Id</th>
                         <th style="width: 10%;">Sub Column Id</th>
-                        <th style="width: 30%;">Column Name</th>
+                        <th style="width: 20%;">Column Name</th>
                         <th style="width: 15%;">Column Type</th>
                         <th style="width: 15%;">Column Hint</th>
                         <th style="width: 10%;"></th>
-                        <th style="width: 15%;"></th>
+                        <th style="width: 17%;"></th>
                       </tr>
                     </thead>
                     
@@ -142,7 +142,9 @@
                 </div>
                 <div class="row gy-4 pt-2" style="align-items: right; float: right;">
                   <div>
-                    <a type="button" class="btn btn-ghost-danger waves-effzect waves-light shadow-none" onclick="deleteform(matlevid)">Batal</button>
+                    <a class="btn btn-ghost-danger waves-effect waves-light shadow-none" {% if mode == 'edit' %} href="data/category/{{ category }}/" {% else %} href="#" onclick="deleteform({{ matlevid }}); return false;" {% endif %} >
+                      Batal
+                    </a>
                     <a type="button" class="btn btn-success waves-effect waves-light" onclick="saveform(matlevid)"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</a>
                   </div>
                 </div>
@@ -280,6 +282,7 @@
               <option value="file" ${item.column_type === 'file' ? 'selected' : ''}>File</option>
               <option value="equation" ${item.column_type === 'equation' ? 'selected' : ''}>Equation</option>
               <option value="sub" ${item.column_type === 'sub' ? 'selected' : ''}>Sub Form</option>
+              <option value="emission" ${item.column_type === 'emission' ? 'selected' : ''}>Emission</option>              
             </select>`,
 
             `<input type="text" class="form-control column-input" id="columnhint"  data-id="${item.id}"
@@ -289,8 +292,20 @@
               <input class="form-check-input column-input show-table " data-id="${item.id}" type="checkbox" id="showtable" ${item.show_table ? 'checked' : ''} />
               <label class="form-check-label">Show table</label>
             </div>`,
-
             `<div class="d-flex align-items-center gap-2">
+              <select class="form-select column-input d-none" id="emission-select"  data-id="${item.id}" style="width:100px" >
+                <option value="" disabled selected>Select</option>
+                <option value="scope1" ${item.column_type === 'scope1' ? 'selected' : ''}>Scope 1</option>
+                <option value="scope2" ${item.column_type === 'scope2' ? 'selected' : ''}>Scope 2</option>
+                <option value="scope3" ${item.column_type === 'scope3' ? 'selected' : ''}>Scope 3</option>
+                <option value="reduction" ${item.column_type === 'reduction' ? 'selected' : ''}>Reduction</option>
+                <option value="non_b3" ${item.column_type === 'non_b3' ? 'selected' : ''}>Non B3</option>
+                <option value="b3" ${item.column_type === 'b3' ? 'selected' : ''}>B3</option>
+                <option value="waste_water" ${item.column_type === 'waste_water' ? 'selected' : ''}>Waste Water</option>
+                <option value="water_consumption" ${item.column_type === 'water_consumption' ? 'selected' : ''}>Water Consumption</option>              
+                <option value="energy_consumption" ${item.column_type === 'energy_consumption' ? 'selected' : ''}>Energy Consumption</option>              
+                <option value="energy_reduction" ${item.column_type === 'energy_reduction' ? 'selected' : ''}>Energy Reduction</option>              
+              </select>
               <a href="javascript:;"  id="btnSaveColumn${item.id}" onclick="save_column(this)" class="btn btn-sm btn-ghost-success waves-effect waves-light shadow-none d-none"> Save Column </a>
               <a href="javascript:;" id="btnDeleteColumn${item.id}" onclick="delete_column(this)" class="btn btn-sm btn-ghost-danger waves-effect waves-light shadow-none"> Delete Column </a>
               <a href="javascript:;"  id="iconDeleteColumn${item.id}" onclick="delete_column(this)" class="btn btn-sm btn-ghost-danger waves-effect waves-light shadow-none d-none"> <i class="ri-delete-bin-line"></i> </a>
@@ -313,7 +328,7 @@
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      cancelButtonColor: '#020202ff',
       confirmButtonText: 'Ya, Hapus!',
       cancelButtonText: 'Batal'
     }).then((result) => {
@@ -378,13 +393,23 @@ $(document).on('keyup change', '.column-input', function () {
     $(`#iconDeleteColumn${id}`).removeClass('d-none')
 })
 
+$(document).on('change', '.column-type', function () {
+  const value = $(this).val();
+
+  if (value === 'emission') {
+    $('#emission-select').removeClass('d-none');
+  } else {
+    $('#emission-select').addClass('d-none');
+  }
+});
+
 function deleteform(id) {
     let maturity_id = id
     {% comment %} console.log(maturity_id) {% endcomment %}
 
     Swal.fire({
       title: 'Apakah Anda yakin?',
-      text: 'Kolom yang dihapus tidak dapat dikembalikan!',
+      text: 'Data yang dihapus tidak dapat dikembalikan!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -397,15 +422,15 @@ function deleteform(id) {
           url: `data/remove_form/${maturity_id}`,
           success: (res) => {
             if (res.success) {
-              Swal.fire('Terhapus!', 'Kolom berhasil dihapus.', 'success').then(function () {
+              Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success').then(function () {
                 window.location.href = `data/category/{{ category }}/`
               })
             } else {
-              Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus kolom.', 'error')
+              Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus data.', 'error')
             }
           },
           error: (err) => {
-            Swal.fire('Error!', 'Tidak dapat menghapus kolom. Silakan coba lagi.', 'error')
+            Swal.fire('Error!', 'Tidak dapat menghapus data. Silakan coba lagi.', 'error')
           }
         })
       }
