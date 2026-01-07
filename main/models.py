@@ -115,6 +115,7 @@ class TMatlevKriteriaColumn(models.Model):
     show_table = models.BooleanField(default=False)
     negative_input = models.BooleanField(default=False)
     equation = models.TextField(blank=True, null=True)
+    emission_category = models.TextField(blank=True, null=True)
     
     class Meta:
         managed = True
