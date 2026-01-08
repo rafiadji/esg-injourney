@@ -36,7 +36,7 @@
               <a class="fs-20" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span><i class="ri-more-fill align-bottom me-1"></i></span></a>
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="master/location_form/edit/{{ dt.id }}"><i class="ri-edit-box-line"></i> Edit</a>
-                <a class="dropdown-item" href="javascript:;" onclick="delete_user({{ dt.id }})"><i class="ri-delete-bin-line"></i> Hapus</a>
+                <a class="dropdown-item" href="javascript:;" onclick="delete_user({{ dt.id }})"><i class="ri-delete-bin-line"></i> Delete</a>
               </div>
             </div>
           </td>
@@ -58,14 +58,14 @@
 
   function delete_user(id){
     Swal.fire({
-      title: 'Apakah Anda yakin?',
-      text: 'Data yang dihapus tidak dapat dikembalikan!',
+      title: 'Are you sure?',
+      text: 'Deleted location cannot be recovered!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Ya, Hapus!',
-      cancelButtonText: 'Batal'
+      confirmButtonText: 'Yes, Delete!',
+      cancelButtonText: 'Cancle'
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({

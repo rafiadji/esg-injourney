@@ -223,8 +223,6 @@ def update_level_get(request):
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)}, status=500)
 
-
-
 def update_weight(request):
     try:
         # Parse data dari request body
@@ -264,8 +262,6 @@ def update_weight(request):
         
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)}, status=500)
-
-
 
 def import_excel(request):
     if request.method == 'POST':
@@ -330,16 +326,6 @@ def import_excel(request):
     
     return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
-
-def envindex(request):
-    return render(request, "envindex.html", context)
-    
-def socindex(request):
-    return render(request, "socindex.html", context)
-
-def govindex(request):
-    return render(request, "govindex.html", context)
-
 def workpaper_form(request):
     if(request.GET.get("mode")) : 
         id = request.GET.get("id")
@@ -384,6 +370,72 @@ def leveldetail(request):
     context['idlev'] = idlev
     context['matlev'] = TMatlevKriteriaDetail.objects.filter(id=idlev).first()
     context['matlevsubid'] = TMatlevKriteria.objects.filter(id=subindicator).first()
+    context['column'] = TMatlevKriteriaColumn.objects.order_by('id').filter(maturity_id=idlev)
+    
+    year = []
+    for x in range(2020, 2031):
+        year.append(x)
+    context['year'] = year
+    context['month'] = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+    
+    if request.method=="POST":
+        r = request.POST
+        rf = request.FILES
+        if r.get('mode') == 'add':
+            matlev = context['matlev']
+            user = request.user
+            post = TRMatlev()
+            post.user = user
+            post.maturity = matlev
+            post.kriteria = matlev.kriteria
+            post.indicator = matlev.kriteria.indicator
+            post.save()
+            # print(f"Before save - Status: {matlev.status}")  
+            matlev.status = 'submitted'
+            matlev.save()
+            # print(f"After save - Status: {matlev.status}") 
+            for key, val in request.POST.items():
+                if key != 'csrfmiddlewaretoken' and key != 'search_terms' and key != 'mode':
+                    col = TMatlevKriteriaColumn.objects.get(id=key)
+                    in_t = TRMatlevColumn()
+                    in_t.column = col
+                    in_t.matlev = post
+                    in_t.value = r.get(key)
+                    in_t.save()
+                    
+            for key, val in request.FILES.items():
+                col = TMatlevKriteriaColumn.objects.get(id=key)
+                in_f = TRMatlevColumn()
+                in_f.column = col
+                in_f.matlev = post
+                in_f.value_files = rf.get(key)
+                in_f.save()
+        else:
+            matlev = context['matlev']
+            user = request.user
+            post = TRMatlev.objects.get(id=r.get('mode'))
+            post.user = user
+            post.maturity = matlev
+            post.kriteria = matlev.kriteria
+            post.indicator = matlev.kriteria.indicator
+            post.save()
+            # print(f"Before save - Status: {matlev.status}")  
+            matlev.status = 'submitted'
+            matlev.save()
+            # print(f"After save - Status: {matlev.status}") 
+            for key, val in request.POST.items():
+                if key != 'csrfmiddlewaretoken' and key != 'search_terms' and key != 'mode':
+                    col = TMatlevKriteriaColumn.objects.get(id=key)
+                    in_t = TRMatlevColumn.objects.get(matlev=post, column=col)
+                    in_t.value = r.get(key)
+                    in_t.save()
+                    
+            for key, val in request.FILES.items():
+                col = TMatlevKriteriaColumn.objects.get(id=key)
+                in_f = TRMatlevColumn.objects.get(matlev=post, column=col)
+                in_f.value_files = rf.get(key)
+                in_f.save()
+        return HttpResponseRedirect('/data/detail/?category='+context['category']+'&ind='+context['ind']+'&sub='+context['sub']+'&matlev='+context['idlev'])
     return render(request, "level_detail.html", context)
 
 def esgindex(request,category):
@@ -435,7 +487,6 @@ def get_data(request, indicator, subindicator):
         "counting_detail": counting_detail
         # "maxlevel" : maxlevel
     })
-    
 
 def get_subind(request, val):
     # print(val)
@@ -468,12 +519,88 @@ def get_leveldetail(request, val):
         "data":list(matlev)
     })
 
-
-
 def upload_file(request):
-    if request.method == "POST":
-        print("File diterima:", request.FILES)
+    if request.method=="POST":
+        r = request.POST
+        rf = request.FILES
+        user = request.user
+        post = TRMatlev()
+        post.user = user
+        post.maturity = TMatlevKriteriaDetail.objects.get(id=r.get('matlev'))
+        post.kriteria = TMatlevKriteria.objects.get(id=r.get('subindicator'))
+        post.indicator = TMatlevIndicator.objects.get(id=r.get('indicator'))
+        post.save()
+        
+        matlev = TMatlevKriteriaDetail.objects.get(id=r.get('matlev'))
+        matlev.status = 'submitted'
+        matlev.save()
+                
+        for key, val in request.FILES.items():
+            col = TMatlevKriteriaColumn.objects.get(id=key)
+            in_f = TRMatlevColumn()
+            in_f.column = col
+            in_f.matlev = post
+            in_f.value_files = rf.get(key)
+            in_f.save()
         return JsonResponse({"status": "ok"})
+
+def get_detail_data(request, id):
+    column_tr = TRMatlev.objects.filter(maturity_id=id).order_by('-id')
+    column_value = []
+    matlev_id = []
+    
+    for col_tr in column_tr:
+        vl = TRMatlevColumn.objects.order_by('id').filter(matlev=col_tr)
+        temp = []
+        for val in vl:
+            if val.column.show_table == True:
+                if val.column.column_type == 'file':
+                    if val.value_files:
+                        file_url = val.value_files.url if hasattr(val.value_files, 'url') else ''
+                        file_name = os.path.basename(val.value_files.name) if val.value_files.name else ''
+                        file_size = val.value_files.size if hasattr(val.value_files, 'size') else 0
+                    
+                        temp.append({
+                            'value': file_url,
+                            'filename': file_name,
+                            'filesize': file_size,
+                            'type': val.column.column_type,
+                            'id_input': val.column.id,
+                            'label': val.column.column_name
+                        })
+                else:
+                    temp.append({
+                        'value': val.value,
+                        'filename': '',
+                        'filesize': 0,
+                        'type': val.column.column_type,
+                        'id_input': val.column.id,
+                        'label': val.column.column_name
+                    })
+        column_value.append(temp)
+        matlev_id.append(col_tr.id)
+    matlev = list(zip(matlev_id, column_value))
+    return JsonResponse({
+        "status": "success",
+        "data":matlev
+    })
+
+def remove_detail_data(request, id):
+    
+    matlevcol = TRMatlevColumn.objects.filter(matlev_id=id)
+    if(matlevcol):
+        for col in matlevcol:
+            if col.value_files:
+                col.value_files.delete(save=False)
+        matlevcol.delete()
+    
+    matlev = TRMatlev.objects.filter(id=id)
+    if(matlev):
+        matlev.delete()
+    
+    return JsonResponse({
+        'success':True,
+    })
 
 def upload_enviro(request):
     if request.method == "POST":
@@ -702,7 +829,6 @@ def upload_enviro(request):
         # emission = TREmission()
         return JsonResponse({"status": "ok"})
 
-
 def add_column(request, id):
     matlevcolumn = TMatlevKriteriaColumn()
     matlevcolumn.maturity_id = id
@@ -733,8 +859,7 @@ def add_data(request, indicator, subindicator):
     return JsonResponse({
         "status": "success",
         "data":matlevid
-    })
-        
+    })      
     
 def remove_column(request, id):
     # print(id)

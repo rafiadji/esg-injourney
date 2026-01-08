@@ -19,6 +19,77 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
+
+    /* Dropzone Sederhana */
+    .dropzone-simple {
+        border: 2px dashed #dee2e6;
+        border-radius: 10px;
+        background: #f8f9fa;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dropzone-simple:hover {
+        border-color: #0d6efd;
+        background-color: #e7f1ff;
+    }
+
+    .dropzone-simple.dz-drag-hover {
+        border-color: #0d6efd;
+        background-color: #e7f1ff;
+        transform: scale(1.02);
+    }
+
+    .dropzone-simple .dz-message {
+        color: #495057;
+    }
+
+    .dropzone-simple .dz-message i {
+        color: #6c757d;
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .dropzone-simple .dz-message h5 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .dropzone-simple .dz-message .text-muted {
+        font-weight: normal;
+    }
+
+    .dropzone-simple .dz-message p {
+        font-size: 0.875rem;
+        margin-top: 1rem;
+        color: #6c757d;
+    }
+
+    /* Preview Area */
+    .file-preview-area {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Status upload */
+    .upload-progress {
+        margin-top: 10px;
+    }
+
+    .upload-progress .progress {
+        height: 6px;
+        margin-top: 5px;
+    }
   </style>
 {% endblock %}
 
@@ -79,12 +150,9 @@
                 </div>
               </div>
             </div>
-            <div class="row justify-content-center">
-              <div class="col-lg-8 col-sm-10">
-                <div class="text-center">
-                  <span class="icon-on text-muted text-center" style="font-size: 100px;"><i class="bx bx-file"></i></span>
-                  <h4 class="text-muted mb-2 pb-4">No Data Available</h4>
-                </div>
+            <div class="row justify-content-center mt-3">
+              <div class="col-lg-12 col-sm-12" id="data-detail">
+                
               </div>
               <!-- end col -->
             </div>
@@ -95,141 +163,158 @@
 
   <div class="modal fade" id="uploadData" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Uploads Documents</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-        </div>
-        <div class="modal-body text-center p-5">
-          <form action="data/upload/" class="dropzone" id="dropzoneUpload">
-            {% csrf_token %}
-            <div class="fallback">
-              <input name="file" type="file" multiple="multiple" />
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Upload Documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
-            <div class="dz-message needsclick">
-              <div class="mb-3">
-                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-              </div>
-              <h4>Drop files here or click to upload.</h4>
-            </div>
-          </form>
-
-          <ul class="list-unstyled mb-0" id="dropzone-preview">
-            <li class="mt-2" id="dropzone-preview-list">
-              <!-- TEMPLATE PREVIEW -->
-              <div class="border rounded">
-                <div class="d-flex p-2">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar-sm bg-light rounded">
-                      <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" alt="Dropzone-Image" />
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body p-5">
+                    <!-- Area Dropzone Sederhana -->
+                    <div class="dropzone-simple" id="dropzoneUpload">
+                        <div class="dz-message">
+                            <div class="mb-3">
+                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                            </div>
+                            <h5 class="mb-2">Choose File <span class="text-muted">or drag file here</span></h5>
+                            <p class="text-muted small mb-0">Note: file extension (.doc .xls .pdf .png .jpg .jpeg)</p>
+                            <input type="file" class="d-none" id="fileInput" />
+                        </div>
                     </div>
-                  </div>
 
-                  <div class="flex-grow-1">
-                    <div class="pt-1">
-                      <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                      <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                      <strong class="error text-danger" data-dz-errormessage></strong>
+                    <!-- Area Preview File -->
+                    <div class="file-preview-area mt-4" id="dropzone-preview" style="display: none;">
+                        <div class="border rounded p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar-sm bg-light rounded">
+                                        <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" alt="File preview" />
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="pt-1">
+                                        <h6 class="mb-1" data-dz-name></h6>
+                                        <p class="text-muted small mb-0" data-dz-size></p>
+                                        <strong class="error text-danger small" data-dz-errormessage></strong>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-dz-remove>
+                                        <i class="bx bx-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-
-                  <div class="flex-shrink-0 ms-3">
-                    <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
-                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancle</button>
+                    <button type="submit" class="btn btn-success" id="submit-upload" disabled>
+                        <i class="bx bx-save"></i> Save
+                    </button>
+                </div>
+            </form>
         </div>
-      </div>
-      <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
   </div>
 
-  <div class="modal fade" id="addData" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal fade" id="formulirData" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl ">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Add Data</h5>
+          <h5 class="modal-title" id="formulirDataLabel">Add Data</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
         </div>
+        <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="mode" id="mode">
         <div class="modal-body">
           <div class="row">
-            <div class="col-xxl-6 col-md-6 mt-3">
-              <label for="2" class="form-label">Type Of Risk</label>
-              <input type="text" class="form-control" id="2" placeholder="Type Of Risk" name="2" />
-            </div>
-            <div class="col-xxl-6 col-md-6 mt-3">
-              <label for="3" class="form-label">Sub Type Of Risk</label>
-              <input type="text" class="form-control" id="3" placeholder="Sub Type Of Risk" name="3" />
-            </div>
-            <div class="col-xxl-6 col-md-6 mt-3">
-              <label for="3" class="form-label">Specific impact that the climate-related risk will have</label>
-              <input type="text" class="form-control" id="3" placeholder="Specific impact that the climate-related risk will have" name="3" />
-            </div>
-            <div class="col-xxl-6 col-md-6 mt-3">
-              <label for="3" class="form-label">Time Frame</label>
-              <input type="text" class="form-control" id="3" placeholder="Time Frame" name="3" />
-            </div>
-            <div class="col-xxl-6 col-md-6 mt-3">
-              <label for="3" class="form-label">Estimated financial implications of the risk before taking action</label>
-              <input type="text" class="form-control" id="3" placeholder="Estimated financial implications of the risk before taking action" name="3" />
-            </div>
-            <div class="col-xxl-6 col-md-6 mt-3">
-              <label for="3" class="form-label">Estimated costs of these actions</label>
-              <input type="text" class="form-control" id="3" placeholder="Estimated costs of these actions" name="3" />
-            </div>
-          </div>
-          <div class="mt-3">
-            <form action="data/upload/" class="dropzone" id="dropzoneData">
-              {% csrf_token %}
-              <div class="fallback">
-                <input name="file" type="file" multiple="multiple" />
-              </div>
-
-              <div class="dz-message needsclick">
-                <div class="mb-3">
-                  <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+            {% for cl in column %}
+              {% if cl.column_type == 'sub' %}
+              <hr class="mt-3">
+              <h5 class="mb-1">{{cl.column_name}}</h5>
+              <span class="mb-4 text-muted">{{cl.hints|default:""}}</span>
+              {% for cln in column %}
+                {% if cln.sub_column_id == cl.id %}
+                <div class="mb-3 col-6">
+                    <label for="{{ cln.id }}" class="form-label">{{cln.column_name}} </label>
+                    {% if cln.column_type == 'year' %}
+                      <select name="{{ cln.id }}" id="{{ cln.id }}" class="form-control year-select">
+                        <option value="" {% if not cln.value %}selected{% endif %}>Choose Year</option>
+                        {% for x in year %}
+                        <option value="{{x}}" {% if cln.value == x|safe %}selected{% endif %}>{{x}}</option>
+                      {% endfor %}
+                    </select>
+                    {% elif cln.column_type == 'month' %}
+                      <select name="{{ cln.id }}" id="{{ cln.id }}" class="form-control month-select">
+                        <option value="" {% if not cln.value %}selected{% endif %}>Choose Month</option>
+                        {% for x in month %}
+                        <option value="{{ x }}" {% if cln.value == x %}selected{% endif %}>{{ x }}</option>
+                        {% endfor %}
+                    </select>
+                    {% elif cln.column_type == 'text' %}
+                      <input type="text" class="form-control" id="{{ cln.id }}" name="{{ cln.id }}" value="{{ cln.value }}">
+                    {% elif cln.column_type == 'decimal' %}
+                      {% if cln.negative_input == True %}
+                      <input type="text" class="form-control num-neg-input" onfocusout="proses_equation()" id="{{ cln.id }}" name="{{ cln.id }}" value="{{ cln.value|default:"0" }}">
+                      {% else %}
+                        <input type="text" class="form-control num-input" onfocusout="proses_equation()" id="{{ cln.id }}" name="{{ cln.id }}" value="{{ cln.value|default:"0" }}">
+                      {% endif %}
+                    {% elif cln.column_type == 'file' %}
+                      <input type="file" class="form-control" id="{{ cln.id }}" name="{{ cln.id }}">
+                    {% elif cln.column_type == 'equation' %}
+                      <input type="text" class="form-control" id="{{ cln.id }}" name="{{ cln.id }}" readonly>
+                    {% endif %}
+                    <div id="help{{ cln.id }}" class="form-text">{{ cln.hints|default:"&nbsp;" }}</div>
                 </div>
-                <h4>Drop files here or click to upload.</h4>
+                {% endif %}
+              {% endfor %}
+              <hr class="mt-3">
+              {% elif cl.sub_column_id == '' or cl.sub_column_id == None %}
+              <div class="mb-3 col-6">
+                  <label for="{{ cl.id }}" class="form-label">{{cl.column_name}}</label>
+                  {% if cl.column_type == 'year' %}
+                    <select name="{{ cl.id }}" id="{{ cl.id }}" class="form-control year-select">
+                      <option value="" {% if not cl.value %} selected {% endif %}>Choose Year</option>
+                      {% for x in year %}
+                      <option value="{{x}}" {% if cl.value == x|safe %} selected {% endif %}>{{x}}</option>
+                      {% endfor %}
+                    </select>
+                  {% elif cl.column_type == 'month' %}
+                    <select name="{{ cl.id }}" id="{{ cl.id }}" class="form-control month-select">
+                        <option value="" {% if not cl.value %}selected{% endif %}>Choose Month</option>
+                        {% for x in month %}
+                        <option value="{{ x }}" {% if cl.value == x %}selected{% endif %}>{{ x }}</option>
+                        {% endfor %}
+                    </select>
+                  {% elif cl.column_type == 'text' %}
+                    <input type="text" class="form-control" id="{{ cl.id }}" name="{{ cl.id }}" value="{{ cl.value }}">
+                  {% elif cl.column_type == 'decimal' %}
+                    
+                    {% if cl.negative_input == True %}
+                      <input type="text" class="form-control num-neg-input" onfocusout="proses_equation()" id="{{ cl.id }}" name="{{ cl.id }}" value="{{ cl.value|default:"0" }}">
+                    {% else %}
+                      <input type="text" class="form-control num-input" onfocusout="proses_equation()" id="{{ cl.id }}" name="{{ cl.id }}" value="{{ cl.value|default:"0" }}">
+                    {% endif %}
+                  {% elif cl.column_type == 'file' %}
+                    <input type="file" class="form-control" id="{{ cl.id }}" name="{{ cl.id }}">
+                    <div id="upload{{ cl.id }}" class="form-text">{{ cl.value|default:"&nbsp;" }}</div>
+                  {% elif cl.column_type == 'equation' %}
+                    <input type="text" class="form-control" id="{{ cl.id }}" name="{{ cl.id }}" readonly>
+                  {% endif %}
+                  <div id="help{{ cl.id }}" class="form-text">{{ cl.hints|default:"&nbsp;" }}</div>
               </div>
-            </form>
-
-            <ul class="list-unstyled mb-0" id="dropzone-preview-data">
-              <li class="mt-2" id="dropzone-preview-list-data">
-                <!-- TEMPLATE PREVIEW -->
-                <div class="border rounded">
-                  <div class="d-flex p-2">
-                    <div class="flex-shrink-0 me-3">
-                      <div class="avatar-sm bg-light rounded">
-                        <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" alt="Dropzone-Image" />
-                      </div>
-                    </div>
-
-                    <div class="flex-grow-1">
-                      <div class="pt-1">
-                        <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                        <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                        <strong class="error text-danger" data-dz-errormessage></strong>
-                      </div>
-                    </div>
-
-                    <div class="flex-shrink-0 ms-3">
-                      <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          
+              {% endif %}
+            {% endfor %}
+          </div>          
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success active"><span class="icon-on"><i class="bx bx-save large"></i> Simpan</span></button>
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancle</span></button>
+          <button type="submit" class="btn btn-success active"><span class="icon-on"><i class="bx bx-save large"></i> Save</span></button>
         </div>
+        </form>
       </div>
       <!-- /.modal-content -->
     </div>
@@ -241,45 +326,479 @@
 
 {% block script %}
 <script>
+  let cacheData = [];
+
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    
+    // Untuk MB, tampilkan 2 desimal, untuk KB tampilkan 0 desimal
+    let formattedSize;
+    if (i === 2) { // MB
+        formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(2));
+    } else {
+        formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(0));
+    }
+    
+    return formattedSize + ' ' + sizes[i];
+  }
+
   function upload_data(){
     $('#uploadData').modal('show')
   }
 
   function add_data(){
-    $('#addData').modal('show')
+    $('#mode').val('add')
+    $('#formulirDataLabel').html('Add Data')
+    $('#formulirData').modal('show')
   }
 
-  Dropzone.autoDiscover = false;
+  function edit_data(index){
+    data = cacheData[index]
+    for(var i = 0; i < data[1].length;i++){
+      if(data[1][i].type != "file"){
+        $('#'+data[1][i].id_input).val(data[1][i].value)
+      } else {
+        $('#upload'+data[1][i].id_input).html(data[1][i].filename)
+      }
+    }
+    $('#mode').val(data[0])
+    $('#formulirDataLabel').html('Edit Data')
+    $('#formulirData').modal('show')
+  }
 
-  var previewNode = document.querySelector("#dropzone-preview-list");
-  previewNode.id = ""; 
-  var previewTemplate = previewNode.parentNode.innerHTML;
-  previewNode.parentNode.removeChild(previewNode);
+  function get_data(id){
+    $.ajax({
+      url: `data/get_detail_data/${id}`,
+      dataType: 'json',
+      async: true,
+      success: (res) => {
+        data = res.data
+        cacheData = data;
+        html = ``
+        if(data.length > 0){
+          for(var i = 0;i < data.length;i++){
+            {% if matlev.data_type == 'upload' %}
+            html += `
+            <div class="border rounded p-3 mb-3">
+              <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 me-3">
+                      <div class="avatar-sm bg-light rounded">
+                          <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" />
+                      </div>
+                  </div>
+                  <div class="flex-grow-1">
+                      <div class="pt-1">
+                        <a href="${data[i][1][0].value}" target="_blank">
+                          <h6 class="mb-1">${data[i][1][0].filename}</h6>
+                        </a>
+                          <p class="text-muted small mb-0">${formatFileSize(data[i][1][0].filesize)}</p>
+                      </div>
+                  </div>
+                  <div class="flex-shrink-0">
+                      <button type="button" class="btn btn-sm btn-outline-danger" onclick="remove_data('${data[i][0]}')">
+                          <i class="bx bx-trash"></i> Delete
+                      </button>
+                  </div>
+              </div>
+            </div>
+            `
+            {% else %}
+            dta_all = ``
+            dta_file = ``
+            for(var j = 0; j < data[i][1].length; j++){
+              if(data[i][1][j].type != "file"){
+                dta_all += `
+                <div class="col-3">
+                  <span style="font-size: 14 !important; line-height: 20px !important; font-weight: 600 !important;">${data[i][1][j].label}</span>
+                  <p style="font-size: 14 !important; line-height: 20px !important; font-weight: 400 !important;">${data[i][1][j].value}<p>
+                </div>
+                `
+              } else {
+                dta_file += `
+                <div class="col-3">
+                  <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm bg-light rounded">
+                            <img data-dz-thumbnail class="img-fluid rounded d-block" src="assets/images/new-document.png" />
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="pt-1">
+                          <a href="${data[i][1][j].value}" target="_blank">
+                            <h6 class="mb-1">${data[i][1][j].filename}</h6>
+                          </a>
+                            <p class="text-muted small mb-0">${formatFileSize(data[i][1][j].filesize)}</p>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                `
+              }
+            } 
+            html += `
+            <div class="border rounded p-3 mb-3">
+              <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0 me-3">
+                  </div>
+                  <div class="flex-grow-1">
+                  </div>
+                  <div class="flex-shrink-0">
+                      <button type="button" class="btn btn-sm btn-outline-warning" onclick="edit_data('${i}')">
+                          <i class="bx bx-pencil"></i> Edit
+                      </button>
+                      <button type="button" class="btn btn-sm btn-outline-danger" onclick="remove_data('${data[i][0]}')">
+                          <i class="bx bx-trash"></i> Delete
+                      </button>
+                  </div>
+              </div>
+              <div class="row">
+                ${dta_all}
+              </div>
+              <div class="row">
+                ${dta_file}
+              </div>
+            </div>
+            `
+            {% endif %}
+          }
+        } else {
+          html += `
+            <div class="text-center">
+              <span class="icon-on text-muted text-center" style="font-size: 100px;"><i class="bx bx-file"></i></span>
+              <h4 class="text-muted mb-2 pb-4">No Data Available</h4>
+            </div>
+            `
+        }
+        $('#data-detail').html(html)
+
+      }
+    }) 
+  }
+
+  function remove_data(id){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Deleted data cannot be recovered!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, Delete!',
+      cancelButtonText: 'Cancle'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: `data/remove_detail_data/${id}`,
+          dataType: 'json',
+          async: true,
+          success: (res) => {
+            get_data('{{idlev}}')
+          }
+        })
+      }
+    })
+  }
+
+  get_data('{{idlev}}')
+
+  {% comment %} function getCookie(name) {
+    let cookieValue = null
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';')
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim()
+        if (cookie.substring(0, name.length + 1) === name + '=') {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+          break
+        }
+      }
+    }
+    return cookieValue
+  }
+
+  Dropzone.autoDiscover = false;{% endcomment %}
+
+  {% for cl in column %}
+  paramname = '{{cl.id}}'
+  {% endfor %}
+  
+
+  Dropzone.autoDiscover = false;
+  var previewNode = document.querySelector("#dropzone-preview .border.rounded");
+  var previewTemplate = previewNode ? previewNode.outerHTML : '';
+  document.querySelector("#dropzone-preview").innerHTML = '';
 
   var myDropzone = new Dropzone("#dropzoneUpload", {
       url: "data/upload/",
+      paramName: paramname, // Pastikan paramname sudah didefinisikan
+      maxFiles: 1,
       maxFilesize: 5, // MB
-      acceptedFiles: ".png,.jpg,.jpeg,.pdf",
+      acceptedFiles: ".png,.jpg,.jpeg,.pdf,.docx",
+      previewsContainer: "#dropzone-preview", 
+      previewTemplate: previewTemplate,
+      clickable: ".dropzone-simple",
+      autoProcessQueue: false,
+      addRemoveLinks: false,
+      dictDefaultMessage: "",
+      dictInvalidFileType: "File type not allowed",
+      dictFileTooBig: "File is too big ({{filesize}}MB). Max filesize: {{maxFilesize}}MB.",
+      init: function() {
+          const dz = this;
+          const dropzoneElement = document.querySelector("#dropzoneUpload");
+          const previewContainer = document.querySelector("#dropzone-preview");
+          const submitButton = document.querySelector("#submit-upload");
+          
+          // Fungsi untuk update tampilan
+          function updateUI() {
+              if (dz.files.length > 0) {
+                  // Ada file - sembunyikan dropzone, tampilkan preview
+                  dropzoneElement.style.display = 'none';
+                  previewContainer.style.display = 'block';
+                  submitButton.disabled = false;
+              } else {
+                  // Tidak ada file - tampilkan dropzone, sembunyikan preview
+                  dropzoneElement.style.display = 'block';
+                  previewContainer.style.display = 'none';
+                  submitButton.disabled = true;
+              }
+          }
+          
+          // Event ketika file ditambahkan
+          this.on("addedfile", function(file) {
+              // Update nama file di preview
+              const fileNameElement = previewContainer.querySelector('[data-dz-name]');
+              const fileSizeElement = previewContainer.querySelector('[data-dz-size]');
+              
+              if (fileNameElement) {
+                  fileNameElement.textContent = file.name;
+              }
+              
+              if (fileSizeElement) {
+                  const fileSize = (file.size / (1024*1024)).toFixed(2); // MB
+                  fileSizeElement.textContent = fileSize + ' MB';
+              }
+              
+              updateUI();
+          });
+          
+          // Event ketika file dihapus
+          this.on("removedfile", function(file) {
+              updateUI();
+          });
+          
+          // Event ketika drag masuk
+          this.on("dragenter", function() {
+              dropzoneElement.classList.add('dz-drag-hover');
+          });
+          
+          // Event ketika drag keluar
+          this.on("dragleave", function() {
+              dropzoneElement.classList.remove('dz-drag-hover');
+          });
+          
+          // Event ketika drop
+          this.on("drop", function() {
+              dropzoneElement.classList.remove('dz-drag-hover');
+          });
+          
+          // Event error
+          this.on("error", function(file, errorMessage) {
+              alert('Error: ' + errorMessage);
+              this.removeFile(file);
+              updateUI();
+          });
+          
+          // Event sending untuk tambahkan data
+          this.on("sending", function(file, xhr, formData) {
+              formData.append('indicator', '{{ind}}');
+              formData.append('subindicator', '{{sub}}');
+              formData.append('matlev', '{{idlev}}');
+              formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+              
+              // Tampilkan loading di button
+              if (submitButton) {
+                  submitButton.innerHTML = '<i class="bx bx-loader bx-spin"></i> Uploading...';
+                  submitButton.disabled = true;
+              }
+          });
+          
+          // Event queue complete
+          this.on("queuecomplete", function() {
+              if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                  // Reset button
+                  if (submitButton) {
+                      submitButton.innerHTML = '<i class="bx bx-save"></i> Simpan';
+                      submitButton.disabled = false;
+                  }
+                  
+                  // Tutup modal
+                  $('#uploadData').modal('hide');
+                  
+                  // Reset dropzone
+                  setTimeout(function() {
+                      dz.removeAllFiles(true);
+                      updateUI();
+                  }, 300);
+                  
+                  // Refresh halaman
+                  setTimeout(function() {
+                      get_data('{{idlev}}')
+                  }, 500);
+              }
+          });
+          
+          // Event submit form
+          const form = document.querySelector("#uploadData form");
+          if (form) {
+              form.addEventListener("submit", function(e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  
+                  if (dz.files.length === 0) {
+                      alert('Please select a file first');
+                      return;
+                  }
+                  
+                  // Process queue
+                  dz.processQueue();
+              });
+          }
+          
+          // Event untuk tombol delete di preview
+          previewContainer.addEventListener('click', function(e) {
+              if (e.target.closest('[data-dz-remove]')) {
+                  dz.removeAllFiles(true);
+                  updateUI();
+              }
+          });
+          
+          // Inisialisasi awal
+          updateUI();
+      }
+  });
+
+  // Fungsi untuk mendapatkan cookie
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === name + '=') {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+
+  {% comment %} var myDropzone = new Dropzone("#dropzoneUpload", {
+      url: "data/upload/",
+      paramName:paramname, 
+      maxFiles: 1,
+      maxFilesize: 5, // MB
+      acceptedFiles: ".png,.jpg,.jpeg,.pdf,.docx",
       previewsContainer: "#dropzone-preview",
       previewTemplate: previewTemplate,
       parallelUploads: 2,
       addRemoveLinks: false,
-  });
+      autoProcessQueue: false,
+      clickable: ".dz-message",
+      headers: {
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+      },
+      init: function() {
+          const submitButton = document.querySelector("#submit-upload");
+          const dz = this;
 
-  var previewNodeData = document.querySelector("#dropzone-preview-list-data");
-  previewNodeData.id = ""; 
-  var previewTemplateData = previewNodeData.parentNode.innerHTML;
-  previewNodeData.parentNode.removeChild(previewNodeData);
+          const dropzoneElement = document.querySelector("#dropzoneUpload");
+          const previewContainer = document.querySelector("#dropzone-preview");
+          
+          // Fungsi untuk update tampilan
+          function updateDropzoneDisplay() {
+              if (dz.files.length > 0) {
+                  // Ada file, sembunyikan area drop dan tampilkan preview
+                  dropzoneElement.classList.add('hide-dropzone');
+                  previewContainer.classList.add('has-files');
+              } else {
+                  // Tidak ada file, tampilkan area drop dan sembunyikan preview
+                  dropzoneElement.classList.remove('hide-dropzone');
+                  previewContainer.classList.remove('has-files');
+              }
+          }
+          
+          // Event ketika file ditambahkan
+          this.on("addedfile", function(file) {
+              updateDropzoneDisplay();
+          });
+          
+          // Event ketika file dihapus
+          this.on("removedfile", function(file) {
+              updateDropzoneDisplay();
+          });
+          
+          const form = document.querySelector("#uploadData form");
+          form.addEventListener("submit", function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              // Tampilkan loading
+              submitButton.innerHTML = '<i class="bx bx-loader bx-spin"></i> Uploading...';
+              submitButton.disabled = true;
+              
+              // Process semua file di queue
+              dz.processQueue();
+          });
+          
+          // Saat semua file berhasil diupload
+          this.on("queuecomplete", function() {
+              if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                  // Reset button
+                  submitButton.innerHTML = '<i class="bx bx-save large"></i> Simpan';
+                  submitButton.disabled = false;
+                  
+                  // Tutup modal
+                  $('#uploadData').modal('hide');
+                  dz.removeAllFiles(true);
+                  
+                  // Refresh halaman atau data
+                  window.location.reload();
+              }
+          });
+          
+          // Saat terjadi error
+          this.on("error", function(file, errorMessage) {
+              alert('Error uploading file: ' + errorMessage);
+              this.removeFile(file);
+              
+              // Reset button
+              submitButton.innerHTML = '<i class="bx bx-save large"></i> Simpan';
+              submitButton.disabled = false;
+          });
+          
+          // Saat mengirim file
+          this.on("sending", function(file, xhr, formData) {
+              
+              formData.append('indicator', '{{ind}}');
+              formData.append('subindicator', '{{sub}}');
+              formData.append('matlev', '{{idlev}}');
+              
+              // Tambahkan CSRF token
+              formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+          });
 
-  var myDropzone = new Dropzone("#dropzoneData", {
-      url: "data/upload/",
-      maxFilesize: 5, // MB
-      acceptedFiles: ".png,.jpg,.jpeg,.pdf",
-      previewsContainer: "#dropzone-preview-data",
-      previewTemplate: previewTemplateData,
-      parallelUploads: 2,
-      addRemoveLinks: false,
-  });
+          updateDropzoneDisplay();
+      },
+      error: function(file, message) {
+        alert('Error: ' + message);
+        this.removeFile(file);
+      }
+  }); {% endcomment %}
 </script>
 
 {% endblock %}
