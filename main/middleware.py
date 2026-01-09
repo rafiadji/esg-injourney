@@ -20,7 +20,7 @@ class ActivityLogMiddleware:
         
         # 1. Handle Tahun Periode
         if 'tahun_periode' not in request.session:
-            request.session['tahun_periode'] = '2024'  # Default tahun
+            request.session['tahun_periode'] = '2025'  # Default tahun
             
         if any(request.path.startswith(path) for path in EXCLUDED_PATHS):
             return self.get_response(request)

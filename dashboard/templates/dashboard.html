@@ -157,13 +157,21 @@
         <div class="col-md-2 p-5 pb-0">
           <h1 class="heading-txt col-4">Summary</h1>
         </div>
-        <div class="col-md-10 pt-5">
-          <a href="#" class="btn dropdown-toggle btn-outline-success rounded-4 waves-effect waves-light shadow-none" data-bs-toggle="dropdown" aria-expanded="false">2025</a>
+        <div class="col-md-1 pt-5">
+          <select name="year_choose" id="year_choose" class="form-select border-success rounded-4 waves-effect waves-light shadow-none">
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+          </select>
+          {% comment %} <a href="#" class="btn dropdown-toggle btn-outline-success rounded-4 waves-effect waves-light shadow-none" data-bs-toggle="dropdown" aria-expanded="false">2025</a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="#">2024</a>
             <a class="dropdown-item" href="#">2022</a>
             <a class="dropdown-item" href="#">2021</a>
-          </div>
+          </div> {% endcomment %}
         </div>
       </div>
     </div>
@@ -207,7 +215,7 @@
                 </h4>
                 <div class="d-flex align-items-center mt-2">
                   <div class="flex-shrink-1">
-                    <h2 class="mb-0 text-white fw-semibold"><span class="counter-value" data-target="49271.79">0</span></h2>
+                    <h2 class="mb-0 text-white fw-semibold"><span class="counter-value" data-target="{{total_emission}}">0</span></h2>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-white">ton CO2eq</span>
@@ -224,7 +232,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-center mt-0">
                   <div class="flex-shrink-1">
-                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="49271.79">0</span></h2>
+                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="{{scope1}}">0</span></h2>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-muted">ton CO2eq</span>
@@ -244,7 +252,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-center mt-0">
                   <div class="flex-shrink-1">
-                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="49271.79">0</span></h2>
+                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="{{scope2}}">0</span></h2>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-muted">ton CO2eq</span>
@@ -264,7 +272,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-center mt-0">
                   <div class="flex-shrink-1">
-                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="49271.79">0</span></h2>
+                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="{{scope3}}">0</span></h2>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-muted">ton CO2eq</span>
@@ -283,15 +291,13 @@
                 <p class="fw-bold text-truncate mb-0">Emissions Reduction</p>
                 <div class="d-flex align-items-center mt-2">
                   <div class="flex-shrink-1">
-                    <h1 class="mb-0"><span class="counter-value" data-target="266006.410">0</span></h1>
+                    <h1 class="mb-0"><span class="counter-value" data-target="{{reduce_emisi}}">0</span></h1>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-muted">ton CO2eq</span>
                   </div>
                   <div class="flex-shrink-1">
-                    <p class="mb-0 text-muted">
-                      <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span>
-                    </p>
+                    
                   </div>
                 </div>
               </div>
@@ -324,15 +330,16 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="2789199">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{energy_consumption}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
-                          <span class="text-muted">kwh</span>
+                          <span class="text-muted">GJ</span>
                         </div>
                       </div>
                     </div>
                     <p class="mb-0 text-muted text-center pt-3">
-                      <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span>
+                      &nbsp;
+                      {% comment %} <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span> {% endcomment %}
                     </p>
                   </div>
                 </div>
@@ -346,7 +353,7 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="2789199">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{water_consumption}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center ">
                           <span class="text-muted">m3</span>
@@ -355,7 +362,8 @@
                     </div>
 
                     <p class="mb-0 text-muted text-center pt-3">
-                      <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span>
+                      &nbsp;
+                      {% comment %} <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span> {% endcomment %}
                     </p>
                   </div>
                 </div>
@@ -369,7 +377,7 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="2789199">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{fuel_consumption}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
                           <span class="text-muted">Liter</span>
@@ -378,7 +386,8 @@
                     </div>
                   </div>
                   <p class="mb-0 text-muted text-center pt-3">
-                    <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span>
+                    &nbsp;
+                    {% comment %} <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span> {% endcomment %}
                   </p>
                 </div>
               </div>
@@ -395,16 +404,17 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="2789199">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{b3}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
-                          <span class="text-muted">Liter</span>
+                          <span class="text-muted">metric tonnes</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <p class="mb-0 text-muted text-center pt-3">
-                    <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span>
+                    &nbsp;
+                    {% comment %} <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span> {% endcomment %}
                   </p>
                 </div>
               </div>
@@ -419,16 +429,17 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="2789199">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{nonb3}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
-                          <span class="text-muted">Liter</span>
+                          <span class="text-muted">metric tonnes</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <p class="mb-0 text-muted text-center pt-3">
-                    <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span>
+                    &nbsp;
+                    {% comment %} <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span> {% endcomment %}
                   </p>
                 </div>
               </div>
@@ -439,20 +450,21 @@
               <div class="card-body">
                 <div class="justify-content-center">
                   <div>
-                    <p class="fw-medium text-muted mb-0 text-center">Waste water</p>
+                    <p class="fw-medium text-muted mb-0 text-center">Waste water Processed</p>
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="2789199">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{waste_water}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
-                          <span class="text-muted">Liter</span>
+                          <span class="text-muted">%</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <p class="mb-0 text-muted text-center pt-3">
-                    <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span>
+                    &nbsp;
+                    {% comment %} <span class="badge rounded-4 mb-0 p-2" style="background-color: #E6EED9; color: #82AB40;">74.59 % <i class="ri-arrow-up-line align-middle"></i></span> {% endcomment %}
                   </p>
                 </div>
               </div>

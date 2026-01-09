@@ -607,7 +607,7 @@ def upload_enviro(request):
         excel_file= request.FILES['file']
         r = request.POST
         wb = openpyxl.load_workbook(excel_file, data_only=True)
-        category = ['scope1', 'scope2', 'scope3', 'reduction', 'non_b3', 'b3', 'waste_water', 'water_consumption', 'energy_consumption', 'energy_reduction']
+        category = ['scope1', 'scope2', 'scope3', 'reduction', 'reduction_total', 'non_b3', 'b3', 'waste_water', 'water_consumption', 'energy_consumption', 'energy_reduction', 'fuel_consumption', 'water_consumption_total', 'non_b3_total', 'b3_total', 'waste_water_total']
         # Scope 1
         scope1 = ['Vehicle Fuels', 'Refrigerant', 'Solid Waste Management', 'Liquid Waste Management', 'Other Fuels']
         scope1Value = [wb['Output']['D20'].value, wb['Output']['D21'].value, wb['Output']['D22'].value, wb['Output']['D23'].value, wb['Output']['D24'].value]
@@ -622,7 +622,8 @@ def upload_enviro(request):
             if r.get('group') != '':
                 em.group = MGroup.objects.get(id=r.get('group'))
             em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
             em.save()
 
         # Scope 2
@@ -639,7 +640,8 @@ def upload_enviro(request):
             if r.get('group') != '':
                 em.group = MGroup.objects.get(id=r.get('group'))
             em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
             em.save()
 
         # Scope 3
@@ -656,7 +658,8 @@ def upload_enviro(request):
             if r.get('group') != '':
                 em.group = MGroup.objects.get(id=r.get('group'))
             em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
             em.save()
 
         # Reduction
@@ -673,7 +676,26 @@ def upload_enviro(request):
             if r.get('group') != '':
                 em.group = MGroup.objects.get(id=r.get('group'))
             em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        
+        # Reduction_total
+        reducettl = ['Total Emission Reduction']
+        reducettlValue = [wb['Output']['D32'].value - (wb['Output']['D16'].value + wb['Output']['D85'].value)]
+        
+        for info, val in zip(reducettl, reducettlValue):
+            em = TREmission()
+            em.category = category[4]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
             em.save()
         
         # Non B3
@@ -702,12 +724,12 @@ def upload_enviro(request):
                     if isinstance(val, (int, float)):
                         totalB3Compos += val
 
-        nonb3 = ['Total Waste Disposed', 'Waste Disposed of in Landfill (TPS) or Management With Third Parties', 'Waste recycled/reused by the company', 'Waste that is processed by the company (composting)', 'Waste with unknown disposal method or unmanaged']
-        nonb3Value = [wb['Output']['D76'].value, totalB3Third, totalB3Comp, totalB3Compos, (wb['Output']['D76'].value - (totalB3Third + totalB3Comp))]
+        nonb3 = ['Waste Disposed of in Landfill (TPS) or Management With Third Parties', 'Waste recycled/reused by the company', 'Waste that is processed by the company (composting)', 'Waste with unknown disposal method or unmanaged']
+        nonb3Value = [totalB3Third, totalB3Comp, totalB3Compos, (wb['Output']['D76'].value - (totalB3Third + totalB3Comp))]
         
         for info, val in zip(nonb3, nonb3Value):
             em = TREmission()
-            em.category = category[4]
+            em.category = category[5]
             em.year = '2025'
             em.information = info
             if val != '':
@@ -715,7 +737,25 @@ def upload_enviro(request):
             if r.get('group') != '':
                 em.group = MGroup.objects.get(id=r.get('group'))
             em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        
+        nonb3ttl = ['Total Waste Disposed']
+        nonb3ttlValue = [wb['Output']['D76'].value]
+        
+        for info, val in zip(nonb3ttl, nonb3ttlValue):
+            em = TREmission()
+            em.category = category[13]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
             em.save()
         
         # B3
@@ -736,12 +776,12 @@ def upload_enviro(request):
                     if isinstance(val, (int, float)):
                         totalB3Comp += val
 
-        b3 = ['Total hazardous waste disposed', 'Total hazardous waste recycled/reused/incinerated without energy recovery', 'Hazardous waste landfilled or third party']
-        b3Value = [wb['Output']['D75'].value, totalB3Comp, totalB3Third]
+        b3 = ['Total hazardous waste recycled/reused/incinerated without energy recovery', 'Hazardous waste landfilled or third party']
+        b3Value = [totalB3Comp, totalB3Third]
         
         for info, val in zip(b3, b3Value):
             em = TREmission()
-            em.category = category[5]
+            em.category = category[6]
             em.year = '2025'
             em.information = info
             if val != '':
@@ -749,7 +789,25 @@ def upload_enviro(request):
             if r.get('group') != '':
                 em.group = MGroup.objects.get(id=r.get('group'))
             em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        
+        b3ttl = ['Total hazardous waste disposed']
+        b3ttlValue = [wb['Output']['D75'].value]
+        
+        for info, val in zip(b3ttl, b3ttlValue):
+            em = TREmission()
+            em.category = category[14]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
             em.save()
         
         # Waste Water
@@ -765,23 +823,6 @@ def upload_enviro(request):
         
         for info, val in zip(wasteWater, wasteWaterValue):
             em = TREmission()
-            em.category = category[6]
-            em.year = '2025'
-            em.information = info
-            if val != '':
-                em.value = val
-            if r.get('group') != '':
-                em.group = MGroup.objects.get(id=r.get('group'))
-            em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
-            em.save()
-
-        # Water Consumption
-        waterconsum = ['Water withdrawal (excluding saltwater)', 'Water discharge (excluding saltwater)', 'Total net fresh water consumption']
-        waterconsumValue = [wb['Output']['D65'].value, (wb['Output']['D65'].value - wb['Output']['D69'].value), (wb['Output']['D65'].value - (wb['Output']['D65'].value - wb['Output']['D69'].value))]
-        
-        for info, val in zip(waterconsum, waterconsumValue):
-            em = TREmission()
             em.category = category[7]
             em.year = '2025'
             em.information = info
@@ -790,14 +831,34 @@ def upload_enviro(request):
             if r.get('group') != '':
                 em.group = MGroup.objects.get(id=r.get('group'))
             em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        
+        wasteWaterttl = ['Total Waste Water processed or managed']
+        if (wb['Output']['D65'].value - wb['Output']['D69'].value) != 0:
+            wasteWaterttlValue = [(totalLiquid / (wb['Output']['D65'].value - wb['Output']['D69'].value)) * 100]
+        else:
+            wasteWaterttlValue = [0]
+        for info, val in zip(wasteWaterttl, wasteWaterttlValue):
+            em = TREmission()
+            em.category = category[15]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
             em.save()
 
-        # Energy Consumption
-        energyconsum = ['Total Non-Renewable Energy Consumption', 'Total Renewable Energy Consumption']
-        energyconsumValue = [wb['Output']['D41'].value, wb['Output']['D44'].value]
+        # Water Consumption
+        waterconsum = ['Water withdrawal (excluding saltwater)', 'Water discharge (excluding saltwater)']
+        waterconsumValue = [wb['Output']['D65'].value, (wb['Output']['D65'].value - wb['Output']['D69'].value), (wb['Output']['D65'].value - (wb['Output']['D65'].value - wb['Output']['D69'].value))]
         
-        for info, val in zip(energyconsum, energyconsumValue):
+        for info, val in zip(waterconsum, waterconsumValue):
             em = TREmission()
             em.category = category[8]
             em.year = '2025'
@@ -807,14 +868,33 @@ def upload_enviro(request):
             if r.get('group') != '':
                 em.group = MGroup.objects.get(id=r.get('group'))
             em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        
+        # Water Consumption Total
+        waterconsumttl = ['Total net fresh water consumption']
+        waterconsumttlValue = [(wb['Output']['D65'].value - (wb['Output']['D65'].value - wb['Output']['D69'].value))]
+        
+        for info, val in zip(waterconsumttl, waterconsumttlValue):
+            em = TREmission()
+            em.category = category[12]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
             em.save()
 
-        # Energy Reduction
-        energyreduce = ['Total Emission Reduction from Renewable Energy Use']
-        energyreduceValue = [wb['Output']['D17'].value]
+        # Energy Consumption
+        energyconsum = ['Total Non-Renewable Energy Consumption', 'Total Renewable Energy Consumption']
+        energyconsumValue = [wb['Output']['D41'].value, wb['Output']['D44'].value]
         
-        for info, val in zip(energyreduce, energyreduceValue):
+        for info, val in zip(energyconsum, energyconsumValue):
             em = TREmission()
             em.category = category[9]
             em.year = '2025'
@@ -824,7 +904,50 @@ def upload_enviro(request):
             if r.get('group') != '':
                 em.group = MGroup.objects.get(id=r.get('group'))
             em.pic = MPic.objects.get(id=r.get('entity'))
-            em.location = MLocation.objects.get(id=r.get('location'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+
+        # Energy Reduction
+        energyreduce = ['Total Emission Reduction from Renewable Energy Use']
+        energyreduceValue = [wb['Output']['D17'].value]
+        
+        for info, val in zip(energyreduce, energyreduceValue):
+            em = TREmission()
+            em.category = category[10]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
+            em.save()
+        
+        # Fuel Consumption
+        totalFuel = 0
+        for x in range(26, 32):
+            for col in range(6, 17):
+                val = wb['Input'].cell(row=x, column=col).value
+                if isinstance(val, (int, float)):
+                    totalFuel += val
+        fuelconsum = ['Total Fuel Consumption']
+        fuelconsumValue = [totalFuel]
+        
+        for info, val in zip(fuelconsum, fuelconsumValue):
+            em = TREmission()
+            em.category = category[11]
+            em.year = '2025'
+            em.information = info
+            if val != '':
+                em.value = val
+            if r.get('group') != '':
+                em.group = MGroup.objects.get(id=r.get('group'))
+            em.pic = MPic.objects.get(id=r.get('entity'))
+            if r.get('location') != '':
+                em.location = MLocation.objects.get(id=r.get('location'))
             em.save()
         # emission = TREmission()
         return JsonResponse({"status": "ok"})
