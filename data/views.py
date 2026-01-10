@@ -13,7 +13,7 @@ import pandas as pd
 import openpyxl
 
 from datetime import datetime, timedelta
-context = {'menu' : 'data'}
+context = {'menu' : 'dashboard'}
 @login_required(login_url='/')
 # Create your views here.
 def index(request):

@@ -115,13 +115,13 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto mt-2 mt-lg-0" id="navbar-example">
               <li class="nav-item">
-                <a class="nav-link fs-15 active" href="dashboard">Home</a>
+                <a class="nav-link fs-15 {% if menu == 'dashboard' %}active{% endif %}" href="dashboard">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link fs-15" href="emission_monitor">Emission Monitor</a>
+                <a class="nav-link fs-15 {% if menu == 'emission_monitor' %}active{% endif %}" href="emission_monitor">Emission Monitor</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link fs-15" href="master">Master</a>
+                <a class="nav-link fs-15 {% if menu == 'master' %}active{% endif %}" href="master">Master</a>
               </li>
             </ul>
 
@@ -132,14 +132,14 @@
                   <span class="d-flex align-items-center">
                     <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-1.jpg" alt="Header Avatar" />
                     <span class="text-start ms-xl-2 text-white">
-                      <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Administrator</span>
-                      <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">admin@injourney.id</span>
+                      <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ request.user.first_name }}</span>
+                      <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ request.user.email }}</span>
                     </span>
                   </span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                   <!-- item -->
-                  <h6 class="dropdown-header">Welcome Anna!</h6>
+                  <h6 class="dropdown-header">{{ request.user.first_name }}!</h6>
                   {% comment %} <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
                   <a class="dropdown-item" href="apps-chat.html"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Messages</span></a>
                   <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Taskboard</span></a>

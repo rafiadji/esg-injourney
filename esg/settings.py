@@ -174,3 +174,7 @@ LOGGING = {
         }
     }
 }
+
+SESSION_COOKIE_AGE = 1209600  # 2 minggu dalam detik (default)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # atau True untuk expire saat browser ditutup
+SESSION_SAVE_EVERY_REQUEST = True  # reset expiry setiap request
