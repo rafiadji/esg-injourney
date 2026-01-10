@@ -73,7 +73,6 @@ def user_form(request, mode, id=None):
             usr.username = r.get('username')
             usr.first_name = r.get('name')
             usr.email = r.get('email')
-            usr.set_password(r.get('password'))
             usr.save()
             
             det = UserDetail.objects.get(user_id=id)
