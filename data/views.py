@@ -604,6 +604,8 @@ def remove_detail_data(request, id):
 
 def upload_enviro(request):
     if request.method == "POST":
+        current_year = str(datetime.now().year)
+        selected_year = request.session.get('tahun_periode', current_year)
         excel_file= request.FILES['file']
         r = request.POST
         wb = openpyxl.load_workbook(excel_file, data_only=True)
@@ -615,7 +617,7 @@ def upload_enviro(request):
         for info, val in zip(scope1, scope1Value):
             em = TREmission()
             em.category = category[0]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -633,7 +635,7 @@ def upload_enviro(request):
         for info, val in zip(scope2, scope2Value):
             em = TREmission()
             em.category = category[1]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -651,7 +653,7 @@ def upload_enviro(request):
         for info, val in zip(scope3, scope3Value):
             em = TREmission()
             em.category = category[2]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -669,7 +671,7 @@ def upload_enviro(request):
         for info, val in zip(reduce, reduceValue):
             em = TREmission()
             em.category = category[3]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -687,7 +689,7 @@ def upload_enviro(request):
         for info, val in zip(reducettl, reducettlValue):
             em = TREmission()
             em.category = category[4]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -730,7 +732,7 @@ def upload_enviro(request):
         for info, val in zip(nonb3, nonb3Value):
             em = TREmission()
             em.category = category[5]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -747,7 +749,7 @@ def upload_enviro(request):
         for info, val in zip(nonb3ttl, nonb3ttlValue):
             em = TREmission()
             em.category = category[13]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -782,7 +784,7 @@ def upload_enviro(request):
         for info, val in zip(b3, b3Value):
             em = TREmission()
             em.category = category[6]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -799,7 +801,7 @@ def upload_enviro(request):
         for info, val in zip(b3ttl, b3ttlValue):
             em = TREmission()
             em.category = category[14]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -824,7 +826,7 @@ def upload_enviro(request):
         for info, val in zip(wasteWater, wasteWaterValue):
             em = TREmission()
             em.category = category[7]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -843,7 +845,7 @@ def upload_enviro(request):
         for info, val in zip(wasteWaterttl, wasteWaterttlValue):
             em = TREmission()
             em.category = category[15]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -861,7 +863,7 @@ def upload_enviro(request):
         for info, val in zip(waterconsum, waterconsumValue):
             em = TREmission()
             em.category = category[8]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -879,7 +881,7 @@ def upload_enviro(request):
         for info, val in zip(waterconsumttl, waterconsumttlValue):
             em = TREmission()
             em.category = category[12]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -897,7 +899,7 @@ def upload_enviro(request):
         for info, val in zip(energyconsum, energyconsumValue):
             em = TREmission()
             em.category = category[9]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -915,7 +917,7 @@ def upload_enviro(request):
         for info, val in zip(energyreduce, energyreduceValue):
             em = TREmission()
             em.category = category[10]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val
@@ -939,7 +941,7 @@ def upload_enviro(request):
         for info, val in zip(fuelconsum, fuelconsumValue):
             em = TREmission()
             em.category = category[11]
-            em.year = '2025'
+            em.year = selected_year
             em.information = info
             if val != '':
                 em.value = val

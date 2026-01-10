@@ -996,12 +996,6 @@
                 <div class="year-dropdown-container">
                     <label for="year-select">Year:</label>
                     <select id="year-select">
-                    <!-- Options akan di-generate oleh JavaScript -->
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
                     </select>
                 </div>
             </div>
@@ -1009,14 +1003,9 @@
                 <div class="entity-dropdown-container">
                     <label for="entity-select">Entity:</label>
                     <select id="entity-select" class="form-control">
-                    <!-- Options akan di-generate oleh JavaScript -->
-                        <option value="airport">Airport</option>
-                        <option value="retail">Retail</option>
-                        <option value="hospitality">Hospitality</option>
-                        <option value="destmanage">Destination Management</option>
-                        <option value="tourism">Tourism Development Corporation</option>
-                        <option value="holding">Holding</option>
-                        <option value="aviation">Aviation Services</option>
+                        {% for ent in entity %}
+                        <option value="{{ent.id}}">{{ent.pic|cut:"InJourney "}}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 
@@ -1035,7 +1024,7 @@
                 </div>
               </div>
               <div class="card-content">
-                <div class="emission-value">42,112.78</div>
+                <div class="emission-value">0</div>
                 <div class="emission-unit">ton CO2eq</div>
               </div>
             </div>
@@ -1046,7 +1035,7 @@
                 <h4 class="scope-title">Emissions scope 1</h4>
               </div>
               <div class="scope-content">
-                <div class="scope-value">11,781.74</div>
+                <div class="scope-value">0</div>
                 <div class="scope-unit">ton CO2eq</div>
               </div>
               <p class="scope-description">Direct Greenhouse Gas Emissions.</p>
@@ -1058,7 +1047,7 @@
                 <h4 class="scope-title">Emissions scope 2</h4>
               </div>
               <div class="scope-content">
-                <div class="scope-value">37,490.05</div>
+                <div class="scope-value">0</div>
                 <div class="scope-unit">ton CO2eq</div>
               </div>
               <p class="scope-description">Indirect Greenhouse Gas Emissions.</p>
@@ -1070,14 +1059,14 @@
                 <h4 class="scope-title">Emissions scope 3</h4>
               </div>
               <div class="scope-content">
-                <div class="scope-value">865.29</div>
+                <div class="scope-value">0</div>
                 <div class="scope-unit">ton CO2eq</div>
               </div>
               <p class="scope-description">Indirect Greenhouse Gas Emissions.</p>
             </div>
             
             <!-- Emissions Reduction Card -->
-            <div class="reduction-card">
+            {% comment %} <div class="reduction-card">
                 <div class="reduction-header">
                     <h3 class="reduction-title">Emissions Reduction</h3>
                     <div class="reduction-badge">86.27%</div>
@@ -1100,7 +1089,7 @@
                     <!-- Filter Buttons -->
                     
                 </div>
-            </div>
+            </div> {% endcomment %}
             <!-- 3 Card Baru -->
             <div class="consumption-cards" style="margin-top: 15px;">
               <!-- Electricity Usage Card -->
@@ -1109,11 +1098,11 @@
                   <h4 class="consumption-title">Electricity usage</h4>
                 </div>
                 <div class="consumption-content">
-                  <div class="consumption-value">2,782,199</div>
-                  <div class="consumption-unit">kWh</div>
+                  <div class="consumption-value">0</div>
+                  <div class="consumption-unit">GJ</div>
                 </div>
                 <div class="consumption-percentage">
-                  <span class="percentage-badge">74.59% ↓</span>
+                  {% comment %} <span class="percentage-badge">74.59% ↓</span> {% endcomment %}
                 </div>
               </div>
               
@@ -1123,11 +1112,11 @@
                   <h4 class="consumption-title">Water consumptions</h4>
                 </div>
                 <div class="consumption-content">
-                  <div class="consumption-value">2,045,211</div>
+                  <div class="consumption-value">0</div>
                   <div class="consumption-unit">m3</div>
                 </div>
                 <div class="consumption-percentage">
-                  <span class="percentage-badge">73.12% ↓</span>
+                  {% comment %} <span class="percentage-badge">73.12% ↓</span> {% endcomment %}
                 </div>
               </div>
               
@@ -1137,11 +1126,50 @@
                   <h4 class="consumption-title">Fuel consumptions</h4>
                 </div>
                 <div class="consumption-content">
-                  <div class="consumption-value">256,115</div>
-                  <div class="consumption-unit">kWh</div>
+                  <div class="consumption-value">0</div>
+                  <div class="consumption-unit">Liter</div>
                 </div>
                 <div class="consumption-percentage">
-                  <span class="percentage-badge">74.11% ↓</span>
+                  {% comment %} <span class="percentage-badge">74.11% ↓</span> {% endcomment %}
+                </div>
+              </div>
+
+              <div class="consumption-card">
+                <div class="consumption-header">
+                  <h4 class="consumption-title">Hazardous Waste</h4>
+                </div>
+                <div class="consumption-content">
+                  <div class="consumption-value">0</div>
+                  <div class="consumption-unit">metric tonnes</div>
+                </div>
+                <div class="consumption-percentage">
+                  {% comment %} <span class="percentage-badge">74.59% ↓</span> {% endcomment %}
+                </div>
+              </div>
+
+              <div class="consumption-card">
+                <div class="consumption-header">
+                  <h4 class="consumption-title">Non-Hazardous Waste</h4>
+                </div>
+                <div class="consumption-content">
+                  <div class="consumption-value">0</div>
+                  <div class="consumption-unit">metric tonnes</div>
+                </div>
+                <div class="consumption-percentage">
+                  {% comment %} <span class="percentage-badge">74.59% ↓</span> {% endcomment %}
+                </div>
+              </div>
+
+              <div class="consumption-card">
+                <div class="consumption-header">
+                  <h4 class="consumption-title">Waste water Processed</h4>
+                </div>
+                <div class="consumption-content">
+                  <div class="consumption-value">0</div>
+                  <div class="consumption-unit">%</div>
+                </div>
+                <div class="consumption-percentage">
+                  {% comment %} <span class="percentage-badge">74.59% ↓</span> {% endcomment %}
                 </div>
               </div>
             </div>
@@ -2303,6 +2331,10 @@
                 }
                 year_select.setChoices(yr_opt, 'value', 'label', false)
             }
+
+            
+            // Generate dropdown tahun
+            generateYearOptions();
             
             // Konfigurasi untuk zoom desimal
             const mapOptions = {
@@ -2333,13 +2365,18 @@
             
             // Data untuk grup 1 (Pulau Jawa) - 5 titik
 
-            var entity_choose = 'airport'
+            var entity_choose = 1
             var activeMarkers = []
 
             $('#entity-select').change(function(){
                 choose = entity_select.getValue().value
                 entity_choose = choose
                 backToOverview();
+            })
+
+            $('#year-select').change(function(){
+                backToOverview();
+                updateSummaryData(point_choose);
             })
 
             const airportList = [
@@ -2554,33 +2591,9 @@
             }
 
             // Fungsi untuk membuat detail marker (5 titik dalam grup)
-            function createDetailMarker(point) {
-                // Tentukan icon berdasarkan type (bandara atau hotel)
-                var iconName
-                switch(point.type) {
-                    case "airport":
-                        iconName = 'fa-plane';
-                        break;
-                    case "retail":
-                        iconName = 'fa-shop';
-                        break;
-                    case "hospitality":
-                        iconName = 'fa-bed';
-                        break;
-                    case "destmanage":
-                        iconName = 'fa-bus';
-                        break;
-                    case "tourism":
-                        iconName = 'fa-suitcase';
-                        break;
-                    case "holding":
-                        iconName = 'fa-house';
-                        break;
-                    case "aviation":
-                        iconName = 'fa-cart-flatbed-suitcase';
-                        break;
-                }
-                
+            var point_choose = []
+            function createDetailMarker(point, index) {
+                // Tentukan icon berdasarkan type (bandara atau hotel) 
                 const icon = L.divIcon({
                     html: `
                         <div style="position: relative; width: 140px; margin-bottom: 10px;">
@@ -2608,7 +2621,7 @@
                                     font-size: 12px;
                                     flex-shrink: 0;
                                 ">
-                                    <i class="fas ${iconName}"></i>
+                                    <i class="fas ${point.pic__pic_icon}"></i>
                                 </div>
                                 
                                 <!-- Nama dengan warna hijau -->
@@ -2620,7 +2633,7 @@
                                     overflow: hidden;
                                     text-overflow: ellipsis;
                                 ">
-                                    ${point.name}
+                                    ${point.location}
                                 </div>
                             </div>
                             
@@ -2644,7 +2657,7 @@
                     popupAnchor: [0, -45]
                 });
                 
-                const marker = L.marker([point.lat, point.lng], { 
+                const marker = L.marker([point.lat, point.long], { 
                     icon: icon,
                     interactive: true,
                     bubblingMouseEvents: true
@@ -2655,20 +2668,7 @@
                     <div style="
                         width: 300px;
                         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                    ">
-                        <!-- Gambar -->
-                        <div style="
-                            width: 100%;
-                            height: 150px;
-                            border-radius: 8px 8px 0 0;
-                            overflow: hidden;
-                            margin-bottom: 12px;
-                        ">
-                            <img src="https://asset.kompas.com/crops/jsI9iT7XGf8pu-DRFOLwHE1FAEY=/3x1:591x393/1200x800/data/photo/2025/07/01/6863d2bad5d3a.jpg" 
-                                alt="${point.name}"
-                                style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        
+                    ">                        
                         <!-- Konten -->
                         <div style="padding: 0 12px 12px 12px;">
                             <!-- Nama (hitam tebal) -->
@@ -2678,7 +2678,7 @@
                                 font-weight: 700;
                                 color: #1f2937;
                             ">
-                                ${point.name}
+                                ${point.location}
                             </h3>
                             
                             <!-- Emisi karbon -->
@@ -2695,7 +2695,7 @@
                                     color: #1f2937;
                                     margin-bottom: 2px;
                                 ">
-                                    ${point.value.toLocaleString()}
+                                    ${point.total_emission.toLocaleString()}
                                 </div>
                                 <div style="
                                     font-size: 12px;
@@ -2724,7 +2724,7 @@
                             " 
                             onmouseover="this.style.backgroundColor='#739a38'"
                             onmouseout="this.style.backgroundColor='#82AB40'"
-                            onclick="showLocationDetail('${point.name}', '${point.type}', ${point.value})">
+                            onclick="showLocationDetail(${index})">
                                 <i class="fas fa-info-circle"></i>
                                 More Detail
                             </button>
@@ -2835,82 +2835,27 @@
             }
 
             // Fungsi untuk menampilkan detail lokasi di panel
-            window.showLocationDetail = function(name, type, emissions) {
-                const detail = locationDetails[name];
-                detail.emissions = emissions
+            window.showLocationDetail = function(index) {
+                const detail = point_choose[index];
                 if (!detail) return;
                 
                 // Tampilkan detail card container
                 const detailContainer = document.getElementById('detailCardContainer');
-                var iconName
-                switch(detail.type) {
-                    case "airport":
-                        iconName = 'fa-plane';
-                        break;
-                    case "retail":
-                        iconName = 'fa-shop';
-                        break;
-                    case "hospitality":
-                        iconName = 'fa-bed';
-                        break;
-                    case "destmanage":
-                        iconName = 'fa-bus';
-                        break;
-                    case "tourism":
-                        iconName = 'fa-suitcase';
-                        break;
-                    case "holding":
-                        iconName = 'fa-house';
-                        break;
-                    case "aviation":
-                        iconName = 'fa-cart-flatbed-suitcase';
-                        break;
-                }
                 
                 // Buat HTML untuk detail card yang sederhana
                 const detailCardHTML = `
                     <div class="detail-card">
                         <div class="detail-card-header">
                             <h3 class="detail-card-title">
-                                <i class="fas ${iconName}"></i>
-                                ${name}
+                                <i class="fas ${detail.pic__pic_icon}"></i>
+                                ${detail.location}
                             </h3>
                             <button class="detail-card-close" onclick="window.document.body.click()">
                                 <i class="fas fa-times"></i>
                             </button>
-                        </div>
-                        
-                        <!-- Gambar -->
-                        <div class="detail-card-image">
-                            <img src="https://asset.kompas.com/crops/jsI9iT7XGf8pu-DRFOLwHE1FAEY=/3x1:591x393/1200x800/data/photo/2025/07/01/6863d2bad5d3a.jpg" 
-                                alt="${name}">
-                        </div>
-                        
+                        </div>                        
                         <!-- Konten -->
-                        <div style="padding: 15px;">                            
-                            <!-- Emisi -->
-                            <div style="
-                                margin-bottom: 15px;
-                                padding: 12px;
-                                background-color: #f9fafb;
-                                border-radius: 6px;
-                                border-left: 3px solid #82AB40;
-                            ">
-                                <div style="
-                                    font-size: 24px;
-                                    font-weight: 700;
-                                    color: #1f2937;
-                                    margin-bottom: 2px;
-                                ">
-                                    ${emissions.toLocaleString()}
-                                </div>
-                                <div style="
-                                    font-size: 12px;
-                                    color: #6b7280;
-                                ">
-                                    ton CO2eq
-                                </div>
-                            </div>
+                        <div style="padding: 15px;">
                             
                             <!-- Info tambahan -->
 
@@ -2927,52 +2872,55 @@
                 detailContainer.style.display = 'block';
                 
                 // Update data di card summary berdasarkan lokasi yang dipilih
-                updateSummaryData(name, detail);
+                updateSummaryData(detail);
                 
                 // Scroll ke atas panel
                 document.querySelector('.map-control-panel').scrollTop = 0;
             };
 
             // Fungsi untuk update data di card summary
-            function updateSummaryData(locationName, locationDetail) {
+            function updateSummaryData(locationDetail) {
                 // Update total gas emission
-                document.querySelector('.emission-value').textContent = locationDetail.emissions.toLocaleString();
+                document.querySelector('.emission-value').textContent = locationDetail.total_emission.toLocaleString();
                 
                 // Update scope 1 (misalnya: 30% dari total untuk bandara, 40% untuk hotel)
-                const scope1Value = locationDetail.type === 'airport' 
-                    ? (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.3).toLocaleString(undefined, {maximumFractionDigits: 2})
-                    : (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.4).toLocaleString(undefined, {maximumFractionDigits: 2});
+                const scope1Value = locationDetail.scope1.toLocaleString();
                 
                 document.querySelectorAll('.scope-value')[0].textContent = scope1Value;
                 
                 // Update scope 2 (misalnya: 50% dari total untuk bandara, 40% untuk hotel)
-                const scope2Value = locationDetail.type === 'airport'
-                    ? (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.5).toLocaleString(undefined, {maximumFractionDigits: 2})
-                    : (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.4).toLocaleString(undefined, {maximumFractionDigits: 2});
+                const scope2Value = locationDetail.scope2.toLocaleString();
                 
                 document.querySelectorAll('.scope-value')[1].textContent = scope2Value;
                 
                 // Update scope 3 (misalnya: 20% dari total untuk bandara, 20% untuk hotel)
-                const scope3Value = locationDetail.type === 'airport'
-                    ? (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.2).toLocaleString(undefined, {maximumFractionDigits: 2})
-                    : (parseInt(locationDetail.emissions.replace(/,/g, '')) * 0.2).toLocaleString(undefined, {maximumFractionDigits: 2});
+                const scope3Value = locationDetail.scope3.toLocaleString();
                 
                 document.querySelectorAll('.scope-value')[2].textContent = scope3Value;
                 
-                // Update consumption cards (misalnya: proportional berdasarkan emisi)
-                const totalEmissions = parseInt(locationDetail.emissions.replace(/,/g, ''));
-                
                 // Electricity (misalnya: 60% dari emisi)
-                const electricityValue = Math.round(totalEmissions * 0.6).toLocaleString();
+                const electricityValue = locationDetail.energy_consumption.toLocaleString();
                 document.querySelectorAll('.consumption-value')[0].textContent = electricityValue;
                 
                 // Water (misalnya: 25% dari emisi)
-                const waterValue = Math.round(totalEmissions * 0.25).toLocaleString();
+                const waterValue = locationDetail.water_consumption.toLocaleString();
                 document.querySelectorAll('.consumption-value')[1].textContent = waterValue;
                 
                 // Fuel (misalnya: 15% dari emisi)
-                const fuelValue = Math.round(totalEmissions * 0.15).toLocaleString();
+                const fuelValue = locationDetail.fuel_consumption.toLocaleString();
                 document.querySelectorAll('.consumption-value')[2].textContent = fuelValue;
+                
+                // Fuel (misalnya: 15% dari emisi)
+                const b3Value = locationDetail.b3.toLocaleString();
+                document.querySelectorAll('.consumption-value')[3].textContent = b3Value;
+                
+                // Fuel (misalnya: 15% dari emisi)
+                const nonb3Value = locationDetail.nonb3.toLocaleString();
+                document.querySelectorAll('.consumption-value')[4].textContent = nonb3Value;
+                
+                // Fuel (misalnya: 15% dari emisi)
+                const wastewaterValue = locationDetail.waste_water.toLocaleString();
+                document.querySelectorAll('.consumption-value')[5].textContent = wastewaterValue;
             }
 
             // Fungsi untuk menutup detail card dan reset data
@@ -2988,16 +2936,16 @@
             // Fungsi untuk reset data summary ke default
             function resetSummaryData() {
                 // Reset total gas emission
-                document.querySelector('.emission-value').textContent = '42,112.78';
+                document.querySelector('.emission-value').textContent = '0';
                 
                 // Reset scope cards
-                const scopeValues = ['11,781.74', '37,490.05', '865.29'];
+                const scopeValues = ['0', '0', '0'];
                 document.querySelectorAll('.scope-value').forEach((element, index) => {
                     element.textContent = scopeValues[index];
                 });
                 
                 // Reset consumption cards
-                const consumptionValues = ['2,782,199', '2,045,211', '256,115'];
+                const consumptionValues = ['0', '0', '0', '0', '0', '0'];
                 document.querySelectorAll('.consumption-value').forEach((element, index) => {
                     element.textContent = consumptionValues[index];
                 });
@@ -3063,44 +3011,30 @@
                 }); {% endcomment %}
 
                 var markerlist
-                switch(entity_choose) {
-                    case "airport":
-                        markerlist = airportList
-                        break;
-                    case "retail":
-                        markerlist = retailList
-                        break;
-                    case "hospitality":
-                        markerlist = hospitalityList
-                        break;
-                    case "destmanage":
-                        markerlist = destmanageList
-                        break;
-                    case "tourism":
-                        markerlist = tourismList
-                        break;
-                    case "holding":
-                        markerlist = holdingList
-                        break;
-                    case "aviation":
-                        markerlist = aviationList
-                        break;
-                }
+                $.ajax({
+                    url: `emission_monitor/get_location/${entity_choose}/${year_select.getValue().value}`,
+                    dataType: 'json',
+                    async: true,
+                    success: (res) => {
+                        markerlist = res.data
+                        point_choose = res.data
+                        console.log(point_choose)
+                        activeMarkers.forEach(m => {
+                            map.removeLayer(m);
+                        });
+                        activeMarkers = [];
 
-                activeMarkers.forEach(m => {
-                    map.removeLayer(m);
-                });
-                activeMarkers = [];
-
-                markerlist.forEach(point => {
-                    const marker = createDetailMarker(point, '#82AB40');
-                    activeMarkers.push(marker);
-                    map.addLayer(marker); // Gunakan layer yang sama tapi isinya detail
-                });
-                
-                document.getElementById('zoomControl').classList.remove('show');
-                map.setView(center_point, 5.8);
-                currentZoomState = 'overview';
+                        markerlist.forEach((point, index) => {
+                            const marker = createDetailMarker(point, index);
+                            activeMarkers.push(marker);
+                            map.addLayer(marker); // Gunakan layer yang sama tapi isinya detail
+                        });
+                        
+                        document.getElementById('zoomControl').classList.remove('show');
+                        map.setView(center_point, 5.8);
+                        currentZoomState = 'overview';
+                    }
+                })
             }
             // Event listener untuk tombol back
             document.getElementById('zoomBackBtn').addEventListener('click', backToOverview);
@@ -3108,20 +3042,8 @@
             // Inisialisasi dengan overview view
             backToOverview();
             
-            // Generate dropdown tahun
-            generateYearOptions();
             
-            // Event listener untuk dropdown tahun
-            const yearSelect = document.getElementById('year-select');
-            if (yearSelect) {
-                yearSelect.addEventListener('change', function(e) {
-                const selectedYear = e.target.value;
-                console.log('Tahun dipilih:', selectedYear);
-                // Di sini Anda bisa tambahkan logika untuk update peta berdasarkan tahun
-                });
-            }
-            
-            // Event listener untuk filter buttons
+            {% comment %} // Event listener untuk filter buttons
             const filterButtons = document.querySelectorAll('.filter-btn');
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
@@ -3361,14 +3283,14 @@
             // Inisialisasi chart setelah sedikit delay
             setTimeout(() => {
                 initChart();
-            }, 300);
+            }, 300); {% endcomment %}
             
             // Pastikan peta mengisi seluruh area saat window di-resize
             window.addEventListener('resize', function() {
                 map.invalidateSize();
-                if (reductionChart) {
+                {% comment %} if (reductionChart) {
                     reductionChart.resize();
-                }
+                } {% endcomment %}
             });
             
             // Inisialisasi ulang size peta
@@ -3392,238 +3314,6 @@
             document.getElementById('zoomBackBtn').addEventListener('click', function() {
                 closeDetailCard();
             });
-
-            loadZipToLeaflet(map)
-
-            // Fungsi utama untuk memuat file ZIP
-            async function loadZipToLeaflet(map) {
-                try {
-                    // Baca file ZIP
-                    const response = await fetch(`assets/Airport.zip`);
-                    if (!response.ok) {
-                        throw new Error(`Gagal mengambil file: ${response.status} ${response.statusText}`);
-                    }
-
-                    const arrayBuffer = await response.arrayBuffer();
-
-                    const zip = new JSZip();
-                    const zipData = await zip.loadAsync(arrayBuffer);
-                    
-                    // Identifikasi semua file dalam ZIP
-                    const files = Object.keys(zipData.files);
-                    
-                    // Kelompokkan file berdasarkan layer
-                    const layers = groupFilesByLayer(files);
-                    
-                    console.log('Layers ditemukan:', layers);
-                    
-                    // Proses setiap layer
-                    for (const layerName in layers) {
-                        await processLayer(layerName, layers[layerName], zipData, map);
-                    }
-                    
-                } catch (error) {
-                    console.error('Error loading ZIP:', error);
-                }
-            }
-
-            // Kelompokkan file berdasarkan nama layer
-            function groupFilesByLayer(files) {
-                const layers = {};
-                
-                files.forEach(file => {
-                    // Ambil nama base file (tanpa ekstensi)
-                    const baseName = file.replace(/\.[^/.]+$/, "");
-                    const extension = file.split('.').pop().toLowerCase();
-                    
-                    if (!layers[baseName]) {
-                        layers[baseName] = {};
-                    }
-                    
-                    layers[baseName][extension] = file;
-                });
-                
-                return layers;
-            }
-
-            // Proses setiap layer
-            async function processLayer(layerName, layerFiles, zipData, map) {
-                try {
-                    // Cek jika ini shapefile
-                    if (layerFiles.shp && layerFiles.dbf) {
-                        await loadShapefile(layerName, layerFiles, zipData, map);
-                    }
-                    
-                    // Cek jika ini GeoTIFF
-                    if (layerFiles.tif || layerFiles.tiff) {
-                        await loadGeoTIFF(layerName, layerFiles, zipData, map);
-                    }
-                    
-                } catch (error) {
-                    console.error(`Error processing layer ${layerName}:`, error);
-                }
-            }
-
-            // Fungsi untuk memuat shapefile
-            async function loadShapefile(layerName, layerFiles, zipData, map) {
-                console.log(`Loading shapefile: ${layerName}`);
-                
-                // Kumpulkan semua file shapefile yang diperlukan
-                const shapefileFiles = {};
-                const requiredExtensions = ['shp', 'dbf', 'prj', 'shx'];
-                
-                for (const ext of requiredExtensions) {
-                    if (layerFiles[ext]) {
-                        const file = await zipData.file(layerFiles[ext]).async('arraybuffer');
-                        shapefileFiles[ext] = file;
-                    }
-                }
-                
-                // Konversi ke GeoJSON menggunakan shpjs
-                const geoJson = await shp.combine([
-                    shapefileFiles.shp,
-                    shapefileFiles.dbf,
-                    shapefileFiles.prj,
-                    shapefileFiles.shx
-                ]);
-                
-                // Tambahkan ke peta
-                const layer = L.geoJSON(geoJson, {
-                    style: function(feature) {
-                        return {
-                            color: getColorForLayer(layerName),
-                            weight: 2,
-                            opacity: 0.8,
-                            fillOpacity: 0.3
-                        };
-                    },
-                    onEachFeature: function(feature, layer) {
-                        if (feature.properties) {
-                            let popupContent = `<h4>${layerName}</h4>`;
-                            for (const key in feature.properties) {
-                                popupContent += `<b>${key}:</b> ${feature.properties[key]}<br>`;
-                            }
-                            layer.bindPopup(popupContent);
-                        }
-                    }
-                }).addTo(map);
-                
-                // Simpan referensi layer
-                layer._layerName = layerName;
-                
-                return layer;
-            }
-
-            // Fungsi untuk memuat GeoTIFF
-            async function loadGeoTIFF(layerName, layerFiles, zipData, map) {
-                console.log(`🚀 Loading GeoTIFF: ${layerName}`);
-
-                // Debug: lihat file apa yang ada
-                console.log('Available files for this layer:', layerFiles);
-                
-                const tifFile = layerFiles.tif || layerFiles.tiff;
-                if (!tifFile) {
-                    console.log(`⚠️ No TIFF file found for ${layerName}`);
-                    return;
-                }
-                
-                try {
-                    // 1. Get file size info
-                    const file = zipData.file(tifFile);
-                    console.log(`📁 File size: ${file._data.uncompressedSize} bytes`);
-                    
-                    // 2. Read as blob first
-                    const blob = await file.async('blob');
-                    console.log(`✅ Blob created, size: ${blob.size} bytes`);
-                    
-                    // 3. Create object URL
-                    const url = URL.createObjectURL(blob);
-                    console.log(`🔗 Object URL created: ${url.substring(0, 50)}...`);
-                    
-                    // 4. Fetch as arraybuffer
-                    const response = await fetch(url);
-                    const arrayBuffer = await response.arrayBuffer();
-                    console.log(`✅ ArrayBuffer obtained, size: ${arrayBuffer.byteLength} bytes`);
-                    
-                    // 5. DEBUG: Check what's available
-                    console.log('🔍 Checking available georaster functions:');
-                    console.log('- window.georaster:', window.georaster);
-                    console.log('- window.parseGeoraster:', window.parseGeoraster);
-                    console.log('- typeof georaster:', typeof georaster);
-                    
-                    // 6. Parse - try different approaches
-                    let raster;
-                    
-                    // Approach A: window.georaster.parse
-                    if (window.georaster && typeof window.georaster.parse === 'function') {
-                        console.log('🔄 Parsing with window.georaster.parse');
-                        raster = await window.georaster.parse(arrayBuffer);
-                    }
-                    // Approach B: parseGeoraster global function
-                    else if (window.parseGeoraster && typeof window.parseGeoraster === 'function') {
-                        console.log('🔄 Parsing with window.parseGeoraster');
-                        raster = await window.parseGeoraster(arrayBuffer);
-                    }
-                    // Approach C: Direct georaster function
-                    else if (typeof georaster === 'function') {
-                        console.log('🔄 Parsing with georaster() directly');
-                        raster = await georaster(arrayBuffer);
-                    }
-                    else {
-                        throw new Error('❌ No georaster parsing function found');
-                    }
-                    
-                    console.log(`✅ Georaster parsed successfully for ${layerName}`);
-                    
-                    // 7. Create layer
-                    const layer = new GeoRasterLayer({
-                        georaster: raster,
-                        opacity: 0.6,
-                        pixelValuesToColorFn: (pixelValues) => {
-                            const value = pixelValues[0] || 0;
-                            
-                            // Color based on layer name
-                            if (layerName.toLowerCase().includes('banjir')) {
-                                const intensity = Math.min(value / 100, 1) * 0.7;
-                                return `rgba(0, 100, 255, ${intensity})`;
-                            } 
-                            else if (layerName.toLowerCase().includes('kekeringan')) {
-                                const intensity = Math.min(value / 100, 1) * 0.7;
-                                return `rgba(255, 150, 0, ${intensity})`;
-                            }
-                            else if (layerName.toLowerCase().includes('longsor')) {
-                                const intensity = Math.min(value / 100, 1) * 0.7;
-                                return `rgba(255, 0, 0, ${intensity})`;
-                            }
-                            
-                            return `rgba(128, 128, 128, 0.5)`;
-                        },
-                        resolution: 128 // Lower resolution for testing
-                    });
-                    
-                    layer.addTo(map);
-                    layer._layerName = layerName;
-                    
-                    // 8. Cleanup
-                    setTimeout(() => {
-                        URL.revokeObjectURL(url);
-                        console.log(`🧹 Cleaned up object URL for ${layerName}`);
-                    }, 1000);
-                    
-                    console.log(`🎉 GeoTIFF ${layerName} successfully loaded and added to map`);
-                    return layer;
-                    
-                } catch (error) {
-                    console.error(`💥 Error loading GeoTIFF ${layerName}:`, error);
-                    
-                    // Try to provide more helpful error info
-                    if (error.message.includes('not a constructor')) {
-                        console.error('Tip: GeoRasterLayer might not be loaded. Check your script tags.');
-                    }
-                    
-                    return null;
-                }
-            }
 
             // Helper function untuk warna
             function getColorForLayer(layerName) {

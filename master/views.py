@@ -218,6 +218,8 @@ def get_indicator_list(request, category):
     })
 
 def indicator_form(request, category, mode, id=None):
+    current_year = str(datetime.now().year)
+    selected_year = request.session.get('tahun_periode', current_year)
     if mode == 'edit':
         context['indicator_edit'] = TMatlevIndicator.objects.filter(id=id).first()
         context['subindicator_edit'] = TMatlevKriteria.objects.filter(indicator_id=id).order_by('number')
@@ -234,7 +236,7 @@ def indicator_form(request, category, mode, id=None):
             ind.pillar = category
             ind.number = (int(last_number) if last_number is not None else 0) + 1
             ind.indicator = r.get('indicator')
-            ind.year = '2025'
+            ind.year = selected_year
             ind.save()
             for kriteria, max_level in zip(r.getlist('kriteria'), r.getlist('max_level')):
                 last_number_sub = TMatlevKriteria.objects.filter(
@@ -247,7 +249,7 @@ def indicator_form(request, category, mode, id=None):
                 krit.level_get = 0
                 krit.level_weight = 0
                 krit.level_sum = 0
-                krit.year = '2025'
+                krit.year = selected_year
                 krit.indicator = ind
                 krit.save()
             return HttpResponseRedirect('/master/indicator')
@@ -255,7 +257,7 @@ def indicator_form(request, category, mode, id=None):
             ind = TMatlevIndicator.objects.get(id=id)
             ind.pillar = category
             ind.indicator = r.get('indicator')
-            ind.year = '2025'
+            ind.year = selected_year
             ind.save()
             for kriteria, max_level, subind_id in zip(r.getlist('kriteria'), r.getlist('max_level'), r.getlist('subind_id')):
                 print(subind_id)
@@ -270,7 +272,7 @@ def indicator_form(request, category, mode, id=None):
                     krit.level_get = 0
                     krit.level_weight = 0
                     krit.level_sum = 0
-                    krit.year = '2025'
+                    krit.year = selected_year
                     krit.indicator = ind
                     krit.save()
                 else:
@@ -280,7 +282,7 @@ def indicator_form(request, category, mode, id=None):
                     krit.level_get = 0
                     krit.level_weight = 0
                     krit.level_sum = 0
-                    krit.year = '2025'
+                    krit.year = selected_year
                     krit.indicator = ind
                     krit.save()
             return HttpResponseRedirect('/master/indicator')

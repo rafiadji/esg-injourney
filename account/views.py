@@ -1,9 +1,11 @@
 from django.shortcuts import render
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 
 from main.models import *
+
+from datetime import datetime, timedelta
 
 # Create your views here.
 def index(request):
@@ -35,3 +37,7 @@ def logout_account(request):
     request.session.flush()
     logout(request)
     return HttpResponseRedirect('/')
+
+def change_year(request, choose):
+    request.session['tahun_periode'] = choose
+    return JsonResponse({'status': 'success'})

@@ -2,6 +2,7 @@ import json
 from django.utils import timezone
 from .models import ActivityLog
 from django.contrib.sessions.middleware import SessionMiddleware
+from datetime import datetime, timedelta
 
 class ActivityLogMiddleware:
     def __init__(self, get_response):
@@ -20,7 +21,8 @@ class ActivityLogMiddleware:
         
         # 1. Handle Tahun Periode
         if 'tahun_periode' not in request.session:
-            request.session['tahun_periode'] = '2025'  # Default tahun
+            current_year = str(datetime.now().year)
+            request.session['tahun_periode'] = current_year  # Default tahun
             
         if any(request.path.startswith(path) for path in EXCLUDED_PATHS):
             return self.get_response(request)

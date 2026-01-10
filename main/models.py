@@ -5,6 +5,7 @@ from django.utils import timezone
 class MPic(models.Model):
     id = models.BigAutoField(primary_key=True)
     pic = models.CharField(max_length=100, blank=True, null=True)
+    pic_icon = models.CharField(max_length=100, blank=True, null=True)
     
     class Meta:
         managed = True
@@ -26,6 +27,10 @@ class MLocation(models.Model):
     pic = models.ForeignKey(MPic, on_delete=models.SET_NULL, null=True, blank=True)
     lat = models.CharField(max_length=100, blank=True, null=True)
     long = models.CharField(max_length=100, blank=True, null=True)
+    banjir = models.CharField(max_length=100, blank=True, null=True)
+    kekeringan = models.CharField(max_length=100, blank=True, null=True)
+    cuacaEkstrim = models.CharField(max_length=100, blank=True, null=True)
+    longsor = models.CharField(max_length=100, blank=True, null=True)
     
     class Meta:
         managed = True

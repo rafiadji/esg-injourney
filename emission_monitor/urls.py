@@ -6,6 +6,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index),
+    path("get_location/<int:pic>/<str:year>", views.get_location),
 
 ]
 
