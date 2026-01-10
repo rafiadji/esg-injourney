@@ -47,6 +47,31 @@
       font-weight: 700;
       color: black;
     }
+    .dashboard-row {
+      display: flex;
+      align-items: stretch;
+    }
+    
+    .dashboard-row > [class^='col-'] {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .dashboard-row .card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .dashboard-row .card-body {
+      flex: 1;
+      min-height: 0;
+    }
+    .cardbd {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
   </style>
 {% endblock %}
 
@@ -205,10 +230,10 @@
             </li>
           </ul>
         </div>
-        <div class="row">
-          <div class="col-lg-4">
+        <div class="row dashboard-row">
+          <div class="col-lg-4 side-column">
             <div class="card card-animate cardgas cardsum">
-              <div class="card-body">
+              <div class="card-body cardbd">
                 <h4 class="fs-17 text-white">
                   Total Gas Emissions<i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
                   <a data-bs-toggle="tooltip" data-bs-placement="top" title="Total gas Emissions (Scope 1 and Scope 2)"><span><i class="ri-information-line"></i></span></a>
@@ -302,28 +327,13 @@
                 </div>
               </div>
               <div class="card-body">
-                <!-- Nav tabs -->
-                <ul class="nav nav-pills nav-custom-outline nav-success mb-3" role="tablist">
-                  <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#scope1" role="tab">All</a>
-                  </li>
-                  <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link" data-bs-toggle="tab" href="#scope1" role="tab">Scope 1</a>
-                  </li>
-                  <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link" data-bs-toggle="tab" href="#scope2" role="tab">Scope 2</a>
-                  </li>
-                  <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link" data-bs-toggle="tab" href="#scope3" role="tab">Scope 3</a>
-                  </li>
-                </ul>
                 <div id="container-chart" style="height: 440px"></div>
               </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-4 side-column">
             <div class="card card-animate cardusage">
-              <div class="card-body">
+              <div class="card-body cardbd">
                 <div class="justify-content-center">
                   <div>
                     <p class="fw-medium text-muted mb-0 text-center">Electricity usage</p>
@@ -346,7 +356,7 @@
               </div>
             </div>
             <div class="card card-animate cardusage">
-              <div class="card-body">
+              <div class="card-body cardbd">
                 <div class="justify-content-center">
                   <div>
                     <p class="fw-medium text-muted mb-0 text-center">Water consumptions</p>
@@ -370,7 +380,7 @@
               </div>
             </div>
             <div class="card card-animate cardusage">
-              <div class="card-body">
+              <div class="card-body cardbd">
                 <div class="justify-content-center">
                   <div>
                     <p class="fw-medium text-muted mb-0 text-center">Fuel consumptions</p>
@@ -397,7 +407,7 @@
         <div class="row">
           <div class="col-lg-4">
             <div class="card card-animate cardusage">
-              <div class="card-body">
+              <div class="card-body cardbd">
                 <div class="justify-content-center">
                   <div>
                     <p class="fw-medium text-muted mb-0 text-center">Hazardous Waste</p>
@@ -422,7 +432,7 @@
           </div>
           <div class="col-lg-4">
             <div class="card card-animate cardusage">
-              <div class="card-body">
+              <div class="card-body cardbd">
                 <div class="justify-content-center">
                   <div>
                     <p class="fw-medium text-muted mb-0 text-center">Non-Hazardous Waste</p>
@@ -447,7 +457,7 @@
           </div>
           <div class="col-lg-4">
             <div class="card card-animate cardusage">
-              <div class="card-body">
+              <div class="card-body cardbd">
                 <div class="justify-content-center">
                   <div>
                     <p class="fw-medium text-muted mb-0 text-center">Waste water Processed</p>
@@ -471,6 +481,47 @@
             </div>
           </div>
         </div>
+
+        
+        <div class="row">
+          
+          <div class="col-md-4">
+            <div class="card card-height-100">
+              <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Environmental</h4>
+              </div>
+              <!-- end card header -->
+              <div class="card-body">
+                {% comment %} <div id="charts1" class="e-charts" style="width: 100%; height: 400px;"></div> {% endcomment %}
+                <div id="env" style="height: 400px"></div>
+              </div>
+            </div> <!-- .card -->
+          </div> <!-- .col -->
+          <div class="col-md-4">
+            <div class="card card-height-100">
+              <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Social</h4>
+              </div>
+              <!-- end card header -->
+              <div class="card-body">
+                {% comment %} <div id="charts2" class="e-charts" style="width: 100%; height: 400px;"></div> {% endcomment %}
+                <div id="soc" style="height: 400px"></div>
+              </div>
+            </div> <!-- .card -->
+          </div> <!-- .col -->
+          <div class="col-md-4">
+            <div class="card card-height-500">
+              <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Governance</h4>
+              </div>
+              <!-- end card header -->
+              <div class="card-body">
+                {% comment %} <div id="gov-eco-charts" class="e-charts" style="width: 100%; height: 400px;"></div> {% endcomment %}
+                <div id="gov" style="height: 400px"></div>
+              </div>
+            </div> <!-- .card -->
+          </div> <!-- .col -->
+        </div>
       </div>
     </div>
   </section>
@@ -478,6 +529,104 @@
 {% block script %}
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
+  <script type="text/javascript">
+    const gauges = [
+      {
+        id: 'env',
+        name: 'Environmental',
+        value: {{ 30|default:0|floatformat:2 }},
+        color: '#45CB85'
+      },
+      {
+        id: 'soc',
+        name: 'Social',
+        value: {{ 50|default:0|floatformat:2 }},
+        color: '#00A2E9'
+      },
+      {
+        id: 'gov',
+        name: 'Governance',
+        value: {{ 70|default:0|floatformat:2 }},
+        color: '#F06548'
+      }
+    ];
+
+    gauges.forEach(gauge => {
+      const dom = document.getElementById(gauge.id);
+      const chart = echarts.init(dom, null, {
+        renderer: 'canvas',
+        useDirtyRect: false
+      });
+
+      const option = {
+        series: [
+          {
+            type: 'gauge',
+            startAngle: 90,
+            endAngle: -270,
+            pointer: {
+              show: false
+            },
+            progress: {
+              show: true,
+              overlap: false,
+              roundCap: true,
+              clip: false,
+              itemStyle: {
+                borderWidth: 1,
+                color: gauge.color,
+                borderColor: gauge.color
+              }
+            },
+            axisLine: {
+              lineStyle: {
+                width: 30
+              }
+            },
+            splitLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              show: false
+            },
+            data: [
+              {
+                value: gauge.value,
+                name: gauge.name,
+                title: {
+                  offsetCenter: ['0%', '-10%']
+                },
+                detail: {
+                  valueAnimation: true,
+                  offsetCenter: ['0%', '20%']
+                }
+              }
+            ],
+            title: {
+              fontSize: 16,
+              fontWeight: 600
+            },
+            detail: {
+              width: 50,
+              height: 14,
+              fontSize: 14,
+              color: gauge.color,
+              borderColor: gauge.color,
+              borderRadius: 20,
+              borderWidth: 1,
+              formatter: '{value}%',
+            }
+          }
+        ]
+      };
+
+      chart.setOption(option);
+      window.addEventListener('resize', chart.resize);
+    });
+  </script>
   <script type="text/javascript">
     document.querySelectorAll('.nav-link').forEach((link) => {
       link.addEventListener('shown.bs.tab', function () {
@@ -502,7 +651,7 @@
           left: '3%',
           right: '4%',
           bottom: '3%',
-          top: '15%',
+          top: '4%',
           containLabel: true,
           show: true,
           borderColor: '#f0f0f0'

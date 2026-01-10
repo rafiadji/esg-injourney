@@ -548,6 +548,16 @@
           let mode = "edit";
           let html = "";
             for (let i = 0; i < data.length; i++) { 
+
+              let lastLevel = count;
+              let deleteClass = null
+              if(data[i].level == lastLevel) {
+                deleteClass = ''
+              }
+              else{
+                deleteClass = 'd-none'
+              }
+
               html += `
                 <div class="card">
                         <div class="card-header">
@@ -561,7 +571,7 @@
                                 <div class="dropdown-menu">
                                   <a class="dropdown-item" href="data/detail?category={{category}}&ind=${indicator}&sub=${data[i].kriteria_id}&matlev=${data[i].id}"><i class="ri-folder-2-line"></i> Detail</a>
                                   <a class="dropdown-item" href="data/edit?id=${data[i].id}&category={{category}}&mode=${mode}"><i class="ri-edit-box-line"></i> Edit</a>
-                                  <a class="dropdown-item" href="#"><i class="ri-delete-bin-line"></i> Hapus</a>
+                                  <a class="dropdown-item ${deleteClass}" href="javascript:;" onclick="delete_data(${data[i].id})"><i class="ri-delete-bin-line"></i> Delete</a>
                                 </div>
                               </div>
                             </div>
@@ -576,6 +586,36 @@
             $('#cardlevel').html(html)
         }
       }) 
+    }
+    function delete_data(id){
+        Swal.fire({
+        title: 'Are you sure?',
+        text: 'Deleted data cannot be recovered!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#020202ff',
+        confirmButtonText: 'Yes, Delete!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `data/delete/${id}`,
+            success: (res) => {
+              if (res.success) {
+                Swal.fire('Deleted!', 'Data has been successfully deleted.', 'success').then(function () {
+                  window.location.reload();
+                })
+              } else {
+                Swal.fire('Failed!', res.message || 'An error occurred while deleting the data.', 'error')
+              }
+            },
+            error: (err) => {
+              Swal.fire('Error!', 'Unable to delete the data. Please try again.', 'error')
+            }
+          })
+        }
+      })
     }
   </script>
 {% endblock %}

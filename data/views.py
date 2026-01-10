@@ -1010,6 +1010,7 @@ def save_column(request, id):
     column_name = request.GET.get('column_name')
     column_type = request.GET.get('column_type')
     column_hint = request.GET.get('column_hint')
+    column_emission = request.GET.get('column_emission')
     show_table = request.GET.get('show_table')
     maturity_id = request.GET.get('maturity_id')
     
@@ -1021,6 +1022,7 @@ def save_column(request, id):
     matlevcol.column_type = column_type
     matlevcol.hints = column_hint
     matlevcol.sub_column_id = subcolumn_id
+    matlevcol.emission_category = column_emission
     matlevcol.show_table = value_showtbl
     matlevcol.maturity_id = maturity_id
     matlevcol.save()

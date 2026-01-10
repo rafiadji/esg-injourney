@@ -143,9 +143,9 @@
                 <div class="row gy-4 pt-2" style="align-items: right; float: right;">
                   <div>
                     <a class="btn btn-ghost-danger waves-effect waves-light shadow-none" {% if mode == 'edit' %} href="data/category/{{ category }}/" {% else %} href="#" onclick="deleteform({{ matlevid }}); return false;" {% endif %} >
-                      Batal
+                      Cancel
                     </a>
-                    <a type="button" class="btn btn-success waves-effect waves-light" onclick="saveform(matlevid)"><i class="ri-save-line align-middle fs-16 me-2"></i> Simpan</a>
+                    <a type="button" class="btn btn-success waves-effect waves-light" onclick="saveform(matlevid)"><i class="ri-save-line align-middle fs-16 me-2"></i> Save</a>
                   </div>
                 </div>
               </form>
@@ -293,18 +293,18 @@
               <label class="form-check-label">Show table</label>
             </div>`,
             `<div class="d-flex align-items-center gap-2">
-              <select class="form-select column-input d-none" id="emission-select"  data-id="${item.id}" style="width:100px" >
+              <select class="form-select column-input ${item.column_type === 'emission' ? '' : 'd-none'}" id="emission-select"  data-id="${item.id}" style="width:100px" >
                 <option value="" disabled selected>Select</option>
-                <option value="scope1" ${item.column_type === 'scope1' ? 'selected' : ''}>Scope 1</option>
-                <option value="scope2" ${item.column_type === 'scope2' ? 'selected' : ''}>Scope 2</option>
-                <option value="scope3" ${item.column_type === 'scope3' ? 'selected' : ''}>Scope 3</option>
-                <option value="reduction" ${item.column_type === 'reduction' ? 'selected' : ''}>Reduction</option>
-                <option value="non_b3" ${item.column_type === 'non_b3' ? 'selected' : ''}>Non B3</option>
-                <option value="b3" ${item.column_type === 'b3' ? 'selected' : ''}>B3</option>
-                <option value="waste_water" ${item.column_type === 'waste_water' ? 'selected' : ''}>Waste Water</option>
-                <option value="water_consumption" ${item.column_type === 'water_consumption' ? 'selected' : ''}>Water Consumption</option>              
-                <option value="energy_consumption" ${item.column_type === 'energy_consumption' ? 'selected' : ''}>Energy Consumption</option>              
-                <option value="energy_reduction" ${item.column_type === 'energy_reduction' ? 'selected' : ''}>Energy Reduction</option>              
+                <option value="scope1" ${item.emission_category === 'scope1' ? 'selected' : ''}>Scope 1</option>
+                <option value="scope2" ${item.emission_category === 'scope2' ? 'selected' : ''}>Scope 2</option>
+                <option value="scope3" ${item.emission_category === 'scope3' ? 'selected' : ''}>Scope 3</option>
+                <option value="reduction" ${item.emission_category === 'reduction' ? 'selected' : ''}>Reduction</option>
+                <option value="non_b3" ${item.emission_category === 'non_b3' ? 'selected' : ''}>Non B3</option>
+                <option value="b3" ${item.emission_category === 'b3' ? 'selected' : ''}>B3</option>
+                <option value="waste_water" ${item.emission_category === 'waste_water' ? 'selected' : ''}>Waste Water</option>
+                <option value="water_consumption" ${item.emission_category === 'water_consumption' ? 'selected' : ''}>Water Consumption</option>              
+                <option value="energy_consumption" ${item.emission_category === 'energy_consumption' ? 'selected' : ''}>Energy Consumption</option>              
+                <option value="energy_reduction" ${item.emission_category === 'energy_reduction' ? 'selected' : ''}>Energy Reduction</option>              
               </select>
               <a href="javascript:;"  id="btnSaveColumn${item.id}" onclick="save_column(this)" class="btn btn-sm btn-ghost-success waves-effect waves-light shadow-none d-none"> Save Column </a>
               <a href="javascript:;" id="btnDeleteColumn${item.id}" onclick="delete_column(this)" class="btn btn-sm btn-ghost-danger waves-effect waves-light shadow-none"> Delete Column </a>
@@ -323,29 +323,29 @@
     let row = $(el).closest('tr')
     let columnId = row.find('#columnid').val()
     Swal.fire({
-      title: 'Apakah Anda yakin?',
-      text: 'Kolom yang dihapus tidak dapat dikembalikan!',
+      title: 'Are you sure?',
+      text: 'Deleted columns cannot be recovered!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#020202ff',
-      confirmButtonText: 'Ya, Hapus!',
-      cancelButtonText: 'Batal'
+      confirmButtonText: 'Yes, Delete!',
+      cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
           url: `data/remove_column/${columnId}`,
           success: (res) => {
             if (res.success) {
-              Swal.fire('Terhapus!', 'Kolom berhasil dihapus.', 'success').then(function () {
+              Swal.fire('Deleted!', 'The column has been successfully deleted.', 'success').then(function () {
                 get_column(matlevid)
               })
             } else {
-              Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus kolom.', 'error')
+              Swal.fire('Failed!', res.message || 'An error occurred while deleting the column.', 'error')
             }
           },
           error: (err) => {
-            Swal.fire('Error!', 'Tidak dapat menghapus kolom. Silakan coba lagi.', 'error')
+            Swal.fire('Error!', 'Unable to delete the column. Please try again.', 'error')
           }
         })
       }
@@ -354,13 +354,19 @@
 
 function save_column(el){
       let row = $(el).closest('tr')
+      let column_emission = null
       let columnId = row.find('#columnid').val()
+      if(row.find('#emission-select').val()){
+        column_emission = row.find('#emission-select').val()
+      }
+      
       let columnData = {
           column_id: row.find('#columnid').val(),
           subcolumn_id: row.find('#subcolumnid').val(),
           column_name: row.find('#columname').val(),
           column_type: row.find('#columntype').val(),
           column_hint: row.find('#columnhint').val(),
+          column_emission: column_emission,
           show_table: row.find('#showtable').is(':checked') ? true : false,
           maturity_id: matlevid
       }
@@ -373,11 +379,11 @@ function save_column(el){
         success: (res) => {
           {% comment %} console.log(res) {% endcomment %}
           if (res.success) {
-            Swal.fire('Disimpan!', 'Kolom berhasil disimpan.', 'success').then(function () {
+            Swal.fire('Saved!', 'The column has been successfully saved.', 'success').then(function () {
                 get_column(matlevid)
               })
           } else {
-            Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menyimpan kolom.', 'error')
+            Swal.fire('Gagal!', res.message || 'An error occurred while saving the column.', 'error')
           }
 
         }
@@ -403,13 +409,23 @@ $(document).on('change', '.column-type', function () {
   }
 });
 
+$(document).on('change', '.dataType_select', function () {
+  const value = $(this).val();
+
+  if (value === 'upload') {
+    $('#emission-select').removeClass('d-none');
+  } else {
+    $('#emission-select').addClass('d-none');
+  }
+});
+
 function deleteform(id) {
     let maturity_id = id
     {% comment %} console.log(maturity_id) {% endcomment %}
 
     Swal.fire({
-      title: 'Apakah Anda yakin?',
-      text: 'Data yang dihapus tidak dapat dikembalikan!',
+      title: 'Are you sure?',
+      text: 'Deleted data cannot be recovered!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -422,15 +438,15 @@ function deleteform(id) {
           url: `data/remove_form/${maturity_id}`,
           success: (res) => {
             if (res.success) {
-              Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success').then(function () {
+              Swal.fire('Deleted!', 'Data has been successfully deleted.', 'success').then(function () {
                 window.location.href = `data/category/{{ category }}/`
               })
             } else {
-              Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menghapus data.', 'error')
+              Swal.fire('Failed!', res.message || 'An error occurred while deleting the data.', 'error')
             }
           },
           error: (err) => {
-            Swal.fire('Error!', 'Tidak dapat menghapus data. Silakan coba lagi.', 'error')
+            Swal.fire('Error!', 'Unable to delete the data. Please try again.', 'error')
           }
         })
       }
@@ -454,12 +470,12 @@ function saveform(id){
         success: (res) => {
           {% comment %} console.log(res) {% endcomment %}
           if (res.success) {
-            Swal.fire('Disimpan!', 'Data berhasil disimpan.', 'success').then(function () {
+            Swal.fire('Saved!', 'Data has been successfully saved.', 'success').then(function () {
                 window.location.href = `data/category/{{ category }}/`
                 {% comment %} console.log(`data/category/{{ category }}/`) {% endcomment %}
             })
           } else {
-            Swal.fire('Gagal!', res.message || 'Terjadi kesalahan saat menyimpan data.', 'error')
+            Swal.fire('Failed!', res.message || 'An error occurred while saving the data.', 'error')
           }
 
         }
