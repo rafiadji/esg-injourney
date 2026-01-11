@@ -749,19 +749,16 @@
       formula = equ[i][1]
       
       let ids = formula.match(/#(\d+)/g).map(item => item.replace(/#/g, ""));
-      formula = formula.replace(/#/g, "")
+      {% comment %} formula = formula.replace(/#/g, "") {% endcomment %}
   
       if (!ids) console.log("Formula tidak valid");
 
       let values = {};
       ids.forEach(id => {
           let inputElement = document.getElementById(id);
-          values[id] = inputElement ? parseFloat(inputElement.value) || 0 : 0;
+          values[id] = inputElement ? parseFloat(inputElement.value.replace('.', '').replace(',', '.')) || 0 : 0;
+          formula = formula.replace('#'+id, values[id]);
       });
-      Object.keys(values).forEach(id => {
-          formula = formula.replace(id, values[id]);
-      });
-
       try {
           hasil = math.evaluate(formula);
           hasil = hasil.toFixed(2);
