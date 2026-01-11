@@ -505,23 +505,6 @@
 
   get_data('{{idlev}}')
 
-  {% comment %} function getCookie(name) {
-    let cookieValue = null
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';')
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim()
-        if (cookie.substring(0, name.length + 1) === name + '=') {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
-          break
-        }
-      }
-    }
-    return cookieValue
-  }
-
-  Dropzone.autoDiscover = false;{% endcomment %}
-
   {% for cl in column %}
   paramname = '{{cl.id}}'
   {% endfor %}
@@ -697,108 +680,96 @@
       return cookieValue;
   }
 
-  {% comment %} var myDropzone = new Dropzone("#dropzoneUpload", {
-      url: "data/upload/",
-      paramName:paramname, 
-      maxFiles: 1,
-      maxFilesize: 5, // MB
-      acceptedFiles: ".png,.jpg,.jpeg,.pdf,.docx",
-      previewsContainer: "#dropzone-preview",
-      previewTemplate: previewTemplate,
-      parallelUploads: 2,
-      addRemoveLinks: false,
-      autoProcessQueue: false,
-      clickable: ".dz-message",
-      headers: {
-          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-      },
-      init: function() {
-          const submitButton = document.querySelector("#submit-upload");
-          const dz = this;
+  const choice_option = {
+    searchResultLimit: 20,
+    shouldSort: false
+  }
+  var equ = []
+  
+  if ($(".year-select").length > 0){
+    const year_select = new Choices('.year-select', choice_option)
+  }
 
-          const dropzoneElement = document.querySelector("#dropzoneUpload");
-          const previewContainer = document.querySelector("#dropzone-preview");
-          
-          // Fungsi untuk update tampilan
-          function updateDropzoneDisplay() {
-              if (dz.files.length > 0) {
-                  // Ada file, sembunyikan area drop dan tampilkan preview
-                  dropzoneElement.classList.add('hide-dropzone');
-                  previewContainer.classList.add('has-files');
-              } else {
-                  // Tidak ada file, tampilkan area drop dan sembunyikan preview
-                  dropzoneElement.classList.remove('hide-dropzone');
-                  previewContainer.classList.remove('has-files');
-              }
-          }
-          
-          // Event ketika file ditambahkan
-          this.on("addedfile", function(file) {
-              updateDropzoneDisplay();
-          });
-          
-          // Event ketika file dihapus
-          this.on("removedfile", function(file) {
-              updateDropzoneDisplay();
-          });
-          
-          const form = document.querySelector("#uploadData form");
-          form.addEventListener("submit", function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              
-              // Tampilkan loading
-              submitButton.innerHTML = '<i class="bx bx-loader bx-spin"></i> Uploading...';
-              submitButton.disabled = true;
-              
-              // Process semua file di queue
-              dz.processQueue();
-          });
-          
-          // Saat semua file berhasil diupload
-          this.on("queuecomplete", function() {
-              if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-                  // Reset button
-                  submitButton.innerHTML = '<i class="bx bx-save large"></i> Simpan';
-                  submitButton.disabled = false;
-                  
-                  // Tutup modal
-                  $('#uploadData').modal('hide');
-                  dz.removeAllFiles(true);
-                  
-                  // Refresh halaman atau data
-                  window.location.reload();
-              }
-          });
-          
-          // Saat terjadi error
-          this.on("error", function(file, errorMessage) {
-              alert('Error uploading file: ' + errorMessage);
-              this.removeFile(file);
-              
-              // Reset button
-              submitButton.innerHTML = '<i class="bx bx-save large"></i> Simpan';
-              submitButton.disabled = false;
-          });
-          
-          // Saat mengirim file
-          this.on("sending", function(file, xhr, formData) {
-              
-              formData.append('indicator', '{{ind}}');
-              formData.append('subindicator', '{{sub}}');
-              formData.append('matlev', '{{idlev}}');
-              
-              // Tambahkan CSRF token
-              formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-          });
+  if ($(".month-select").length > 0){
+    const month_select = new Choices('.month-select', choice_option)
+  }
 
-          updateDropzoneDisplay();
-      },
-      error: function(file, message) {
-        alert('Error: ' + message);
-        this.removeFile(file);
+  if ($(".num-input").length > 0){
+    const inputElements = document.querySelectorAll('.num-input');
+    inputElements.forEach(element => {
+      new Cleave(element, {
+        numeral: true,
+        numeralDecimalScale: 2,
+        numeralPositiveOnly: true,
+        numeralDecimalMark: ',',
+        delimiter: '.'
+      })
+    });
+  }
+
+  if ($(".num-neg-input").length > 0){
+    const inputElements = document.querySelectorAll('.num-neg-input');
+    inputElements.forEach(element => {
+      new Cleave(element, {
+        numeral: true,
+        numeralDecimalScale: 2,
+        numeralPositiveOnly: false,
+        numeralDecimalMark: ',',
+        delimiter: '.'
+      })
+    });
+  }
+
+  {% for cl in column %}
+    {% if cl.column_type == 'sub' %}
+    {% for cln in column %}
+      {% if cln.sub_column_id == cl.id %}
+        {% if cln.column_type == 'equation' %}
+          add_equ({{cln.id}}, '{{cln.equation}}')
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% elif cl.sub_column_id == '' or cl.sub_column_id == None %}
+        {% if cl.column_type == 'equation' %}
+          add_equ({{cl.id}}, '{{cl.equation}}')
+        {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  function add_equ(id, equation){
+    var temp = [id, equation]
+    equ.push(temp)
+    console.log(equ)
+  }
+
+  function proses_equation(){
+    for(let i = 0;i < equ.length; i++){
+      formula = equ[i][1]
+      
+      let ids = formula.match(/#(\d+)/g).map(item => item.replace(/#/g, ""));
+      formula = formula.replace(/#/g, "")
+  
+      if (!ids) console.log("Formula tidak valid");
+
+      let values = {};
+      ids.forEach(id => {
+          let inputElement = document.getElementById(id);
+          values[id] = inputElement ? parseFloat(inputElement.value) || 0 : 0;
+      });
+      Object.keys(values).forEach(id => {
+          formula = formula.replace(id, values[id]);
+      });
+
+      try {
+          hasil = math.evaluate(formula);
+          hasil = hasil.toFixed(2);
+          $('#'+equ[i][0]).val(hasil)
+      } catch (error) {
+          console.log("Error dalam evaluasi rumus")
+          console.log(error)
       }
-  }); {% endcomment %}
+    }
+  }
 </script>
 
 {% endblock %}
