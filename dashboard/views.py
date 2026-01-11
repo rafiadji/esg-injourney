@@ -172,5 +172,7 @@ def index(request):
     context['nonb3'] = nonb3
     context['waste_water'] = waste_water
     
+    print(context)
+    
     return render(request, "dashboard.html", context)
 

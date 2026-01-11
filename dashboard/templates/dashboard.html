@@ -636,19 +636,19 @@
       {
         id: 'env',
         name: 'Environmental',
-        value: {{ env|default:0|floatformat:2 }},
+        value: {{ env_progress|default:0|floatformat:2 }},
         color: '#45CB85'
       },
       {
         id: 'soc',
         name: 'Social',
-        value: {{ soc|default:0|floatformat:2 }},
+        value: {{ soc_progress|default:0|floatformat:2 }},
         color: '#00A2E9'
       },
       {
         id: 'gov',
         name: 'Governance',
-        value: {{ gov|default:0|floatformat:2 }},
+        value: {{ gov_progress|default:0|floatformat:2 }},
         color: '#F06548'
       }
     ];
