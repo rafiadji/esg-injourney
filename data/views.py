@@ -451,13 +451,14 @@ def leveldetail(request):
     return render(request, "level_detail.html", context)
 
 def esgindex(request,category):
-    
+    current_year = str(datetime.now().year)
+    selected_year = request.session.get('tahun_periode', current_year)
     
     if category == 'env':
         context['title'] = "Environment"
         context['subtitle'] = "We are committed to preserving the planet by reducing carbon footprints, managing natural resources responsibly, and driving eco-friendly innovation."
         context['imgurl'] = "assets/images/env.jpg"
-        context['submenulist'] = TMatlevIndicator.objects.filter(pillar='env').order_by('number')
+        context['submenulist'] = TMatlevIndicator.objects.filter(pillar='env', year=selected_year).order_by('number')
         for submenu in context['submenulist']:
             kriteria = TMatlevKriteria.objects.filter(indicator_id=submenu.id).order_by('number')
             submenu.kriteria = kriteria
@@ -467,7 +468,7 @@ def esgindex(request,category):
         context['title'] = "Social"
         context['subtitle'] = "Empowering communities through inclusion, employee well-being, and supporting fair, sustainable growth for all."
         context['imgurl'] = "assets/images/soc.jpg"
-        context['submenulist'] = TMatlevIndicator.objects.filter(pillar='soc').order_by('number')
+        context['submenulist'] = TMatlevIndicator.objects.filter(pillar='soc', year=selected_year).order_by('number')
         for submenu in context['submenulist']:
             kriteria = TMatlevKriteria.objects.filter(indicator_id=submenu.id).order_by('number')
             submenu.kriteria = kriteria
@@ -477,7 +478,7 @@ def esgindex(request,category):
         context['title'] = "Governance"
         context['subtitle'] = "Building trust with transparency, integrity, and responsible governance to create long-term value."
         context['imgurl'] = "assets/images/gov.jpg"
-        context['submenulist'] = TMatlevIndicator.objects.filter(pillar='gov').order_by('number')
+        context['submenulist'] = TMatlevIndicator.objects.filter(pillar='gov', year=selected_year).order_by('number')
         for submenu in context['submenulist']:
             kriteria = TMatlevKriteria.objects.filter(indicator_id=submenu.id).order_by('number')
             submenu.kriteria = kriteria
