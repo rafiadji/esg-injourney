@@ -236,7 +236,7 @@
                 </h4>
                 <div class="d-flex align-items-center mt-2">
                   <div class="flex-shrink-1">
-                    <h2 class="mb-0 text-white fw-semibold"><span class="counter-value" data-target="{{total_emission}}">0</span></h2>
+                    <h2 class="mb-0 text-white fw-semibold"><span class="counter-value" data-target="{{total_emission|floatformat:3}}">0</span></h2>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-white">ton CO2eq</span>
@@ -253,7 +253,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-center mt-0">
                   <div class="flex-shrink-1">
-                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="{{scope1}}">0</span></h2>
+                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="{{scope1|floatformat:3}}">0</span></h2>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-muted">ton CO2eq</span>
@@ -273,7 +273,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-center mt-0">
                   <div class="flex-shrink-1">
-                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="{{scope2}}">0</span></h2>
+                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="{{scope2|floatformat:3}}">0</span></h2>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-muted">ton CO2eq</span>
@@ -293,7 +293,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-center mt-0">
                   <div class="flex-shrink-1">
-                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="{{scope3}}">0</span></h2>
+                    <h2 class="mb-0 fw-semibold"><span class="counter-value" data-target="{{scope3|floatformat:3}}">0</span></h2>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-muted">ton CO2eq</span>
@@ -312,7 +312,7 @@
                 <p class="fw-bold text-truncate mb-0">Emissions Reduction</p>
                 <div class="d-flex align-items-center mt-2">
                   <div class="flex-shrink-1">
-                    <h1 class="mb-0"><span class="counter-value" data-target="{{reduce_emisi}}">0</span></h1>
+                    <h1 class="mb-0"><span class="counter-value" data-target="{{reduce_emisi|floatformat:3}}">0</span></h1>
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="text-muted">ton CO2eq</span>
@@ -336,7 +336,7 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{energy_consumption}}">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{energy_consumption|floatformat:3}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
                           <span class="text-muted">GJ</span>
@@ -359,7 +359,7 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{water_consumption}}">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{water_consumption|floatformat:3}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center ">
                           <span class="text-muted">m3</span>
@@ -383,7 +383,7 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{fuel_consumption}}">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{fuel_consumption|floatformat:3}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
                           <span class="text-muted">Liter</span>
@@ -410,7 +410,7 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{b3}}">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{b3|floatformat:3}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
                           <span class="text-muted">metric tonnes</span>
@@ -435,7 +435,7 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{nonb3}}">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{nonb3|floatformat:3}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
                           <span class="text-muted">metric tonnes</span>
@@ -460,7 +460,7 @@
                     <div class="d-flex justify-content-center">
                       <div class="d-flex align-items-center mt-2">
                         <div class="flex-shrink-1">
-                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{waste_water}}">0</span></h1>
+                          <h1 class="mb-0 text-center"><span class="counter-value" data-target="{{waste_water|floatformat:3}}">0</span></h1>
                         </div>
                         <div class="flex-grow-1 ms-3 text-center">
                           <span class="text-muted">%</span>
