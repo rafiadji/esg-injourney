@@ -336,6 +336,7 @@ def workpaper_form(request):
         idmatlevkrit = context['matlevkrit'].first()
         context['matlevind'] = TMatlevIndicator.objects.filter(id=idmatlevkrit['indicator_id']).values()
         context['mode'] = request.GET.get("mode")
+        context['countlevel'] = None
         # context['matlevcol'] = TMatlevKriteriaColumn.objects.filter(maturity_id = idmatlev).order_by('id').values()
     else : 
         category = request.GET.get("cat")
