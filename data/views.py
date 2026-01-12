@@ -410,6 +410,12 @@ def leveldetail(request):
                 in_f.matlev = post
                 in_f.value_files = rf.get(key)
                 in_f.save()
+            
+            #Cek submit
+            count_mat = TMatlevKriteriaDetail.objects.filter(kriteria_id=subindicator, status='submitted').count()
+            krit = TMatlevKriteria.objects.get(id=subindicator)
+            krit.level_get = count_mat
+            krit.save()
         else:
             matlev = context['matlev']
             user = request.user
@@ -435,6 +441,12 @@ def leveldetail(request):
                 in_f = TRMatlevColumn.objects.get(matlev=post, column=col)
                 in_f.value_files = rf.get(key)
                 in_f.save()
+                
+            #Cek submit
+            count_mat = TMatlevKriteriaDetail.objects.filter(kriteria_id=subindicator, status='submitted').count()
+            krit = TMatlevKriteria.objects.get(id=subindicator)
+            krit.level_get = count_mat
+            krit.save()
         return HttpResponseRedirect('/data/detail/?category='+context['category']+'&ind='+context['ind']+'&sub='+context['sub']+'&matlev='+context['idlev'])
     return render(request, "level_detail.html", context)
 
@@ -542,6 +554,12 @@ def upload_file(request):
             in_f.matlev = post
             in_f.value_files = rf.get(key)
             in_f.save()
+        
+        #Cek submit
+        count_mat = TMatlevKriteriaDetail.objects.filter(kriteria_id=r.get('subindicator'), status='submitted').count()
+        krit = TMatlevKriteria.objects.get(id=r.get('subindicator'))
+        krit.level_get = count_mat
+        krit.save()
         return JsonResponse({"status": "ok"})
 
 def get_detail_data(request, id):

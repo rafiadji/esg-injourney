@@ -749,6 +749,63 @@
     })
     
     var option = {
+      tooltip: {
+          trigger: 'item',
+          backgroundColor: 'rgba(50, 50, 50, 0.9)',
+          borderColor: '#333',
+          textStyle: {
+              color: '#fff',
+              fontSize: 12
+          },
+          position: function(point, params, dom, rect, size) {
+              // Estimate tooltip size
+              const tooltipWidth = 150;
+              const tooltipHeight = 60;
+              
+              // Boundary check dalam chart container
+              const chartWidth = size.viewSize[0];
+              const chartHeight = size.viewSize[1];
+              
+              let x = point[0];
+              let y = point[1];
+              
+              // Default: kanan atas
+              let posX = x + 10;
+              let posY = y - tooltipHeight - 10;
+              
+              // Jika keluar kanan, pindah ke kiri
+              if (posX + tooltipWidth > chartWidth) {
+                  posX = x - tooltipWidth - 10;
+              }
+              
+              // Jika keluar kiri, pindah ke kanan
+              if (posX < 0) {
+                  posX = x + 20;
+              }
+              
+              // Jika keluar atas, pindah ke bawah
+              if (posY < 0) {
+                  posY = y + 20;
+              }
+              
+              // Jika keluar bawah, pindah ke atas
+              if (posY + tooltipHeight > chartHeight) {
+                  posY = y - tooltipHeight - 20;
+              }
+              
+              return [posX, posY];
+          },
+          extraCssText: 'z-index: 9999 !important;',
+          formatter: function(params) {
+              const value = Math.abs(params.value).toLocaleString();
+              return `
+                  <div style="display: flex; align-items: center;">
+                      <span style="display: inline-block; width: 8px; height: 8px; background-color: #82AB40; border-radius: 50%; margin-right: 6px;"></span>
+                      <span>Reduction: <strong>${value}</strong> ton CO2eq</span>
+                  </div>
+              `;
+          }
+      },
       grid: {
           left: '3%',
           right: '4%',
@@ -760,7 +817,7 @@
       },
       xAxis: {
           type: 'category',
-          data: ['2020', '2021', '2022', '2023', '2024', '2025'],
+          data: {{year_reduce|safe}},
           axisLine: {
               lineStyle: {
                   color: '#e0e0e0'
@@ -819,7 +876,7 @@
       },
       series: [
         {
-          data: [820, 810, 800, 720, 680, 560, 300],
+          data: {{year_val_reduce|safe}},
           type: 'line',
           smooth: true,
           symbol: 'circle',
