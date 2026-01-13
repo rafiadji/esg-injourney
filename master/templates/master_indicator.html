@@ -20,6 +20,13 @@
     <h1 class="heading-txt fw-semibold flex-grow-1">Indicators</h1>
     <div class="flex-shrink-0">
       <div class="d-flex flex-wrap gap-2">
+        <div id="yearChoicesContainer">
+          <select name="year_choose" id="year_choose" class="form-select border-success rounded-4 waves-effect waves-light shadow-none">
+          </select>
+        </div>
+        {% if matlev_indicator_count == 0 %}
+        <a href="javascript:;" onclick="copy_form()" class="btn btn-success active"><span class="icon-on"><i class="ri-file-copy-line align-bottom me-1"></i> Copy Kertas Kerja</span></a>
+        {% endif %}
         <a href="master/mast_formind" class="btn btn-success active" id="add-indicator"><span class="icon-on"><i class="ri-add-line align-bottom me-1"></i> Add New Indicators</span></a>
       </div>
     </div>
@@ -38,10 +45,45 @@
       </tbody>
     </table>
   </div>
+
+  <div id="modal-copy" class="modal fade" tabindex="-1" aria-labelledby="modalFormLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form action="/master/copy_matlev" method="post">
+          {% csrf_token %}
+          <input type="hidden" id="year_copy" name="year_copy">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalFormLabel">Copy Kertas Kerja</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3 col-12">
+              <label for="year_choose" class="form-label">Tahun</label>
+              <select name="year_choose" id="year_choose" class="form-select">
+                {% for ay in allyear %}
+                <option value="{{ay.year}}">{{ay.year}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-light text-dark" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">
+              Copy
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block script %}
 <script>
+  function copy_form(){
+    $('#modal-copy').modal('show')
+  }
+
   var table_indicator = $('#master-indicator').DataTable({ 
     ordering: false,
     searching: false,

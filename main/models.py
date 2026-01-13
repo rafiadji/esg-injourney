@@ -84,6 +84,16 @@ class TMatlevKriteria(models.Model):
         managed = True
         db_table = 't_matlev_kriteria'
 
+class TMatlevKriteriaLevelGet(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    kriteria = models.ForeignKey(TMatlevKriteria, on_delete=models.SET_NULL, null=True, blank=True)
+    pic = models.ForeignKey(MPic, on_delete=models.SET_NULL, null=True, blank=True)
+    level_get = models.IntegerField(blank=True, null=True, default=0)
+    
+    class Meta:
+        managed = True
+        db_table = 't_matlev_kriteria_levelget'
+
 class TMatlevKriteriaDetail(models.Model):
     id = models.BigAutoField(primary_key=True)
     kriteria = models.ForeignKey(TMatlevKriteria, on_delete=models.SET_NULL, null=True, blank=True)
@@ -140,6 +150,7 @@ class TRMatlev(models.Model):
     indicator = models.ForeignKey(TMatlevIndicator, on_delete=models.SET_NULL, null=True, blank=True)
     kriteria = models.ForeignKey(TMatlevKriteria, on_delete=models.SET_NULL, null=True, blank=True)
     maturity = models.ForeignKey(TMatlevKriteriaDetail, on_delete=models.SET_NULL, null=True, blank=True)
+    pic = models.ForeignKey(MPic, on_delete=models.SET_NULL, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True,default=timezone.now)
 

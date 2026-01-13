@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
 from datetime import datetime, timedelta
+import re
 
 context = {'menu' : 'master'}
 @login_required(login_url='/')
@@ -204,11 +205,19 @@ def delete_ent(request, id):
     })
 
 def indicator(request):
+    current_year = str(datetime.now().year)
+    selected_year = request.session.get('tahun_periode', current_year)
     context['submenu'] = 'indicator'
+    context['allyear'] = TMatlevIndicator.objects.distinct('year').values('year')
+    context['matlev_indicator_count'] = TMatlevIndicator.objects.filter(
+        year=selected_year
+    ).count()
     return render(request, "master_indicator.html", context)
 
 def get_indicator_list(request, category):
-    ind_list = TMatlevIndicator.objects.order_by('number').filter(pillar=category).values('id', 'indicator')
+    current_year = str(datetime.now().year)
+    selected_year = request.session.get('tahun_periode', current_year)
+    ind_list = TMatlevIndicator.objects.order_by('number').filter(pillar=category, year=selected_year).values('id', 'indicator')
     for ind in ind_list:
         subind_list = TMatlevKriteria.objects.order_by('number').filter(indicator_id=ind['id']).values('id', 'kriteria')
         ind['subindicator'] = list(subind_list)
@@ -288,6 +297,102 @@ def indicator_form(request, category, mode, id=None):
             return HttpResponseRedirect('/master/indicator')
             
     return render(request, "master_formindicator.html", context)
+
+def copy_matlev(request):
+    current_year = str(datetime.now().year)
+    selected_year = request.session.get('tahun_periode', current_year)
+    year_choose = request.POST.get('year_choose')
+    indicator = TMatlevIndicator.objects.order_by('id').filter(year=year_choose)
+    for ind in indicator:
+        new_ind = TMatlevIndicator()
+        new_ind.pillar = ind.pillar
+        new_ind.number = ind.number
+        new_ind.indicator = ind.indicator
+        new_ind.year = selected_year
+        new_ind.save()
+        
+        kriteria = TMatlevKriteria.objects.order_by('id').filter(indicator=ind)
+        for kri in kriteria:
+            new_kri = TMatlevKriteria()
+            new_kri.number = kri.number
+            new_kri.kriteria = kri.kriteria
+            new_kri.max_level = kri.max_level
+            new_kri.level_get = 0
+            new_kri.level_sum = 0
+            new_kri.level_weight = 0
+            new_kri.year = selected_year
+            new_kri.indicator = new_ind
+            new_kri.save()
+            
+            picc = MPic.objects.all()
+            for pc in picc:
+                new_kri_lvl = TMatlevKriteriaLevelGet()
+                new_kri_lvl.level_get = 0
+                new_kri_lvl.kriteria = new_kri
+                new_kri_lvl.pic = pc
+                new_kri_lvl.save()
+            
+            maturity = TMatlevKriteriaDetail.objects.order_by('id').filter(kriteria=kri)
+            for mat in maturity:
+                new_mat = TMatlevKriteriaDetail()
+                new_mat.maturity = mat.maturity
+                new_mat.level = mat.level
+                new_mat.evidence = mat.evidence
+                new_mat.data_type = mat.data_type
+                new_mat.status = 'belum'
+                new_mat.keterangan = None
+                new_mat.kriteria = new_kri
+                new_mat.save()
+                
+                mat_column = TMatlevKriteriaColumn.objects.order_by('id').filter(maturity=mat, sub_column_id__isnull=True)
+                dec_save = []
+                for mat_col in mat_column:
+                    if mat_col.column_type != 'equation':
+                        new_mat_col = TMatlevKriteriaColumn()
+                        new_mat_col.column_name = mat_col.column_name
+                        new_mat_col.column_type = mat_col.column_type
+                        new_mat_col.hints = mat_col.hints
+                        new_mat_col.show_table = mat_col.show_table
+                        new_mat_col.equation = mat_col.equation
+                        new_mat_col.maturity = new_mat
+                        new_mat_col.save()
+                    
+                        if mat_col.column_type == 'sub':
+                            sub_mat_column = TMatlevKriteriaColumn.objects.order_by('id').filter(sub_column=mat_col)
+                            for sub_mat_col in sub_mat_column:
+                                new_sub_mat_col = TMatlevKriteriaColumn()
+                                new_sub_mat_col.column_name = sub_mat_col.column_name
+                                new_sub_mat_col.column_type = sub_mat_col.column_type
+                                new_sub_mat_col.hints = sub_mat_col.hints
+                                new_sub_mat_col.show_table = sub_mat_col.show_table
+                                new_sub_mat_col.equation = sub_mat_col.equation
+                                new_sub_mat_col.maturity = new_mat
+                                new_sub_mat_col.sub_column = new_mat_col
+                                new_sub_mat_col.save()
+                        
+                        if mat_col.column_type == 'decimal':
+                            dec_save.append([mat_col.id, new_mat_col.id])
+                    else:
+                        equ = mat_col.equation
+                        angka_lama = re.findall(r"#(\d+)", equ)
+                        angka_baru = []
+                        for al in angka_lama:
+                            for ds in dec_save:
+                                if str(ds[0]) == str(al):
+                                    angka_baru.append(ds[1])
+                        
+                        for lama, baru in zip(angka_lama, angka_baru):
+                            equ = equ.replace(f"#{lama}", f"#{baru}")
+                            
+                        new_mat_col = TMatlevKriteriaColumn()
+                        new_mat_col.column_name = mat_col.column_name
+                        new_mat_col.column_type = mat_col.column_type
+                        new_mat_col.hints = mat_col.hints
+                        new_mat_col.show_table = mat_col.show_table
+                        new_mat_col.equation = equ
+                        new_mat_col.maturity = new_mat
+                        new_mat_col.save()
+    return HttpResponseRedirect('/master/indicator')
 
 def delete_sub(request, id):
     TMatlevKriteria.objects.filter(id=id).delete()
@@ -524,14 +629,6 @@ def delete_kriteria(request, id):
         'success':True,
         'data':''
     })
-
-@csrf_exempt
-def set_tahun_session(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        request.session['tahun_periode'] = data.get('tahun_periode', '2024')
-        return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'error'}, status=400)
 
 def mast_form(request):
     # if submenu == 'user':

@@ -19,12 +19,14 @@ def login_account(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            request.session['selected_pic'] = 1
             if user.is_superuser == False:
                 dt = UserDetail.objects.filter(user=user).first()
                 request.session['role'] = dt.role
                 
                 pic = UserPIC.objects.filter(user=user).first()
                 request.session['pic'] = pic.pic_id
+                request.session['selected_pic'] = pic.pic_id
             return HttpResponseRedirect('dashboard/')
         else:
             return HttpResponseRedirect('/')
@@ -40,4 +42,8 @@ def logout_account(request):
 
 def change_year(request, choose):
     request.session['tahun_periode'] = choose
+    return JsonResponse({'status': 'success'})
+
+def change_pic(request, choose):
+    request.session['selected_pic'] = choose
     return JsonResponse({'status': 'success'})

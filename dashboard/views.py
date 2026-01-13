@@ -117,7 +117,7 @@ def index(request):
     total_emission = scope1 + scope2 + scope3
     
     #reduction
-    emission_reduce = TREmission.objects.annotate(year_int=Cast('year', IntegerField())).filter(year_int__lte=int(selected_year), category='reduction_total')
+    emission_reduce = TREmission.objects.annotate(year_int=Cast('year', IntegerField())).filter(year_int__lte=int(selected_year), category='reduction_total').order_by('year')
     reduce_emisi = 0
     year_reduce = []
     year_val_reduce = []

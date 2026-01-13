@@ -86,25 +86,25 @@
           <!-- Nav tabs -->
           <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
             <li class="nav-item nav-item-menuinj">
-              <a class="nav-link active" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/injourney.png" data-default="assets/images/injourney.png" data-active="assets/images/injourney.png" class="card-logo" height="40" /></a>
+              <a class="nav-link {% if request.session.selected_pic == 1 %}active{% endif %}"  data-bs-toggle="tab" href="javascript:;" onclick="change_pic(1)" role="tab"><img src="{% if request.session.selected_pic == 1 %}assets/images/injourney.png{% else %}assets/images/injourney-white.png{% endif %}" data-default="" data-active="assets/images/injourney.png" class="card-logo" height="40" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-airport-white.png" data-default="assets/images/logotab/inj-airport-white.png" data-active="assets/images/logotab/inj-airport-act.png" class="card-logo" /></a>
+              <a class="nav-link {% if request.session.selected_pic == 2 %}active{% endif %}" data-bs-toggle="tab" href="javascript:;" onclick="change_pic(2)" role="tab"><img src="{% if request.session.selected_pic == 2 %}assets/images/logotab/inj-airport-act.png{% else %}assets/images/logotab/inj-airport-white.png{% endif %}" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-aviation-white.png" data-default="assets/images/logotab/inj-aviation-white.png" data-active="assets/images/logotab/inj-aviation-act.png" class="card-logo" /></a>
+              <a class="nav-link {% if request.session.selected_pic == 3 %}active{% endif %}" data-bs-toggle="tab" href="javascript:;" onclick="change_pic(3)" role="tab"><img src="{% if request.session.selected_pic == 3 %}assets/images/logotab/inj-aviation-act.png{% else %}assets/images/logotab/inj-aviation-white.png{% endif %}" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-retail-white.png" data-default="assets/images/logotab/inj-retail-white.png" data-active="assets/images/logotab/inj-retaiil-act.png" class="card-logo" /></a>
+              <a class="nav-link {% if request.session.selected_pic == 4 %}active{% endif %}" data-bs-toggle="tab" href="javascript:;" onclick="change_pic(4)" role="tab"><img src="{% if request.session.selected_pic == 4 %}assets/images/logotab/inj-retaiil-act.png{% else %}assets/images/logotab/inj-retail-white.png{% endif %}" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-hospi-white.png" data-default="assets/images/logotab/inj-hospi-white.png" data-active="assets/images/logotab/inj-hospi-act.png" class="card-logo" /></a>
+              <a class="nav-link {% if request.session.selected_pic == 5 %}active{% endif %}" data-bs-toggle="tab" href="javascript:;" onclick="change_pic(5)" role="tab"><img src="{% if request.session.selected_pic == 5 %}assets/images/logotab/inj-hospi-act.png{% else %}assets/images/logotab/inj-hospi-white.png{% endif %}" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-desti-white.png" data-default="assets/images/logotab/inj-desti-white.png" data-active="assets/images/logotab/inj-desti-ac.png" class="card-logo" /></a>
+              <a class="nav-link {% if request.session.selected_pic == 6 %}active{% endif %}" data-bs-toggle="tab" href="javascript:;" onclick="change_pic(6)" role="tab"><img src="{% if request.session.selected_pic == 6 %}assets/images/logotab/inj-desti-ac.png{% else %}assets/images/logotab/inj-desti-white.png{% endif %}" class="card-logo" /></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-muted" data-bs-toggle="tab" href="javascript:;" role="tab"><img src="assets/images/logotab/inj-tourisn-white.png" data-default="assets/images/logotab/inj-tourisn-white.png" data-active="assets/images/logotab/inj-touris-act.png" class="card-logo" /></a>
+              <a class="nav-link {% if request.session.selected_pic == 7 %}active{% endif %}" data-bs-toggle="tab" href="javascript:;" onclick="change_pic(7)" role="tab"><img src="{% if request.session.selected_pic == 7 %}assets/images/logotab/inj-touris-act.png{% else %}assets/images/logotab/inj-tourisn-white.png{% endif %}" class="card-logo" /></a>
             </li>
           </ul>
 
@@ -243,7 +243,7 @@
 {% endblock %}
 {% block script %}
   <script type="text/javascript">
-    document.querySelectorAll('.nav-link').forEach((link) => {
+    {% comment %} document.querySelectorAll('.nav-link').forEach((link) => {
       link.addEventListener('shown.bs.tab', function () {
         document.querySelectorAll('.nav-link img').forEach((img) => {
           img.src = img.getAttribute('data-default')
@@ -252,7 +252,7 @@
         let img = this.querySelector('img')
         img.src = img.getAttribute('data-active')
       })
-    })
+    }) {% endcomment %}
   </script>
   <script>
     const choice_option = {
@@ -610,6 +610,17 @@
               Swal.fire('Error!', 'Unable to delete the data. Please try again.', 'error')
             }
           })
+        }
+      })
+    }
+
+    function change_pic(pic) {
+      $.ajax({
+        url: `change_pic/${pic}`,
+        dataType: 'json',
+        async: true,
+        success:(res) => {
+          window.location.reload()
         }
       })
     }

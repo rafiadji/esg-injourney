@@ -365,6 +365,7 @@ def leveldetail(request):
     idlev = request.GET.get('matlev')
     subindicator = request.GET.get('sub')
     indicator = request.GET.get('ind')
+    selected_pic = request.session.get('selected_pic')
     context['category'] = request.GET.get('category')
     context['ind'] = request.GET.get('ind')
     context['sub'] = request.GET.get('sub')
@@ -390,6 +391,7 @@ def leveldetail(request):
             post.maturity = matlev
             post.kriteria = matlev.kriteria
             post.indicator = matlev.kriteria.indicator
+            post.pic = MPic.objects.get(id=selected_pic)
             post.save()
             # print(f"Before save - Status: {matlev.status}")  
             matlev.status = 'submitted'
@@ -414,7 +416,7 @@ def leveldetail(request):
             
             #Cek submit
             count_mat = TMatlevKriteriaDetail.objects.filter(kriteria_id=subindicator, status='submitted').count()
-            krit = TMatlevKriteria.objects.get(id=subindicator)
+            krit = TMatlevKriteriaLevelGet.objects.get(id=subindicator, pic_id=selected_pic)
             krit.level_get = count_mat
             krit.save()
         else:
@@ -425,6 +427,7 @@ def leveldetail(request):
             post.maturity = matlev
             post.kriteria = matlev.kriteria
             post.indicator = matlev.kriteria.indicator
+            post.pic = MPic.objects.get(id=selected_pic)
             post.save()
             # print(f"Before save - Status: {matlev.status}")  
             matlev.status = 'submitted'
@@ -445,7 +448,7 @@ def leveldetail(request):
                 
             #Cek submit
             count_mat = TMatlevKriteriaDetail.objects.filter(kriteria_id=subindicator, status='submitted').count()
-            krit = TMatlevKriteria.objects.get(id=subindicator)
+            krit = TMatlevKriteriaLevelGet.objects.get(id=subindicator, pic_id=selected_pic)
             krit.level_get = count_mat
             krit.save()
         return HttpResponseRedirect('/data/detail/?category='+context['category']+'&ind='+context['ind']+'&sub='+context['sub']+'&matlev='+context['idlev'])
@@ -535,6 +538,7 @@ def get_leveldetail(request, val):
 
 def upload_file(request):
     if request.method=="POST":
+        selected_pic = request.session.get('selected_pic')
         r = request.POST
         rf = request.FILES
         user = request.user
@@ -543,6 +547,7 @@ def upload_file(request):
         post.maturity = TMatlevKriteriaDetail.objects.get(id=r.get('matlev'))
         post.kriteria = TMatlevKriteria.objects.get(id=r.get('subindicator'))
         post.indicator = TMatlevIndicator.objects.get(id=r.get('indicator'))
+        post.pic = MPic.objects.get(id=selected_pic)
         post.save()
         
         matlev = TMatlevKriteriaDetail.objects.get(id=r.get('matlev'))
@@ -559,13 +564,15 @@ def upload_file(request):
         
         #Cek submit
         count_mat = TMatlevKriteriaDetail.objects.filter(kriteria_id=r.get('subindicator'), status='submitted').count()
-        krit = TMatlevKriteria.objects.get(id=r.get('subindicator'))
+        krit = TMatlevKriteriaLevelGet.objects.get(id=r.get('subindicator'), pic_id=selected_pic)
         krit.level_get = count_mat
         krit.save()
         return JsonResponse({"status": "ok"})
 
 def get_detail_data(request, id):
-    column_tr = TRMatlev.objects.filter(maturity_id=id).order_by('-id')
+    
+    selected_pic = request.session.get('selected_pic')
+    column_tr = TRMatlev.objects.filter(maturity_id=id,pic_id=selected_pic).order_by('-id')
     column_value = []
     matlev_id = []
     
@@ -704,7 +711,7 @@ def upload_enviro(request):
         
         # Reduction_total
         reducettl = ['Total Emission Reduction']
-        reducettlValue = [wb['Output']['D32'].value - (wb['Output']['D16'].value + wb['Output']['D85'].value)]
+        reducettlValue = [wb['Output']['D16'].value]
         
         for info, val in zip(reducettl, reducettlValue):
             em = TREmission()

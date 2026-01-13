@@ -9,6 +9,7 @@ urlpatterns = [
     # path("login", views.login_account),
     path("logout", views.logout_account),
     path("change_year/<str:choose>", views.change_year),
+    path("change_pic/<int:choose>", views.change_pic),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
